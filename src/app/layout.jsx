@@ -1,14 +1,17 @@
-import './globals.css';
+"use client";
 
-export const metadata = {
-  title: 'Petty Cash KPN',
-  description: 'Petty Cash System KNP Corp',
-};
+import { SWRConfig } from "swr";
+import API from "@/services/api";
+import MainLayout from "./main-layout";
 
 export default function RootLayout({ children }) {
+  const swrConfig = {
+    fetcher: (url) => API.get(url).then((res) => res.data),
+  };
+
   return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
+    <MainLayout>
+      <SWRConfig value={swrConfig}>{children}</SWRConfig>
+    </MainLayout>
   );
 }

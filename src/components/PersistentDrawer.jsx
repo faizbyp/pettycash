@@ -19,6 +19,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import { useState } from "react";
+import Link from "next/link";
 
 const drawerWidth = 240;
 
@@ -92,7 +93,7 @@ export default function PersistentDrawer({ title, children }) {
     },
     {
       name: "Item List",
-      url: "/item",
+      url: "/dashboard/item",
       icon: <InboxIcon />,
     },
   ];
@@ -151,10 +152,12 @@ export default function PersistentDrawer({ title, children }) {
         <List>
           {menu.map((item) => (
             <ListItem key={item.name} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.name} />
-              </ListItemButton>
+              <Link href={item.url} passHref legacyBehavior>
+                <ListItemButton>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.name} />
+                </ListItemButton>
+              </Link>
             </ListItem>
           ))}
         </List>
