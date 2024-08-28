@@ -17,7 +17,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -76,27 +75,9 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-export default function PersistentDrawer({ title, children }) {
+export default function PersistentDrawer({ title, menu, children }) {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-
-  const menu = [
-    {
-      name: "Dashboard",
-      url: "/dashboard",
-      icon: <InboxIcon />,
-    },
-    {
-      name: "Request PO",
-      url: "/request",
-      icon: <InboxIcon />,
-    },
-    {
-      name: "Item List",
-      url: "/dashboard/item",
-      icon: <InboxIcon />,
-    },
-  ];
 
   const handleDrawerOpen = () => {
     setOpen(true);
