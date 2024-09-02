@@ -1,14 +1,25 @@
+import { ThemeProvider } from "@mui/material";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { LocalizationProvider } from "@mui/x-date-pickers";
 import "./globals.css";
+import theme from "@/theme";
 
 export const metadata = {
   title: "Petty Cash KPN",
-  description: "Petty Cash System KNP Corp",
+  description: "Petty Cash System KPN Corp",
 };
 
 export default function MainLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AppRouterCacheProvider>
+          <ThemeProvider theme={theme}>
+            <LocalizationProvider dateAdapter={AdapterMoment}>{children}</LocalizationProvider>
+          </ThemeProvider>
+        </AppRouterCacheProvider>
+      </body>
     </html>
   );
 }

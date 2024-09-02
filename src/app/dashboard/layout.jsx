@@ -14,18 +14,13 @@ export default function DashboardLayout({ children }) {
     },
     {
       name: "Request PO",
-      url: "/dashboard/request",
-      icon: <InboxIcon />,
-    },
-    {
-      name: "Item List",
-      url: "/dashboard/item",
+      url: "/dashboard/my-po/new",
       icon: <InboxIcon />,
     },
   ];
 
   return (
-    <PersistentDrawer title={metadata.title} menu={menu}>
+    <PersistentDrawer title="Petty Cash KPN" menu={menu}>
       {children}
     </PersistentDrawer>
   );

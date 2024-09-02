@@ -3,32 +3,27 @@
 import useFetch from "@/app/hooks/useFetch";
 import SelectCtrl from "@/components/forms/SelectCtrl";
 import TextFieldCtrl from "@/components/forms/TextFieldCtrl";
-import { Box, MenuItem } from "@mui/material";
+import { Box, MenuItem, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-function RequestPage() {
+function NewPOPage() {
+  const { data: company } = useFetch("/company");
   const { data: vendor } = useFetch("/vendor");
-  const { data: item } = useFetch("/item");
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
+      company: "",
       vendor: "",
     },
   });
 
   return (
     <Box component="main">
-      {vendor && (
-        <SelectCtrl name="vendor" label="Vendor" control={control}>
-          {vendor.data.map((data) => (
-            <MenuItem key={data.id_vendor} value={data.id_vendor}>
-              {data.vendor_name}
-            </MenuItem>
-          ))}
-        </SelectCtrl>
-      )}
+      <Typography variant="h1" sx={{ color: "primary.main" }}>
+        My Purchase Orders
+      </Typography>
     </Box>
   );
 }
-export default RequestPage;
+export default NewPOPage;
