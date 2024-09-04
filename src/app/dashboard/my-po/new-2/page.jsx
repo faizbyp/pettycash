@@ -35,6 +35,9 @@ import NumericFieldCtrl from "@/components/forms/NumericField";
 import CurrencyField from "@/components/forms/CurrencyField";
 import ItemTable from "@/components/ItemTable";
 import { calculateTotal, formatPercent, formatThousand } from "@/helper/helper";
+import API from "@/services/api";
+import toast from "react-hot-toast";
+import { isAxiosError } from "axios";
 
 function NewPO2Page() {
   const router = useRouter();
@@ -82,6 +85,9 @@ function NewPO2Page() {
   const { fields, append } = useFieldArray({
     control: poControl,
     name: "items",
+    rules: {
+      required: true,
+    },
   });
 
   useEffect(() => {
@@ -126,33 +132,23 @@ function NewPO2Page() {
 
   const onSubmit = async (values) => {
     // setLoading(true);
-
-    // const payload = {
-    //   company: values.company,
-    //   po_date: values.po_date.toString(),
-    //   vendor: values.vendor,
-    // };
-    // console.log(payload);
-
-    console.log(getValues());
+    delete values.items;
     console.log(values);
 
-    // try {
-    //   const res = !isEdit
-    //     ? await axiosAuth.post("/book", { data: payload })
-    //     : await axiosAuth.patch(`/book/${editData.id_book}`, { data: payload });
-    //   router.replace(`/dashboard/book/success/${res.data.id_ticket}`);
-    // } catch (error) {
-    //   const errors = error as AxiosError;
-    //   if (axios.isAxiosError(error)) {
-    //     const data = errors.response?.data as { message: string };
-    //     toast.error(data.message);
-    //   } else {
-    //     toast.error("error");
-    //   }
-    //   console.error(error);
-    //   setLoading(false);
-    // }
+    try {
+      const res = await API.post("/po", { data: values });
+      toast.success(`${res.data.message}
+        ${res.data.id_po}`);
+    } catch (err) {
+      if (isAxiosError(err)) {
+        const data = err.response?.data;
+        toast.error(data.message);
+      } else {
+        toast.error("Error");
+      }
+      console.error(err);
+      //   setLoading(false);
+    }
   };
 
   return (
@@ -213,7 +209,7 @@ function NewPO2Page() {
                   </Box>
                 </Grid>
               </Grid>
-              <Box sx={{ textAlign: "right" }}>
+              <Box sx={{ textAlign: "right", mt: 2 }}>
                 <Button variant="contained" onClick={handleSubmit(onSubmit)}>
                   Submit
                 </Button>

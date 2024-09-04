@@ -4,6 +4,7 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import "./globals.css";
 import theme from "@/theme";
+import { Toaster } from "react-hot-toast";
 
 export const metadata = {
   title: "Petty Cash KPN",
@@ -16,7 +17,10 @@ export default function MainLayout({ children }) {
       <body>
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
-            <LocalizationProvider dateAdapter={AdapterMoment}>{children}</LocalizationProvider>
+            <LocalizationProvider dateAdapter={AdapterMoment}>
+              <Toaster position="bottom-left" />
+              {children}
+            </LocalizationProvider>
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
