@@ -139,14 +139,14 @@ function NewPO2Page() {
       const res = await API.post("/po", { data: values });
       toast.success(`${res.data.message}
         ${res.data.id_po}`);
-    } catch (err) {
-      if (isAxiosError(err)) {
-        const data = err.response?.data;
+    } catch (error) {
+      if (isAxiosError(error)) {
+        const data = error.response?.data;
         toast.error(data.message);
       } else {
         toast.error("Error");
       }
-      console.error(err);
+      console.error(error);
       //   setLoading(false);
     }
   };
