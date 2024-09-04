@@ -83,7 +83,7 @@ function NewPO2Page() {
     },
   });
 
-  const { fields, append } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control: poControl,
     name: "items",
     rules: {
@@ -129,6 +129,10 @@ function NewPO2Page() {
     append(values);
     resetItemForm();
     handleCloseForm();
+  };
+
+  const deleteItem = async (index) => {
+    remove(index);
   };
 
   const onSubmit = async (values) => {
@@ -184,7 +188,7 @@ function NewPO2Page() {
                   Add Item
                 </Button>
               </Box>
-              <ItemTable data={fields} />
+              <ItemTable data={fields} onDelete={deleteItem} />
               <Grid container spacing={2}>
                 <Grid size={{ xs: 12, md: 6 }}>
                   <TextFieldCtrl

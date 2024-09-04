@@ -7,9 +7,11 @@ import {
   TableHead,
   TableRow,
   Paper,
+  IconButton,
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-const ItemTable = ({ data }) => {
+const ItemTable = ({ data, onDelete }) => {
   return (
     <TableContainer component={Paper} sx={{ mb: 4 }}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -21,6 +23,7 @@ const ItemTable = ({ data }) => {
             <TableCell>UOM</TableCell>
             <TableCell align="right">Unit Price</TableCell>
             <TableCell align="right">Amount</TableCell>
+            <TableCell align="right">Action</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -34,6 +37,11 @@ const ItemTable = ({ data }) => {
               <TableCell>{item.uom}</TableCell>
               <TableCell align="right">{formatThousand(item.unit_price)}</TableCell>
               <TableCell align="right">{formatThousand(item.amount)}</TableCell>
+              <TableCell align="right">
+                <IconButton edge="end" aria-label="delete" onClick={() => onDelete(index)}>
+                  <DeleteIcon />
+                </IconButton>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
