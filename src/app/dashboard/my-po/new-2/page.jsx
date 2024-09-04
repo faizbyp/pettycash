@@ -4,39 +4,139 @@ import useFetch from "@/app/hooks/useFetch";
 import useSessionStorage from "@/app/hooks/useSessionStorage";
 import DatePickerCtrl from "@/components/forms/DatePicker";
 import SelectCtrl from "@/components/forms/Select";
-import { Box, Button, Divider, Grid2 as Grid, MenuItem, Skeleton, Typography } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import TextFieldCtrl from "@/components/forms/TextField";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  Grid2 as Grid,
+  IconButton,
+  MenuItem,
+  Paper,
+  Skeleton,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@mui/material";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
+import NumericFieldCtrl from "@/components/forms/NumericField";
+import CurrencyField from "@/components/forms/CurrencyField";
+import ItemTable from "@/components/ItemTable";
+import { calculateTotal, formatPercent, formatThousand } from "@/helper/helper";
 
 function NewPO2Page() {
   const router = useRouter();
   const [poData, setPoData] = useSessionStorage("poData");
   const { data: company } = useFetch(poData ? `/company/${poData.company}` : null);
   const { data: vendor } = useFetch(poData ? `/vendor/${poData.vendor}` : null);
-  console.log(poData);
+  const { data: uom } = useFetch("/uom");
+  const [openForm, setOpenForm] = useState(false);
 
-  const { control, handleSubmit, getValues, setValue } = useForm({
+  const {
+    control: poControl,
+    handleSubmit,
+    getValues,
+    setValue,
+    watch,
+  } = useForm({
     defaultValues: {
-      company: "",
       po_date: moment(),
-      vendor: "",
+      id_company: "",
+      id_vendor: "",
+      created_by: "",
+      notes: "",
+      sub_total: 0,
+      ppn: 10 / 100,
+      grand_total: 0,
     },
   });
+
+  const {
+    control: itemControl,
+    handleSubmit: handleItem,
+    reset: resetItemForm,
+  } = useForm({
+    defaultValues: {
+      id_po_item: "",
+      id_po: "",
+      description: "",
+      unit_price: 0,
+      qty: 0,
+      uom: "",
+      amount: 0,
+    },
+  });
+
+  const { fields, append } = useFieldArray({
+    control: poControl,
+    name: "items",
+  });
+
+  useEffect(() => {
+    if (poData) {
+      setValue("po_date", poData.po_date);
+      setValue("id_company", poData.company);
+      setValue("id_vendor", poData.vendor);
+    }
+  }, [poData, setValue]);
+
+  useEffect(() => {
+    setValue("sub_total", calculateTotal(fields, "amount"));
+    console.log(
+      "grand totalll",
+      getValues("sub_total") + getValues("sub_total") * getValues("ppn")
+    );
+    setValue("grand_total", getValues("sub_total") + getValues("sub_total") * getValues("ppn"));
+  }, [setValue, getValues, fields]);
 
   const onPrev = () => {
     router.back();
   };
 
+  const handleOpenForm = () => {
+    setOpenForm(true);
+  };
+
+  const handleCloseForm = (event, reason) => {
+    if (reason && reason === "backdropClick") return;
+    setOpenForm(false);
+  };
+
+  const addItem = async (values) => {
+    values = {
+      ...values,
+      amount: values.unit_price * values.qty,
+    };
+    append(values);
+    resetItemForm();
+    handleCloseForm();
+  };
+
   const onSubmit = async (values) => {
     // setLoading(true);
-    const payload = {
-      company: values.company,
-      po_date: values.po_date.toString(),
-      vendor: values.vendor,
-    };
-    console.log(payload);
+
+    // const payload = {
+    //   company: values.company,
+    //   po_date: values.po_date.toString(),
+    //   vendor: values.vendor,
+    // };
+    // console.log(payload);
+
+    console.log(getValues());
+    console.log(values);
+
     // try {
     //   const res = !isEdit
     //     ? await axiosAuth.post("/book", { data: payload })
@@ -56,43 +156,151 @@ function NewPO2Page() {
   };
 
   return (
-    <Box component="main">
-      <Button onClick={() => onPrev()}>Back</Button>
-      <Typography variant="h1" sx={{ color: "primary.main" }}>
-        Create New PO - 2
-      </Typography>
-      {company && vendor && poData ? (
-        <>
-          <Grid container spacing={4}>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <Typography>{company.data.name}</Typography>
-              <Typography>{company.data.addr}</Typography>
-              <Typography>Phone: {company.data.phone}</Typography>
-              <Typography>Fax: {company.data.fax}</Typography>
+    <>
+      <Box component="main">
+        <Button onClick={() => onPrev()}>Back</Button>
+        <Typography variant="h1" sx={{ color: "primary.main" }}>
+          Create New PO - 2
+        </Typography>
+        {company && vendor && poData ? (
+          <>
+            <Grid container spacing={2}>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography>{company.data.name}</Typography>
+                <Typography>{company.data.addr}</Typography>
+                <Typography>Phone: {company.data.phone}</Typography>
+                <Typography>Fax: {company.data.fax}</Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography>Date</Typography>
+                <Typography>{moment(poData.po_date).format("DD/MM/YYYY")}</Typography>
+              </Grid>
             </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <Typography>Date</Typography>
-              <Typography>{moment(poData.po_date).format("DD/MM/YYYY")}</Typography>
-            </Grid>
-          </Grid>
-          <Divider sx={{ my: 2 }} />
-          <Typography>Vendor: {vendor.data.vendor_name}</Typography>
-          <form>
-            <Box sx={{ textAlign: "right" }}>
-              <Button variant="contained" onClick={handleSubmit(onSubmit)}>
-                Submit
-              </Button>
-            </Box>
-          </form>
-        </>
-      ) : (
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-          <Skeleton variant="rounded" width="100%" height={64} />
-          <Skeleton variant="rounded" width="100%" height={64} />
-          <Skeleton variant="rounded" width="100%" height={64} />
-        </Box>
-      )}
-    </Box>
+            <Divider sx={{ my: 2 }} />
+            <Typography>Vendor: {vendor.data.vendor_name}</Typography>
+            <form>
+              <Box sx={{ mt: 4, display: "flex", gap: 2, alignItems: "center" }}>
+                <Typography variant="h2" sx={{ m: 0 }}>
+                  Items
+                </Typography>
+                <Button variant="outlined" onClick={handleOpenForm}>
+                  Add Item
+                </Button>
+              </Box>
+              <ItemTable data={fields} />
+              <Grid container spacing={2}>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextFieldCtrl
+                    multiline={true}
+                    rows={5}
+                    control={poControl}
+                    name="notes"
+                    label="Notes"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <Box sx={{ display: "flex", gap: 16, justifyContent: "end" }}>
+                    <Box>
+                      <Typography>Sub Total</Typography>
+                      <Typography>PPN</Typography>
+                      <Typography>Grand Total</Typography>
+                    </Box>
+                    <Box sx={{ textAlign: "right" }}>
+                      <Typography>{formatThousand(watch("sub_total"))}</Typography>
+                      <Typography>{formatPercent(watch("ppn"))}</Typography>
+                      <Typography>{formatThousand(watch("grand_total"))}</Typography>
+                    </Box>
+                  </Box>
+                </Grid>
+              </Grid>
+              <Box sx={{ textAlign: "right" }}>
+                <Button variant="contained" onClick={handleSubmit(onSubmit)}>
+                  Submit
+                </Button>
+              </Box>
+            </form>
+          </>
+        ) : (
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <Skeleton variant="rounded" width="100%" height={64} />
+            <Skeleton variant="rounded" width="100%" height={64} />
+            <Skeleton variant="rounded" width="100%" height={64} />
+          </Box>
+        )}
+      </Box>
+
+      {/* ADD ITEM DIALOG */}
+      <Dialog open={openForm} onClose={handleCloseForm} aria-modal="true" fullWidth maxWidth="sm">
+        <DialogTitle>Add Item</DialogTitle>
+        <IconButton
+          aria-label="close"
+          onClick={handleCloseForm}
+          sx={(theme) => ({
+            position: "absolute",
+            right: 8,
+            top: 8,
+            color: theme.palette.grey[500],
+          })}
+        >
+          <CloseIcon />
+        </IconButton>
+        <DialogContent dividers>
+          <Box sx={{ mb: 2 }}>
+            <TextFieldCtrl
+              control={itemControl}
+              name="description"
+              label="Description"
+              rules={{
+                required: "Field required",
+              }}
+            />
+          </Box>
+          <Box sx={{ mb: 2 }}>
+            <CurrencyField
+              control={itemControl}
+              name="unit_price"
+              label="Unit Price"
+              rules={{
+                required: "Field required",
+              }}
+            />
+          </Box>
+          <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+            <NumericFieldCtrl
+              control={itemControl}
+              name="qty"
+              label="Quantity"
+              min={0}
+              rules={{
+                required: "Field required",
+              }}
+            />
+            <SelectCtrl
+              name="uom"
+              label="UOM"
+              control={itemControl}
+              rules={{
+                required: "Field required",
+              }}
+            >
+              {uom &&
+                uom.data.map((data) => (
+                  <MenuItem key={data.uom} value={data.uom}>
+                    {data.uom}
+                  </MenuItem>
+                ))}
+            </SelectCtrl>
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseForm}>Cancel</Button>
+          <Button variant="contained" onClick={handleItem(addItem)}>
+            Add
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/* END ADD ITEM DIALOG */}
+    </>
   );
 }
 export default NewPO2Page;

@@ -47,10 +47,6 @@ const TextFieldCtrl = ({
             variant="outlined"
             multiline={multiline}
             rows={rows}
-            inputProps={{
-              readOnly: readOnly,
-              inputMode: numericInput ? "numeric" : "text",
-            }}
             fullWidth
           />
         )}
