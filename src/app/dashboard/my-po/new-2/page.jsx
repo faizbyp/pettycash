@@ -46,6 +46,7 @@ function NewPO2Page() {
   const { data: vendor } = useFetch(poData ? `/vendor/${poData.vendor}` : null);
   const { data: uom } = useFetch("/uom");
   const [openForm, setOpenForm] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const {
     control: poControl,
@@ -131,14 +132,14 @@ function NewPO2Page() {
   };
 
   const onSubmit = async (values) => {
-    // setLoading(true);
-    delete values.items;
+    setLoading(true);
     console.log(values);
 
     try {
       const res = await API.post("/po", { data: values });
       toast.success(`${res.data.message}
         ${res.data.id_po}`);
+      router.push("/dashboard");
     } catch (error) {
       if (isAxiosError(error)) {
         const data = error.response?.data;
@@ -147,7 +148,7 @@ function NewPO2Page() {
         toast.error("Error");
       }
       console.error(error);
-      //   setLoading(false);
+      setLoading(false);
     }
   };
 
@@ -210,7 +211,7 @@ function NewPO2Page() {
                 </Grid>
               </Grid>
               <Box sx={{ textAlign: "right", mt: 2 }}>
-                <Button variant="contained" onClick={handleSubmit(onSubmit)}>
+                <Button variant="contained" onClick={handleSubmit(onSubmit)} disabled={loading}>
                   Submit
                 </Button>
               </Box>
