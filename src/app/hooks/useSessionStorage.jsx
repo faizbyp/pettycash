@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-function useSessionStorage(key, initialValue) {
+function useSessionStorage(key, initialValue = JSON.stringify("")) {
   // Check if we are in the browser environment
   const isBrowser = typeof window !== "undefined";
 
@@ -10,7 +10,19 @@ function useSessionStorage(key, initialValue) {
   const getStoredValue = () => {
     if (isBrowser) {
       const storedValue = sessionStorage.getItem(key);
-      return storedValue ? JSON.parse(storedValue) : initialValue;
+
+      // If storedValue is null, return initialValue
+      if (!storedValue) {
+        return initialValue;
+      }
+
+      try {
+        // Parse the stored value (and avoid parsing undefined or invalid JSON)
+        return JSON.parse(storedValue);
+      } catch (error) {
+        console.error("Error parsing JSON from sessionStorage:", error);
+        return initialValue; // Return initial value if there's a parsing error
+      }
     }
     return initialValue;
   };
