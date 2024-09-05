@@ -38,6 +38,8 @@ import { calculateTotal, formatPercent, formatThousand } from "@/helper/helper";
 import API from "@/services/api";
 import toast from "react-hot-toast";
 import { isAxiosError } from "axios";
+import CheckboxCtrl from "@/components/forms/Checkbox";
+import { WatchLater } from "@mui/icons-material";
 
 function NewPO2Page() {
   const router = useRouter();
@@ -47,6 +49,7 @@ function NewPO2Page() {
   const { data: uom } = useFetch("/uom");
   const [openForm, setOpenForm] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isPPN, setIsPPN] = useState(false);
 
   const {
     control: poControl,
@@ -62,7 +65,7 @@ function NewPO2Page() {
       created_by: "",
       notes: "",
       sub_total: 0,
-      ppn: 10 / 100,
+      ppn: false,
       grand_total: 0,
     },
   });
@@ -101,12 +104,15 @@ function NewPO2Page() {
 
   useEffect(() => {
     setValue("sub_total", calculateTotal(fields, "amount"));
-    console.log(
-      "grand totalll",
-      getValues("sub_total") + getValues("sub_total") * getValues("ppn")
+    setValue(
+      "grand_total",
+      watch("ppn")
+        ? getValues("sub_total") + getValues("sub_total") * (11 / 100)
+        : getValues("sub_total")
     );
-    setValue("grand_total", getValues("sub_total") + getValues("sub_total") * getValues("ppn"));
-  }, [setValue, getValues, fields]);
+    console.log("grand totalll", getValues("grand_total"));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setValue, getValues, watch("ppn"), fields]);
 
   const onPrev = () => {
     router.back();
@@ -201,14 +207,19 @@ function NewPO2Page() {
                 </Grid>
                 <Grid size={{ xs: 12, md: 6 }}>
                   <Box sx={{ display: "flex", gap: 16, justifyContent: "end" }}>
-                    <Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                      }}
+                    >
                       <Typography>Sub Total</Typography>
-                      <Typography>PPN</Typography>
                       <Typography>Grand Total</Typography>
                     </Box>
                     <Box sx={{ textAlign: "right" }}>
                       <Typography>{formatThousand(watch("sub_total"))}</Typography>
-                      <Typography>{formatPercent(watch("ppn"))}</Typography>
+                      <CheckboxCtrl name="ppn" control={poControl} label="PPN 11%" noMargin />
                       <Typography>{formatThousand(watch("grand_total"))}</Typography>
                     </Box>
                   </Box>
