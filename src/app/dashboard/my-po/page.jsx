@@ -1,6 +1,6 @@
 "use client";
 
-import useFetch from "@/app/hooks/useFetch";
+import useFetch from "@/hooks/useFetch";
 import SelectCtrl from "@/components/forms/SelectCtrl";
 import TextFieldCtrl from "@/components/forms/TextFieldCtrl";
 import { Box, MenuItem, Typography } from "@mui/material";
