@@ -2,12 +2,16 @@
 
 import { PasswordWithEye } from "@/components/forms/PasswordWithEye";
 import TextFieldCtrl from "@/components/forms/TextField";
+import useSessionStorage from "@/hooks/useSessionStorage";
 import { Box, Button, Container, Link as MuiLink, Typography } from "@mui/material";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 export default function Register() {
-  const { control, handleSubmit } = useForm({
+  const router = useRouter();
+  const [email, setEmail] = useSessionStorage("userEmail");
+  const { control, handleSubmit, getValues } = useForm({
     defaultValues: {
       name: "",
       email: "",
@@ -18,6 +22,8 @@ export default function Register() {
 
   const onSubmit = (values) => {
     console.log(values);
+    sessionStorage.setItem("userEmail", values.email);
+    router.replace("/register/otp");
   };
 
   return (
@@ -41,7 +47,13 @@ export default function Register() {
               name="email"
               control={control}
               label="Email"
-              rules={{ required: "Field required" }}
+              rules={{
+                required: "Field required",
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: "invalid email address",
+                },
+              }}
             />
           </Box>
           <Box sx={{ mb: 2 }}>
@@ -62,7 +74,7 @@ export default function Register() {
           </Box>
           <Box sx={{ textAlign: "right" }}>
             <Button variant="contained" onClick={handleSubmit(onSubmit)}>
-              Register
+              Verify
             </Button>
           </Box>
         </form>
