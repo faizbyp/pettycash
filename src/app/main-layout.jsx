@@ -5,6 +5,13 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import "./globals.css";
 import theme from "@/theme";
 import { Toaster } from "react-hot-toast";
+import { Roboto } from "next/font/google";
+
+const roboto = Roboto({
+  weight: ["100", "300", "400", "500", "700", "900"],
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const metadata = {
   title: "Petty Cash KPN",
@@ -14,7 +21,7 @@ export const metadata = {
 export default function MainLayout({ children }) {
   return (
     <html lang="en">
-      <body>
+      <body className={roboto.className}>
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <LocalizationProvider dateAdapter={AdapterMoment}>

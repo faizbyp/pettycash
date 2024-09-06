@@ -2,7 +2,8 @@
 
 import { PasswordWithEye } from "@/components/forms/PasswordWithEye";
 import TextFieldCtrl from "@/components/forms/TextField";
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Box, Button, Container, Typography, Link as MuiLink } from "@mui/material";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 
 export default function Login() {
@@ -47,6 +48,11 @@ export default function Login() {
             </Button>
           </Box>
         </form>
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+          <MuiLink href="/register" component={Link}>
+            Register
+          </MuiLink>
+        </Box>
       </Container>
     </Box>
   );
