@@ -3,6 +3,7 @@
 import { SWRConfig } from "swr";
 import API from "@/services/api";
 import MainLayout from "./main-layout";
+import { SessionProvider } from "next-auth/react";
 
 export default function RootLayout({ children }) {
   const swrConfig = {
@@ -11,7 +12,9 @@ export default function RootLayout({ children }) {
 
   return (
     <MainLayout>
-      <SWRConfig value={swrConfig}>{children}</SWRConfig>
+      <SessionProvider>
+        <SWRConfig value={swrConfig}>{children}</SWRConfig>
+      </SessionProvider>
     </MainLayout>
   );
 }

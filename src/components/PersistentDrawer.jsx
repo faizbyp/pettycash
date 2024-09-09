@@ -19,6 +19,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { useState } from "react";
 import Link from "next/link";
+import { Avatar, Menu, MenuItem, Popover } from "@mui/material";
+import { signOut, useSession } from "next-auth/react";
 
 const drawerWidth = 240;
 
@@ -75,6 +77,68 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
+const UserMenu = () => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const { data: session } = useSession();
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    signOut({ callbackUrl: "/login" });
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
+  return (
+    <>
+      <IconButton aria-describedby={id} edge="end" onClick={handleClick}>
+        <Avatar sx={{ width: 32, height: 32 }} />
+      </IconButton>
+      <Menu
+        id={id}
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "center",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        keepMounted
+      >
+        <MenuItem sx={{ width: "10rem" }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
+            <IconButton>
+              <Avatar>{session?.user?.username.slice(0, 2).toUpperCase()}</Avatar>
+            </IconButton>
+            <Typography>{session?.user?.username}</Typography>
+          </Box>
+        </MenuItem>
+        <MenuItem onClick={handleLogout} sx={{ width: "10rem" }}>
+          Logout
+        </MenuItem>
+      </Menu>
+    </>
+  );
+};
+
 export default function PersistentDrawer({ title, menu, children }) {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
@@ -91,24 +155,25 @@ export default function PersistentDrawer({ title, menu, children }) {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={[
-              {
-                mr: 2,
-              },
-              open && { display: "none" },
-            ]}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            {title}
-          </Typography>
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={[
+                {
+                  mr: 2,
+                },
+                open && { display: "none" },
+              ]}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6">{title}</Typography>
+          </Box>
+          <UserMenu />
         </Toolbar>
       </AppBar>
       <Drawer
