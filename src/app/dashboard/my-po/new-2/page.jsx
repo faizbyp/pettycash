@@ -40,9 +40,11 @@ import toast from "react-hot-toast";
 import { isAxiosError } from "axios";
 import CheckboxCtrl from "@/components/forms/Checkbox";
 import { WatchLater } from "@mui/icons-material";
+import { useSession } from "next-auth/react";
 
 function NewPO2Page() {
   const router = useRouter();
+  const { data: session } = useSession();
   const [poData, setPoData] = useSessionStorage("poData");
   const { data: company } = useFetch(poData ? `/company/${poData.company}` : null);
   const { data: vendor } = useFetch(poData ? `/vendor/${poData.vendor}` : null);
@@ -62,7 +64,7 @@ function NewPO2Page() {
       po_date: moment(),
       id_company: "",
       id_vendor: "",
-      created_by: "",
+      id_user: "",
       notes: "",
       sub_total: 0,
       ppn: false,
@@ -143,6 +145,10 @@ function NewPO2Page() {
 
   const onSubmit = async (values) => {
     setLoading(true);
+    values = {
+      ...values,
+      id_user: session?.user?.id_user,
+    };
     console.log(values);
 
     try {
