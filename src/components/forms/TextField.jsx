@@ -25,6 +25,7 @@ const TextFieldCtrl = ({
         defaultValue={valueovr}
         render={({ field: { onChange, value, ref }, fieldState: { error } }) => (
           <TextField
+            autoComplete="on"
             helperText={error ? error.message : null}
             error={!!error}
             onChange={(e) => {

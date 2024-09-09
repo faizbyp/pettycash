@@ -5,9 +5,12 @@ import TextFieldCtrl from "@/components/forms/TextField";
 import { Box, Button, Container, Typography, Link as MuiLink } from "@mui/material";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function Login() {
+  const [loading, setLoading] = useState(false);
   const { control, handleSubmit } = useForm({
     defaultValues: {
       username: "",
@@ -16,7 +19,7 @@ export default function Login() {
   });
 
   const loginUser = async (values) => {
-    console.log(values);
+    setLoading(true);
     const payload = {
       ...values,
       redirect: false,
@@ -24,9 +27,29 @@ export default function Login() {
     console.log(payload);
     try {
       const res = await signIn("credentials", payload);
-      console.log("RESPON", res);
+
+      if (res?.status === 200) {
+        const session = await getSession();
+        if (session?.user.id_role === process.env.NEXT_PUBLIC_USER_ID) {
+          location.replace("/dashboard");
+        } else if (session?.user.id_role === process.env.NEXT_PUBLIC_ADMIN_ID) {
+          location.replace("/admin");
+        } else {
+          toast("Please try again");
+        }
+      } else if (res?.status === 401) {
+        if (res.error) {
+          toast.error(JSON.parse(res.error).message);
+        } else {
+          toast.error("Error");
+        }
+      } else {
+        toast.error("❌ Failed to login");
+      }
     } catch (error) {
       console.error("Login Error", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -42,7 +65,7 @@ export default function Login() {
             <TextFieldCtrl
               name="username"
               control={control}
-              label="Username"
+              label="Username / Email"
               rules={{ required: "Field required" }}
             />
           </Box>
@@ -55,7 +78,7 @@ export default function Login() {
             />
           </Box>
           <Box sx={{ textAlign: "right" }}>
-            <Button type="submit" variant="contained">
+            <Button type="submit" variant="contained" disabled={loading}>
               Login
             </Button>
           </Box>
