@@ -3,12 +3,23 @@
 import { PasswordWithEye } from "@/components/forms/PasswordWithEye";
 import TextFieldCtrl from "@/components/forms/TextField";
 import useSessionStorage from "@/hooks/useSessionStorage";
-import { Box, Button, Container, Link as MuiLink, Typography } from "@mui/material";
+import API from "@/services/api";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Link as MuiLink,
+  Typography,
+} from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 export default function Register() {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [email, setEmail] = useSessionStorage("userEmail");
   const { control, handleSubmit, getValues } = useForm({
@@ -20,10 +31,29 @@ export default function Register() {
     },
   });
 
-  const onSubmit = (values) => {
+  const registerUser = async (values) => {
+    setLoading(true);
     console.log(values);
-    sessionStorage.setItem("userEmail", values.email);
-    router.replace("/register/otp");
+
+    try {
+      const res = await API.post("/user/register", values);
+      if (res?.status === 200) {
+        sessionStorage.setItem("userEmail", values.email);
+        toast.success(res.data.message);
+        router.replace("/register/otp");
+      } else {
+        toast.error("Failed to register", res.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      if (error?.response?.data) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Server Error");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -33,7 +63,7 @@ export default function Register() {
           Register
         </Typography>
         <Typography variant="h2">Petty Cash KPN</Typography>
-        <form>
+        <Box component="form" onSubmit={handleSubmit(registerUser)} sx={{ width: "100%" }}>
           <Box sx={{ my: 2 }}>
             <TextFieldCtrl
               name="name"
@@ -73,11 +103,11 @@ export default function Register() {
             />
           </Box>
           <Box sx={{ textAlign: "right" }}>
-            <Button variant="contained" onClick={handleSubmit(onSubmit)}>
-              Verify
+            <Button type="submit" variant="contained" disabled={loading}>
+              {!loading ? "Verify" : <CircularProgress size="1.8rem" />}
             </Button>
           </Box>
-        </form>
+        </Box>
         <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
           <MuiLink href="/login" component={Link}>
             Login

@@ -5,8 +5,6 @@ export default withAuth(
   function middleware(req) {
     console.log("Middleware is running");
 
-    console.log("REQ USER", req.nextauth.token?.role_id);
-
     if (
       req.nextUrl.pathname.startsWith("/dashboard") &&
       req.nextauth.token?.id_role !== process.env.NEXT_PUBLIC_USER_ID &&

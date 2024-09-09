@@ -2,7 +2,14 @@
 
 import { PasswordWithEye } from "@/components/forms/PasswordWithEye";
 import TextFieldCtrl from "@/components/forms/TextField";
-import { Box, Button, Container, Typography, Link as MuiLink } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Typography,
+  Link as MuiLink,
+  CircularProgress,
+} from "@mui/material";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { getSession, signIn } from "next-auth/react";
@@ -44,10 +51,11 @@ export default function Login() {
           toast.error("Error");
         }
       } else {
-        toast.error("❌ Failed to login");
+        toast.error("Failed to login");
       }
     } catch (error) {
       console.error("Login Error", error);
+      toast.error("Login Error", error);
     } finally {
       setLoading(false);
     }
@@ -79,7 +87,7 @@ export default function Login() {
           </Box>
           <Box sx={{ textAlign: "right" }}>
             <Button type="submit" variant="contained" disabled={loading}>
-              Login
+              {!loading ? "Login" : <CircularProgress size="1.8rem" />}
             </Button>
           </Box>
         </Box>
