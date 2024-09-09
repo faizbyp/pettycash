@@ -8,8 +8,11 @@ import {
   TableRow,
   Paper,
   Chip,
+  IconButton,
 } from "@mui/material";
 import moment from "moment";
+import InfoIcon from "@mui/icons-material/Info";
+import Link from "next/link";
 
 const statusColor = (status) => {
   switch (status) {
@@ -36,11 +39,16 @@ const POTable = ({ data }) => {
             <TableCell>Vendor</TableCell>
             <TableCell align="right">Grand Total</TableCell>
             <TableCell>Status</TableCell>
+            <TableCell align="right"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {data.map((item) => (
-            <TableRow key={item.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+            <TableRow
+              hover
+              key={item.id}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
               <TableCell component="th" scope="row">
                 {item.id_po}
               </TableCell>
@@ -50,6 +58,13 @@ const POTable = ({ data }) => {
               <TableCell align="right">{formatThousand(item.grand_total)}</TableCell>
               <TableCell>
                 <Chip color={statusColor(item.status)} label={item.status} />
+              </TableCell>
+              <TableCell align="right">
+                <Link href={`/dashboard/po/${encodeURIComponent(item.id_po)}`} passHref>
+                  <IconButton>
+                    <InfoIcon />
+                  </IconButton>
+                </Link>
               </TableCell>
             </TableRow>
           ))}

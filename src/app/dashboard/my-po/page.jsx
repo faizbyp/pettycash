@@ -2,18 +2,27 @@
 
 import POTable from "@/components/POTable";
 import useFetch from "@/hooks/useFetch";
-import { Box, MenuItem, Skeleton, Typography } from "@mui/material";
+import { Box, Button, MenuItem, Skeleton, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
+import AddIcon from "@mui/icons-material/Add";
+import Link from "next/link";
 
-function NewPOPage() {
+function MyPOPage() {
   const { data: session } = useSession();
   const { data: po } = useFetch(session ? `/po/user/${session.user.id_user}` : null);
 
   return (
     <Box component="main">
-      <Typography variant="h1" sx={{ color: "primary.main" }}>
-        My Purchase Orders
-      </Typography>
+      <Box sx={{ mb: 1, display: "flex", gap: 2, alignItems: "center" }}>
+        <Typography variant="h1" sx={{ m: 0, color: "primary.main" }}>
+          My Purchase Orders
+        </Typography>
+        <Link href="/dashboard/my-po/new" passHref>
+          <Button variant="outlined" startIcon={<AddIcon />}>
+            Add PO
+          </Button>
+        </Link>
+      </Box>
       {po ? (
         <POTable data={po.data} />
       ) : (
@@ -26,4 +35,4 @@ function NewPOPage() {
     </Box>
   );
 }
-export default NewPOPage;
+export default MyPOPage;
