@@ -5,6 +5,7 @@ import TextFieldCtrl from "@/components/forms/TextField";
 import { Box, Button, Container, Typography, Link as MuiLink } from "@mui/material";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import { signIn } from "next-auth/react";
 
 export default function Login() {
   const { control, handleSubmit } = useForm({
@@ -14,8 +15,19 @@ export default function Login() {
     },
   });
 
-  const onSubmit = (values) => {
+  const loginUser = async (values) => {
     console.log(values);
+    const payload = {
+      ...values,
+      redirect: false,
+    };
+    console.log(payload);
+    try {
+      const res = await signIn("credentials", payload);
+      console.log("RESPON", res);
+    } catch (error) {
+      console.error("Login Error", error);
+    }
   };
 
   return (
@@ -25,7 +37,7 @@ export default function Login() {
           Login
         </Typography>
         <Typography variant="h2">Petty Cash KPN</Typography>
-        <form>
+        <Box component="form" onSubmit={handleSubmit(loginUser)} sx={{ width: "100%" }}>
           <Box sx={{ my: 2 }}>
             <TextFieldCtrl
               name="username"
@@ -43,11 +55,11 @@ export default function Login() {
             />
           </Box>
           <Box sx={{ textAlign: "right" }}>
-            <Button variant="contained" onClick={handleSubmit(onSubmit)}>
+            <Button type="submit" variant="contained">
               Login
             </Button>
           </Box>
-        </form>
+        </Box>
         <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
           <MuiLink href="/register" component={Link}>
             Register
