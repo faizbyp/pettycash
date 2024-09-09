@@ -23,7 +23,7 @@ const ItemTable = ({ data, onDelete }) => {
             <TableCell>UOM</TableCell>
             <TableCell align="right">Unit Price</TableCell>
             <TableCell align="right">Amount</TableCell>
-            <TableCell align="right">Action</TableCell>
+            {onDelete && <TableCell align="right">Action</TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -37,11 +37,13 @@ const ItemTable = ({ data, onDelete }) => {
               <TableCell>{item.uom}</TableCell>
               <TableCell align="right">{formatThousand(item.unit_price)}</TableCell>
               <TableCell align="right">{formatThousand(item.amount)}</TableCell>
-              <TableCell align="right">
-                <IconButton edge="end" aria-label="delete" onClick={() => onDelete(index)}>
-                  <DeleteIcon />
-                </IconButton>
-              </TableCell>
+              {onDelete && (
+                <TableCell align="right">
+                  <IconButton edge="end" aria-label="delete" onClick={() => onDelete(index)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>

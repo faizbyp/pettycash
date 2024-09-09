@@ -179,10 +179,10 @@ function NewPO2Page() {
           <>
             <Grid container spacing={2}>
               <Grid size={{ xs: 12, md: 6 }}>
-                <Typography>{company.data.name}</Typography>
-                <Typography>{company.data.addr}</Typography>
-                <Typography>Phone: {company.data.phone}</Typography>
-                <Typography>Fax: {company.data.fax}</Typography>
+                <Typography>{company.data.company_name}</Typography>
+                <Typography>{company.data.company_addr}</Typography>
+                <Typography>Phone: {company.data.company_phone}</Typography>
+                <Typography>Fax: {company.data.company_fax}</Typography>
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 <Typography>Date</Typography>

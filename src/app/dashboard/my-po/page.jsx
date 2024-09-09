@@ -1,28 +1,28 @@
 "use client";
 
+import POTable from "@/components/POTable";
 import useFetch from "@/hooks/useFetch";
-import SelectCtrl from "@/components/forms/SelectCtrl";
-import TextFieldCtrl from "@/components/forms/TextFieldCtrl";
-import { Box, MenuItem, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Box, MenuItem, Skeleton, Typography } from "@mui/material";
+import { useSession } from "next-auth/react";
 
 function NewPOPage() {
-  const { data: company } = useFetch("/company");
-  const { data: vendor } = useFetch("/vendor");
-
-  const { control, handleSubmit } = useForm({
-    defaultValues: {
-      company: "",
-      vendor: "",
-    },
-  });
+  const { data: session } = useSession();
+  const { data: po } = useFetch(session ? `/po/user/${session.user.id_user}` : null);
 
   return (
     <Box component="main">
       <Typography variant="h1" sx={{ color: "primary.main" }}>
         My Purchase Orders
       </Typography>
+      {po ? (
+        <POTable data={po.data} />
+      ) : (
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          <Skeleton variant="rounded" width="100%" height={64} />
+          <Skeleton variant="rounded" width="100%" height={64} />
+          <Skeleton variant="rounded" width="100%" height={64} />
+        </Box>
+      )}
     </Box>
   );
 }

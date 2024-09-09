@@ -1,5 +1,8 @@
 import PersistentDrawer from "@/components/PersistentDrawer";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
+import HomeIcon from "@mui/icons-material/Home";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import ContactPageIcon from "@mui/icons-material/ContactPage";
 
 export const metadata = {
   title: "Dashboard",
@@ -10,12 +13,17 @@ export default function DashboardLayout({ children }) {
     {
       name: "Dashboard",
       url: "/dashboard",
-      icon: <InboxIcon />,
+      icon: <HomeIcon />,
+    },
+    {
+      name: "My PO",
+      url: "/dashboard/my-po",
+      icon: <ContactPageIcon />,
     },
     {
       name: "Request PO",
       url: "/dashboard/my-po/new",
-      icon: <InboxIcon />,
+      icon: <AddCircleIcon />,
     },
   ];
 

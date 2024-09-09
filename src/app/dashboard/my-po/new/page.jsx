@@ -74,7 +74,7 @@ function NewPOPage() {
                 >
                   {companies.data.map((data) => (
                     <MenuItem key={data.id_company} value={data.id_company}>
-                      {data.name}
+                      {data.company_name}
                     </MenuItem>
                   ))}
                 </SelectCtrl>
