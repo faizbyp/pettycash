@@ -94,7 +94,7 @@ const UserMenu = () => {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
+  const id = open ? "user-popover" : undefined;
 
   return (
     <>
@@ -126,7 +126,7 @@ const UserMenu = () => {
             }}
           >
             <IconButton>
-              <Avatar>{session?.user?.username.slice(0, 2).toUpperCase()}</Avatar>
+              <Avatar>{session?.user?.username.slice(0, 1).toUpperCase()}</Avatar>
             </IconButton>
             <Typography>{session?.user?.username}</Typography>
           </Box>
