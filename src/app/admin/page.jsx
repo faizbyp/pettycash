@@ -13,7 +13,7 @@ function AdminPage() {
         Purchase Orders
       </Typography>
       {po ? (
-        <POTable data={po.data} />
+        <POTable data={po.data} admin />
       ) : (
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
           <Skeleton variant="rounded" width="100%" height={64} />

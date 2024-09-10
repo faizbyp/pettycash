@@ -1,4 +1,4 @@
-import { formatThousand } from "@/helper/helper";
+import { formatThousand, statusColor } from "@/helper/helper";
 import {
   Table,
   TableBody,
@@ -14,20 +14,7 @@ import moment from "moment";
 import InfoIcon from "@mui/icons-material/Info";
 import Link from "next/link";
 
-const statusColor = (status) => {
-  switch (status) {
-    case "approved":
-      return "success";
-    case "rejected":
-      return "error";
-    case "pending":
-      return "warning";
-    default:
-      return "default";
-  }
-};
-
-const POTable = ({ data }) => {
+const POTable = ({ data, admin }) => {
   return (
     <TableContainer component={Paper} sx={{ mb: 4 }}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -35,7 +22,7 @@ const POTable = ({ data }) => {
           <TableRow>
             <TableCell>ID PO</TableCell>
             <TableCell>PO Date</TableCell>
-            {data[0].user_name && <TableCell>Req By</TableCell>}
+            {admin && <TableCell>Req By</TableCell>}
             <TableCell>Company</TableCell>
             <TableCell>Vendor</TableCell>
             <TableCell align="right">Grand Total</TableCell>
@@ -50,7 +37,7 @@ const POTable = ({ data }) => {
                 {row.id_po}
               </TableCell>
               <TableCell>{moment(row.po_date).format("DD/MM/YYYY")}</TableCell>
-              {row.user_name && <TableCell>{row.user_name}</TableCell>}
+              {admin && <TableCell>{row.user_name}</TableCell>}
               <TableCell>{row.company_name}</TableCell>
               <TableCell>{row.vendor_name}</TableCell>
               <TableCell align="right">{formatThousand(row.grand_total)}</TableCell>
@@ -58,7 +45,14 @@ const POTable = ({ data }) => {
                 <Chip color={statusColor(row.status)} label={row.status} />
               </TableCell>
               <TableCell align="right">
-                <Link href={`/dashboard/po/${encodeURIComponent(row.id_po)}`} passHref>
+                <Link
+                  href={
+                    admin
+                      ? `/admin/approval/${encodeURIComponent(row.id_po)}`
+                      : `/dashboard/po/${encodeURIComponent(row.id_po)}`
+                  }
+                  passHref
+                >
                   <IconButton>
                     <InfoIcon />
                   </IconButton>

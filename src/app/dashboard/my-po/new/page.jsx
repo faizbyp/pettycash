@@ -28,32 +28,6 @@ function NewPOPage() {
     router.push("/dashboard/my-po/new-2");
   };
 
-  const onSubmit = async (values) => {
-    // setLoading(true);
-    const payload = {
-      company: values.company,
-      po_date: values.po_date.toString(),
-      vendor: values.vendor,
-    };
-    console.log(payload);
-    // try {
-    //   const res = !isEdit
-    //     ? await axiosAuth.post("/book", { data: payload })
-    //     : await axiosAuth.patch(`/book/${editData.id_book}`, { data: payload });
-    //   router.replace(`/dashboard/book/success/${res.data.id_ticket}`);
-    // } catch (error) {
-    //   const errors = error as AxiosError;
-    //   if (axios.isAxiosError(error)) {
-    //     const data = errors.response?.data as { message: string };
-    //     toast.error(data.message);
-    //   } else {
-    //     toast.error("error");
-    //   }
-    //   console.error(error);
-    //   setLoading(false);
-    // }
-  };
-
   return (
     <Box component="main">
       <Typography variant="h1" sx={{ color: "primary.main" }}>

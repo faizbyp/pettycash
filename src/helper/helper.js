@@ -11,3 +11,16 @@ export const calculateTotal = (array, props) => {
   });
   return sum;
 };
+
+export const statusColor = (status) => {
+  switch (status) {
+    case "approved":
+      return "success";
+    case "rejected":
+      return "error";
+    case "pending":
+      return "warning";
+    default:
+      return "default";
+  }
+};
