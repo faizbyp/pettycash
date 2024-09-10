@@ -1,11 +1,11 @@
 "use client";
 
 import POTable from "@/components/POTable";
-import useFetch from "@/hooks/useFetch";
 import { Typography, Box, Skeleton } from "@mui/material";
+import useSWR from "swr";
 
 function AdminPage() {
-  const { data: po } = useFetch("/po");
+  const { data: po } = useSWR(`/po`);
 
   return (
     <>
