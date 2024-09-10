@@ -35,6 +35,7 @@ const POTable = ({ data }) => {
           <TableRow>
             <TableCell>ID PO</TableCell>
             <TableCell>PO Date</TableCell>
+            {data[0].user_name && <TableCell>Req By</TableCell>}
             <TableCell>Company</TableCell>
             <TableCell>Vendor</TableCell>
             <TableCell align="right">Grand Total</TableCell>
@@ -43,24 +44,21 @@ const POTable = ({ data }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((item) => (
-            <TableRow
-              hover
-              key={item.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
+          {data.map((row) => (
+            <TableRow hover key={row.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
               <TableCell component="th" scope="row">
-                {item.id_po}
+                {row.id_po}
               </TableCell>
-              <TableCell>{moment(item.po_date).format("DD/MM/YYYY")}</TableCell>
-              <TableCell>{item.company_name}</TableCell>
-              <TableCell>{item.vendor_name}</TableCell>
-              <TableCell align="right">{formatThousand(item.grand_total)}</TableCell>
+              <TableCell>{moment(row.po_date).format("DD/MM/YYYY")}</TableCell>
+              {row.user_name && <TableCell>{row.user_name}</TableCell>}
+              <TableCell>{row.company_name}</TableCell>
+              <TableCell>{row.vendor_name}</TableCell>
+              <TableCell align="right">{formatThousand(row.grand_total)}</TableCell>
               <TableCell>
-                <Chip color={statusColor(item.status)} label={item.status} />
+                <Chip color={statusColor(row.status)} label={row.status} />
               </TableCell>
               <TableCell align="right">
-                <Link href={`/dashboard/po/${encodeURIComponent(item.id_po)}`} passHref>
+                <Link href={`/dashboard/po/${encodeURIComponent(row.id_po)}`} passHref>
                   <IconButton>
                     <InfoIcon />
                   </IconButton>

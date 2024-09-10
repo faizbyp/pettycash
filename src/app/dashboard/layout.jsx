@@ -1,5 +1,4 @@
 import PersistentDrawer from "@/components/PersistentDrawer";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import HomeIcon from "@mui/icons-material/Home";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ContactPageIcon from "@mui/icons-material/ContactPage";
