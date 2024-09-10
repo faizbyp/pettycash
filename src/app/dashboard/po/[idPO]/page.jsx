@@ -1,13 +1,14 @@
 "use client";
 
 import ItemTable from "@/components/ItemTable";
+import POFooter from "@/components/POFooter";
+import POHeader from "@/components/POHeader";
 import useFetch from "@/hooks/useFetch";
-import { Box, Skeleton, Typography, Grid2 as Grid, Divider } from "@mui/material";
-import moment from "moment";
+import { Box, Skeleton, Typography } from "@mui/material";
 
 function PODetailPage({ params }) {
   const idPO = decodeURIComponent(params.idPO);
-  const { data: po } = useFetch(`/po/${params.idPO}`);
+  let { data: po } = useFetch(`/po/${params.idPO}`);
 
   return (
     <Box>
@@ -16,21 +17,21 @@ function PODetailPage({ params }) {
       </Typography>
       {po ? (
         <>
-          <Grid container spacing={2}>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <Typography>{po.data.company.company_name}</Typography>
-              <Typography>{po.data.company.company_addr}</Typography>
-              <Typography>Phone: {po.data.company.company_phone}</Typography>
-              <Typography>Fax: {po.data.company.company_fax}</Typography>
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <Typography>Date</Typography>
-              <Typography>{moment(po.data.po_date).format("DD/MM/YYYY")}</Typography>
-            </Grid>
-          </Grid>
-          <Divider sx={{ my: 2 }} />
-          <Typography>Vendor: {po.data.vendor.vendor_name}</Typography>
+          <POHeader
+            company={po.data.company}
+            vendor={po.data.vendor}
+            idPO={idPO}
+            po_date={po.data.po_date}
+          />
           <ItemTable data={po.data.items} />
+          <POFooter
+            notes={po.data.notes}
+            total={{
+              sub_total: po.data.sub_total,
+              ppn: parseFloat(po.data.ppn),
+              grand_total: po.data.grand_total,
+            }}
+          />
         </>
       ) : (
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>

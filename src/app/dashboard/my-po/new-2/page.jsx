@@ -2,7 +2,6 @@
 
 import useFetch from "@/hooks/useFetch";
 import useSessionStorage from "@/hooks/useSessionStorage";
-import DatePickerCtrl from "@/components/forms/DatePicker";
 import SelectCtrl from "@/components/forms/Select";
 import CloseIcon from "@mui/icons-material/Close";
 import TextFieldCtrl from "@/components/forms/TextField";
@@ -13,18 +12,9 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Divider,
-  Grid2 as Grid,
   IconButton,
   MenuItem,
-  Paper,
   Skeleton,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Typography,
 } from "@mui/material";
 import moment from "moment";
@@ -34,13 +24,13 @@ import { useFieldArray, useForm } from "react-hook-form";
 import NumericFieldCtrl from "@/components/forms/NumericField";
 import CurrencyField from "@/components/forms/CurrencyField";
 import ItemTable from "@/components/ItemTable";
-import { calculateTotal, formatPercent, formatThousand } from "@/helper/helper";
+import { calculateTotal } from "@/helper/helper";
 import API from "@/services/api";
 import toast from "react-hot-toast";
 import { isAxiosError } from "axios";
-import CheckboxCtrl from "@/components/forms/Checkbox";
-import { WatchLater } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
+import POFooter from "@/components/POFooter";
+import POHeader from "@/components/POHeader";
 
 function NewPO2Page() {
   const router = useRouter();
@@ -51,7 +41,6 @@ function NewPO2Page() {
   const { data: uom } = useFetch("/uom");
   const [openForm, setOpenForm] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [isPPN, setIsPPN] = useState(false);
 
   const {
     control: poControl,
@@ -177,20 +166,7 @@ function NewPO2Page() {
         </Typography>
         {company && vendor && poData ? (
           <>
-            <Grid container spacing={2}>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Typography>{company.data.company_name}</Typography>
-                <Typography>{company.data.company_addr}</Typography>
-                <Typography>Phone: {company.data.company_phone}</Typography>
-                <Typography>Fax: {company.data.company_fax}</Typography>
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Typography>Date</Typography>
-                <Typography>{moment(poData.po_date).format("DD/MM/YYYY")}</Typography>
-              </Grid>
-            </Grid>
-            <Divider sx={{ my: 2 }} />
-            <Typography>Vendor: {vendor.data.vendor_name}</Typography>
+            <POHeader company={company.data} vendor={vendor.data} po_date={poData.po_date} />
             <form>
               <Box sx={{ mt: 4, display: "flex", gap: 2, alignItems: "center" }}>
                 <Typography variant="h2" sx={{ m: 0 }}>
@@ -201,36 +177,13 @@ function NewPO2Page() {
                 </Button>
               </Box>
               <ItemTable data={fields} onDelete={deleteItem} />
-              <Grid container spacing={2}>
-                <Grid size={{ xs: 12, md: 6 }}>
-                  <TextFieldCtrl
-                    multiline={true}
-                    rows={5}
-                    control={poControl}
-                    name="notes"
-                    label="Notes"
-                  />
-                </Grid>
-                <Grid size={{ xs: 12, md: 6 }}>
-                  <Box sx={{ display: "flex", gap: 16, justifyContent: "end" }}>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Typography>Sub Total</Typography>
-                      <Typography>Grand Total</Typography>
-                    </Box>
-                    <Box sx={{ textAlign: "right" }}>
-                      <Typography>{formatThousand(watch("sub_total"))}</Typography>
-                      <CheckboxCtrl name="ppn" control={poControl} label="PPN 11%" noMargin />
-                      <Typography>{formatThousand(watch("grand_total"))}</Typography>
-                    </Box>
-                  </Box>
-                </Grid>
-              </Grid>
+              <POFooter
+                control={poControl}
+                watch={{
+                  sub_total: watch("sub_total"),
+                  grand_total: watch("grand_total"),
+                }}
+              />
               <Box sx={{ textAlign: "right", mt: 2 }}>
                 <Button variant="contained" onClick={handleSubmit(onSubmit)} disabled={loading}>
                   Submit
