@@ -3,20 +3,8 @@
 import useFetch from "@/hooks/useFetch";
 import useSessionStorage from "@/hooks/useSessionStorage";
 import SelectCtrl from "@/components/forms/Select";
-import CloseIcon from "@mui/icons-material/Close";
 import TextFieldCtrl from "@/components/forms/TextField";
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  MenuItem,
-  Skeleton,
-  Typography,
-} from "@mui/material";
+import { Box, Button, MenuItem, Skeleton, Typography } from "@mui/material";
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -31,6 +19,7 @@ import { isAxiosError } from "axios";
 import { useSession } from "next-auth/react";
 import POFooter from "@/components/POFooter";
 import POHeader from "@/components/POHeader";
+import DialogComp from "@/components/Dialog";
 
 function NewPO2Page() {
   const router = useRouter();
@@ -200,77 +189,66 @@ function NewPO2Page() {
         )}
       </Box>
 
-      {/* ADD ITEM DIALOG */}
-      <Dialog open={openForm} onClose={handleCloseForm} aria-modal="true" fullWidth maxWidth="sm">
-        <DialogTitle>Add Item</DialogTitle>
-        <IconButton
-          aria-label="close"
-          onClick={handleCloseForm}
-          sx={(theme) => ({
-            position: "absolute",
-            right: 8,
-            top: 8,
-            color: theme.palette.grey[500],
-          })}
-        >
-          <CloseIcon />
-        </IconButton>
-        <DialogContent dividers>
-          <Box sx={{ mb: 2 }}>
-            <TextFieldCtrl
-              control={itemControl}
-              name="description"
-              label="Description"
-              rules={{
-                required: "Field required",
-              }}
-            />
-          </Box>
-          <Box sx={{ mb: 2 }}>
-            <CurrencyField
-              control={itemControl}
-              name="unit_price"
-              label="Unit Price"
-              rules={{
-                required: "Field required",
-              }}
-            />
-          </Box>
-          <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
-            <NumericFieldCtrl
-              control={itemControl}
-              name="qty"
-              label="Quantity"
-              min={0}
-              rules={{
-                required: "Field required",
-              }}
-            />
-            <SelectCtrl
-              name="uom"
-              label="UOM"
-              control={itemControl}
-              rules={{
-                required: "Field required",
-              }}
-            >
-              {uom &&
-                uom.data.map((data) => (
-                  <MenuItem key={data.uom} value={data.uom}>
-                    {data.uom}
-                  </MenuItem>
-                ))}
-            </SelectCtrl>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseForm}>Cancel</Button>
-          <Button variant="contained" onClick={handleItem(addItem)}>
-            Add
-          </Button>
-        </DialogActions>
-      </Dialog>
-      {/* END ADD ITEM DIALOG */}
+      <DialogComp
+        title="Add Item"
+        open={openForm}
+        onClose={handleCloseForm}
+        actions={
+          <>
+            <Button onClick={handleCloseForm}>Cancel</Button>
+            <Button variant="contained" onClick={handleItem(addItem)}>
+              Add
+            </Button>
+          </>
+        }
+      >
+        <Box sx={{ mb: 2 }}>
+          <TextFieldCtrl
+            control={itemControl}
+            name="description"
+            label="Description"
+            rules={{
+              required: "Field required",
+            }}
+          />
+        </Box>
+        <Box sx={{ mb: 2 }}>
+          <CurrencyField
+            control={itemControl}
+            name="unit_price"
+            label="Unit Price"
+            rules={{
+              required: "Field required",
+            }}
+          />
+        </Box>
+        <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+          <NumericFieldCtrl
+            control={itemControl}
+            name="qty"
+            label="Quantity"
+            min={0}
+            rules={{
+              required: "Field required",
+            }}
+          />
+          <SelectCtrl
+            name="uom"
+            label="UOM"
+            control={itemControl}
+            rules={{
+              required: "Field required",
+            }}
+          >
+            {uom &&
+              uom.data.map((data) => (
+                <MenuItem key={data.uom} value={data.uom}>
+                  {data.uom}
+                </MenuItem>
+              ))}
+          </SelectCtrl>
+        </Box>
+      </DialogComp>
     </>
   );
 }
