@@ -17,12 +17,14 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { useState } from "react";
+import { createContext, useState, useContext } from "react";
 import Link from "next/link";
 import { Avatar, Menu, MenuItem, Popover } from "@mui/material";
 import { signOut, useSession } from "next-auth/react";
 
 const drawerWidth = 240;
+
+const SessionContext = createContext();
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(({ theme }) => ({
   flexGrow: 1,
@@ -77,9 +79,8 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-const UserMenu = () => {
+const UserMenu = ({ session }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const { data: session } = useSession();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -142,6 +143,7 @@ const UserMenu = () => {
 export default function PersistentDrawer({ title, menu, children }) {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const { data: session } = useSession();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -152,66 +154,70 @@ export default function PersistentDrawer({ title, menu, children }) {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar sx={{ justifyContent: "space-between" }}>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              sx={[
-                {
-                  mr: 2,
-                },
-                open && { display: "none" },
-              ]}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6">{title}</Typography>
-          </Box>
-          <UserMenu />
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
+    <SessionContext.Provider value={session?.user?.name}>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <AppBar position="fixed" open={open}>
+          <Toolbar sx={{ justifyContent: "space-between" }}>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerOpen}
+                edge="start"
+                sx={[
+                  {
+                    mr: 2,
+                  },
+                  open && { display: "none" },
+                ]}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h6">{title}</Typography>
+            </Box>
+            <UserMenu session={session} />
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          sx={{
             width: drawerWidth,
-            boxSizing: "border-box",
-          },
-        }}
-        variant="persistent"
-        anchor="left"
-        open={open}
-      >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-          {menu.map((item) => (
-            <ListItem key={item.name} disablePadding>
-              <Link href={item.url} passHref legacyBehavior>
-                <ListItemButton>
-                  <ListItemIcon>{item.icon}</ListItemIcon>
-                  <ListItemText primary={item.name} />
-                </ListItemButton>
-              </Link>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-      <Main open={open}>
-        <DrawerHeader />
-        {children}
-      </Main>
-    </Box>
+            flexShrink: 0,
+            "& .MuiDrawer-paper": {
+              width: drawerWidth,
+              boxSizing: "border-box",
+            },
+          }}
+          variant="persistent"
+          anchor="left"
+          open={open}
+        >
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            </IconButton>
+          </DrawerHeader>
+          <Divider />
+          <List>
+            {menu.map((item) => (
+              <ListItem key={item.name} disablePadding>
+                <Link href={item.url} passHref legacyBehavior>
+                  <ListItemButton>
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    <ListItemText primary={item.name} />
+                  </ListItemButton>
+                </Link>
+              </ListItem>
+            ))}
+          </List>
+        </Drawer>
+        <Main open={open}>
+          <DrawerHeader />
+          {children}
+        </Main>
+      </Box>
+    </SessionContext.Provider>
   );
 }
+
+export const useSessionName = () => useContext(SessionContext);
