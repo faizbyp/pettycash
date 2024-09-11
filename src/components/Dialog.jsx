@@ -5,7 +5,14 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from "@
 
 const DialogComp = ({ title, actions, open, onClose, children }) => {
   return (
-    <Dialog open={open} onClose={onClose} aria-modal="true" fullWidth maxWidth="sm">
+    <Dialog
+      open={open}
+      onClose={onClose}
+      aria-modal="true"
+      fullWidth
+      maxWidth="sm"
+      closeAfterTransition
+    >
       <DialogTitle>{title}</DialogTitle>
       <IconButton
         aria-label="close"
