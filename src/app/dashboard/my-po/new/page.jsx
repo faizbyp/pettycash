@@ -37,49 +37,43 @@ function NewPOPage() {
         <Grid size={{ xs: 12, md: 6 }}>
           {companies && vendors ? (
             <form>
-              <Box sx={{ mb: 2 }}>
-                <SelectCtrl
-                  name="company"
-                  label="Company"
-                  control={control}
-                  rules={{
-                    required: "Field required",
-                  }}
-                >
-                  {companies.data.map((data) => (
-                    <MenuItem key={data.id_company} value={data.id_company}>
-                      {data.company_name}
-                    </MenuItem>
-                  ))}
-                </SelectCtrl>
-              </Box>
-              <Box sx={{ mb: 2 }}>
-                <DatePickerCtrl
-                  name="po_date"
-                  label="PO Date"
-                  control={control}
-                  rules={{
-                    required: "Field required",
-                  }}
-                  onChange={(value) => {
-                    setValue("po_date", value);
-                  }}
-                />
-              </Box>
-              <Box sx={{ mb: 2 }}>
-                <SelectCtrl
-                  name="vendor"
-                  label="Vendor"
-                  control={control}
-                  rules={{ required: "Field required" }}
-                >
-                  {vendors.data.map((data) => (
-                    <MenuItem key={data.id_vendor} value={data.id_vendor}>
-                      {data.vendor_name}
-                    </MenuItem>
-                  ))}
-                </SelectCtrl>
-              </Box>
+              <SelectCtrl
+                name="company"
+                label="Company"
+                control={control}
+                rules={{
+                  required: "Field required",
+                }}
+              >
+                {companies.data.map((data) => (
+                  <MenuItem key={data.id_company} value={data.id_company}>
+                    {data.company_name}
+                  </MenuItem>
+                ))}
+              </SelectCtrl>
+              <DatePickerCtrl
+                name="po_date"
+                label="PO Date"
+                control={control}
+                rules={{
+                  required: "Field required",
+                }}
+                onChange={(value) => {
+                  setValue("po_date", value);
+                }}
+              />
+              <SelectCtrl
+                name="vendor"
+                label="Vendor"
+                control={control}
+                rules={{ required: "Field required" }}
+              >
+                {vendors.data.map((data) => (
+                  <MenuItem key={data.id_vendor} value={data.id_vendor}>
+                    {data.vendor_name}
+                  </MenuItem>
+                ))}
+              </SelectCtrl>
               <Box sx={{ textAlign: "right" }}>
                 <Button variant="contained" onClick={handleSubmit(onNext)}>
                   Next

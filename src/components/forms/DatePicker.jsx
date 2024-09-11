@@ -13,7 +13,7 @@ const DatePickerCtrl = ({ name, label, control, rules, onChange }) => {
       render={({ field: { value }, fieldState: { error } }) => (
         <DatePicker
           onChange={onChange}
-          sx={{ width: "100%" }}
+          sx={{ width: "100%", mb: 2 }}
           value={moment(value)}
           label={label}
           slotProps={{

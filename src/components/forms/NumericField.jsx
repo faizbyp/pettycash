@@ -33,7 +33,7 @@ export default function NumericFieldCtrl({
         name={name}
         rules={rules}
         render={({ field: { onChange, value, ref }, fieldState: { error } }) => (
-          <FormControl fullWidth>
+          <FormControl fullWidth sx={{ mb: 2 }}>
             <NumericFormat
               onChange={(e) => {
                 if (onChangeOvr !== undefined) {

@@ -54,6 +54,7 @@ const TextFieldCtrl = ({
                 inputMode: numericInput ? "numeric" : "text",
               },
             }}
+            sx={{ mb: 2 }}
             fullWidth
           />
         )}

@@ -69,22 +69,18 @@ export default function Login() {
         </Typography>
         <Typography variant="h2">Petty Cash KPN</Typography>
         <Box component="form" onSubmit={handleSubmit(loginUser)} sx={{ width: "100%" }}>
-          <Box sx={{ my: 2 }}>
-            <TextFieldCtrl
-              name="username"
-              control={control}
-              label="Username / Email"
-              rules={{ required: "Field required" }}
-            />
-          </Box>
-          <Box sx={{ mb: 2 }}>
-            <PasswordWithEye
-              name="password"
-              control={control}
-              label="Password"
-              rules={{ required: "Field required" }}
-            />
-          </Box>
+          <TextFieldCtrl
+            name="username"
+            control={control}
+            label="Username / Email"
+            rules={{ required: "Field required" }}
+          />
+          <PasswordWithEye
+            name="password"
+            control={control}
+            label="Password"
+            rules={{ required: "Field required" }}
+          />
           <Box sx={{ textAlign: "right" }}>
             <Button type="submit" variant="contained" disabled={loading}>
               {!loading ? "Login" : <CircularProgress size="1.8rem" />}

@@ -64,44 +64,36 @@ export default function Register() {
         </Typography>
         <Typography variant="h2">Petty Cash KPN</Typography>
         <Box component="form" onSubmit={handleSubmit(registerUser)} sx={{ width: "100%" }}>
-          <Box sx={{ my: 2 }}>
-            <TextFieldCtrl
-              name="name"
-              control={control}
-              label="Name"
-              rules={{ required: "Field required" }}
-            />
-          </Box>
-          <Box sx={{ mb: 2 }}>
-            <TextFieldCtrl
-              name="email"
-              control={control}
-              label="Email"
-              rules={{
-                required: "Field required",
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "invalid email address",
-                },
-              }}
-            />
-          </Box>
-          <Box sx={{ mb: 2 }}>
-            <TextFieldCtrl
-              name="username"
-              control={control}
-              label="Username"
-              rules={{ required: "Field required" }}
-            />
-          </Box>
-          <Box sx={{ mb: 2 }}>
-            <PasswordWithEye
-              name="password"
-              control={control}
-              label="Password"
-              rules={{ required: "Field required" }}
-            />
-          </Box>
+          <TextFieldCtrl
+            name="name"
+            control={control}
+            label="Name"
+            rules={{ required: "Field required" }}
+          />
+          <TextFieldCtrl
+            name="email"
+            control={control}
+            label="Email"
+            rules={{
+              required: "Field required",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "invalid email address",
+              },
+            }}
+          />
+          <TextFieldCtrl
+            name="username"
+            control={control}
+            label="Username"
+            rules={{ required: "Field required" }}
+          />
+          <PasswordWithEye
+            name="password"
+            control={control}
+            label="Password"
+            rules={{ required: "Field required" }}
+          />
           <Box sx={{ textAlign: "right" }}>
             <Button type="submit" variant="contained" disabled={loading}>
               {!loading ? "Verify" : <CircularProgress size="1.8rem" />}

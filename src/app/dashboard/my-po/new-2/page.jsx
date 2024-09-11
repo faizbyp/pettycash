@@ -202,27 +202,23 @@ function NewPO2Page() {
           </>
         }
       >
-        <Box sx={{ mb: 2 }}>
-          <TextFieldCtrl
-            control={itemControl}
-            name="description"
-            label="Description"
-            rules={{
-              required: "Field required",
-            }}
-          />
-        </Box>
-        <Box sx={{ mb: 2 }}>
-          <CurrencyField
-            control={itemControl}
-            name="unit_price"
-            label="Unit Price"
-            rules={{
-              required: "Field required",
-            }}
-          />
-        </Box>
-        <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+        <TextFieldCtrl
+          control={itemControl}
+          name="description"
+          label="Description"
+          rules={{
+            required: "Field required",
+          }}
+        />
+        <CurrencyField
+          control={itemControl}
+          name="unit_price"
+          label="Unit Price"
+          rules={{
+            required: "Field required",
+          }}
+        />
+        <Box sx={{ display: "flex", gap: 2 }}>
           <NumericFieldCtrl
             control={itemControl}
             name="qty"

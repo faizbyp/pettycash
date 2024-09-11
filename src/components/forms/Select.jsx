@@ -13,7 +13,7 @@ const SelectCtrl = ({
 }) => {
   const labelId = `${name}-label`;
   return (
-    <FormControl {...props} fullWidth>
+    <FormControl {...props} fullWidth sx={{ mb: 2 }}>
       <InputLabel id={labelId}>{label}</InputLabel>
       <Controller
         name={name}

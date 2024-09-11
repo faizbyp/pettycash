@@ -1,11 +1,11 @@
 import { createTheme } from "@mui/material";
 
 const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#009788",
-    },
-  },
+  // palette: {
+  //   primary: {
+  //     main: "#009788",
+  //   },
+  // },
   typography: {
     h1: {
       fontSize: "2rem",
@@ -28,7 +28,6 @@ const theme = createTheme({
       marginBottom: "0.5rem",
     },
   },
-  palette: {},
 });
 
 export default theme;

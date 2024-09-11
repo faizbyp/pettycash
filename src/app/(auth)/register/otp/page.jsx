@@ -57,30 +57,26 @@ export default function RegisterOtp() {
           Verify OTP
         </Typography>
         <Typography variant="h2">Petty Cash KPN</Typography>
-        <Typography>Please check OTP on your email</Typography>
+        <Typography sx={{ mb: 2 }}>Please check OTP on your email</Typography>
         <Box component="form" onSubmit={handleSubmit(verifyOtp)} sx={{ width: "100%" }}>
-          <Box sx={{ my: 2 }}>
-            <TextFieldCtrl
-              name="email"
-              control={control}
-              label="Email"
-              readOnly
-              rules={{ required: "Field required" }}
-            />
-          </Box>
-          <Box sx={{ mb: 2 }}>
-            <TextFieldCtrl
-              name="otp"
-              control={control}
-              label="OTP Code"
-              rules={{
-                required: "Field required",
-                validate: {
-                  length: (values) => values.length === 6 || "OTP is 6 character length",
-                },
-              }}
-            />
-          </Box>
+          <TextFieldCtrl
+            name="email"
+            control={control}
+            label="Email"
+            readOnly
+            rules={{ required: "Field required" }}
+          />
+          <TextFieldCtrl
+            name="otp"
+            control={control}
+            label="OTP Code"
+            rules={{
+              required: "Field required",
+              validate: {
+                length: (values) => values.length === 6 || "OTP is 6 character length",
+              },
+            }}
+          />
           <Box sx={{ textAlign: "right" }}>
             <Button type="submit" variant="contained" disabled={loading}>
               {!loading ? "Register" : <CircularProgress size="1.8rem" />}
