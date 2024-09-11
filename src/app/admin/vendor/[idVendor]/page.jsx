@@ -64,6 +64,7 @@ function VendorDetailPage({ params }) {
         {vendor ? (
           <>
             <Box sx={{ mb: 4 }}>
+              <Typography>{vendor.data.id_vendor}</Typography>
               <Typography variant="h1" sx={{ color: "primary.main" }}>
                 {vendor.data.vendor_name}
               </Typography>
@@ -93,12 +94,12 @@ function VendorDetailPage({ params }) {
                 </Box>
               </Box>
             </Box>
-            <Typography variant="h2" sx={{ color: "error.main" }}>
+            {/* <Typography variant="h2" sx={{ color: "error.main" }}>
               Delete Vendor
             </Typography>
             <Button variant="contained" color="error" disabled={loading}>
               Delete
-            </Button>
+            </Button> */}
           </>
         ) : (
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
