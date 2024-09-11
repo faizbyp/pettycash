@@ -75,7 +75,7 @@ function CompanyPage() {
 
   return (
     <>
-      <Box component="section" sx={{ mb: 8 }}>
+      <Box component="section" sx={{ mb: 6 }}>
         <Typography variant="h1" sx={{ color: "primary.main" }}>
           Companies
         </Typography>
@@ -120,7 +120,7 @@ function CompanyPage() {
           <Typography variant="h2" sx={{ m: 0, color: "primary.main" }}>
             Upstream Companies
           </Typography>
-          <Button variant="outlined" startIcon={<AddIcon />} onClick={handleOpenForm}>
+          <Button variant="outlined" startIcon={<AddIcon />} onClick={handleOpenForm} disabled>
             Add Company
           </Button>
         </Box>
