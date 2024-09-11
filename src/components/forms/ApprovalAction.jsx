@@ -47,7 +47,6 @@ const ApprovalAction = ({ id_user, id_po }) => {
         toast.error("Error");
       }
       console.error(error);
-      setLoading(false);
     } finally {
       setLoading(false);
     }

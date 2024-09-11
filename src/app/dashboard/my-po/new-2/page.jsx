@@ -142,6 +142,7 @@ function NewPO2Page() {
         toast.error("Error");
       }
       console.error(error);
+    } finally {
       setLoading(false);
     }
   };
