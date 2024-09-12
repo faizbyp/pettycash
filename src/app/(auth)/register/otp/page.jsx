@@ -4,6 +4,6 @@ export const metadata = {
   title: "Register/OTP - Petty Cash KPN",
 };
 
-export default function LoginPage() {
+export default function RegisterOTPPage() {
   return <RegisterOTP />;
 }

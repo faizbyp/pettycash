@@ -1,14 +1,9 @@
-"use client";
+import Dashboard from "@/components/pages/Dashboard";
 
-import { useSessionName } from "@/components/PersistentDrawer";
-import { Typography } from "@mui/material";
+export const metadata = {
+  title: "Dashboard - Petty Cash KPN",
+};
 
-function DashboardPage() {
-  const sessionName = useSessionName();
-  return (
-    <>
-      <Typography variant="h1">Welcome, {sessionName}</Typography>
-    </>
-  );
+export default function DashboardPage() {
+  return <Dashboard />;
 }
-export default DashboardPage;

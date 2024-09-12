@@ -4,7 +4,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ContactPageIcon from "@mui/icons-material/ContactPage";
 
 export const metadata = {
-  title: "Dashboard",
+  title: "Dashboard - Petty Cash KPN",
 };
 
 export default function DashboardLayout({ children }) {
