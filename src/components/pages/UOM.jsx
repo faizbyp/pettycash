@@ -30,6 +30,7 @@ import CheckboxCtrl from "@/components/forms/Checkbox";
 import API from "@/services/api";
 import toast from "react-hot-toast";
 import { isAxiosError } from "axios";
+import { ListSkeleton } from "../Skeleton";
 
 const UOM = () => {
   const { data: uom, refetch } = useFetch("/uom");
@@ -95,7 +96,7 @@ const UOM = () => {
           ))}
         </List>
       ) : (
-        <Skeleton variant="rounded" width="100%" height={64} />
+        <ListSkeleton />
       )}
 
       <DialogComp

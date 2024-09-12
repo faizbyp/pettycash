@@ -3,6 +3,7 @@
 import ItemTable from "@/components/ItemTable";
 import POFooter from "@/components/POFooter";
 import POHeader from "@/components/POHeader";
+import { POSkeleton } from "@/components/Skeleton";
 import useFetch from "@/hooks/useFetch";
 import { Box, Skeleton, Typography } from "@mui/material";
 
@@ -34,11 +35,7 @@ function PODetailPage({ params }) {
           />
         </>
       ) : (
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-          <Skeleton variant="rounded" width="100%" height={64} />
-          <Skeleton variant="rounded" width="100%" height={64} />
-          <Skeleton variant="rounded" width="100%" height={64} />
-        </Box>
+        <POSkeleton />
       )}
     </Box>
   );

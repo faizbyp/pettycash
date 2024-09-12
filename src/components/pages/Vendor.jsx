@@ -27,6 +27,7 @@ import CheckboxCtrl from "@/components/forms/Checkbox";
 import API from "@/services/api";
 import toast from "react-hot-toast";
 import { isAxiosError } from "axios";
+import { TableSkeleton } from "../Skeleton";
 
 const Vendor = () => {
   const { data: vendors, refetch } = useFetch("/vendor");
@@ -126,7 +127,7 @@ const Vendor = () => {
           </Table>
         </TableContainer>
       ) : (
-        <Skeleton variant="rounded" width="100%" height={64} />
+        <TableSkeleton column={5} />
       )}
 
       <DialogComp

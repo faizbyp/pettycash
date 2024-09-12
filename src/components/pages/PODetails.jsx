@@ -8,6 +8,7 @@ import { statusColor } from "@/helper/helper";
 import useFetch from "@/hooks/useFetch";
 import { Box, Skeleton, Typography, Chip } from "@mui/material";
 import { useSession } from "next-auth/react";
+import { POSkeleton } from "../Skeleton";
 
 const PODetails = ({ idPO }) => {
   const { data: session } = useSession();
@@ -43,11 +44,7 @@ const PODetails = ({ idPO }) => {
           )}
         </>
       ) : (
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-          <Skeleton variant="rounded" width="100%" height={64} />
-          <Skeleton variant="rounded" width="100%" height={64} />
-          <Skeleton variant="rounded" width="100%" height={64} />
-        </Box>
+        <POSkeleton />
       )}
     </>
   );

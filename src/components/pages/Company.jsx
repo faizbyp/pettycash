@@ -27,6 +27,7 @@ import API from "@/services/api";
 import toast from "react-hot-toast";
 import { isAxiosError } from "axios";
 import NumericFieldCtrl from "@/components/forms/NumericField";
+import { TableSkeleton } from "../Skeleton";
 
 const Company = () => {
   const { data: companies } = useFetch("/company?type=group");
@@ -115,7 +116,7 @@ const Company = () => {
             </Table>
           </TableContainer>
         ) : (
-          <Skeleton variant="rounded" width="100%" height={64} />
+          <TableSkeleton column={5} />
         )}
       </Box>
 
@@ -168,7 +169,7 @@ const Company = () => {
             </Table>
           </TableContainer>
         ) : (
-          <Skeleton variant="rounded" width="100%" height={64} />
+          <TableSkeleton column={6} />
         )}
       </Box>
 

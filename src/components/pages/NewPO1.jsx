@@ -8,6 +8,7 @@ import { Box, Button, Grid2 as Grid, MenuItem, Skeleton, Typography } from "@mui
 import moment from "moment";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { ListSkeleton } from "../Skeleton";
 
 const NewPO1 = () => {
   const router = useRouter();
@@ -111,11 +112,7 @@ const NewPO1 = () => {
               </Box>
             </Box>
           ) : (
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              <Skeleton variant="rounded" width="100%" height={64} />
-              <Skeleton variant="rounded" width="100%" height={64} />
-              <Skeleton variant="rounded" width="100%" height={64} />
-            </Box>
+            <ListSkeleton />
           )}
         </Grid>
       </Grid>

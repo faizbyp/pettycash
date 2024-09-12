@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { ListSkeleton } from "../Skeleton";
 
 const VendorDetails = ({ idVendor }) => {
   const { data: vendor } = useFetch(`/vendor/${idVendor}`);
@@ -103,11 +104,7 @@ const VendorDetails = ({ idVendor }) => {
             </Button> */}
           </>
         ) : (
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <Skeleton variant="rounded" width="100%" height={64} />
-            <Skeleton variant="rounded" width="100%" height={64} />
-            <Skeleton variant="rounded" width="100%" height={64} />
-          </Box>
+          <ListSkeleton />
         )}
       </Grid>
     </Grid>

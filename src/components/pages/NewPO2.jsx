@@ -20,6 +20,7 @@ import { useSession } from "next-auth/react";
 import POFooter from "@/components/POFooter";
 import POHeader from "@/components/POHeader";
 import DialogComp from "@/components/Dialog";
+import { POSkeleton } from "../Skeleton";
 
 const NewPO2 = () => {
   const router = useRouter();
@@ -182,11 +183,7 @@ const NewPO2 = () => {
             </form>
           </>
         ) : (
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <Skeleton variant="rounded" width="100%" height={64} />
-            <Skeleton variant="rounded" width="100%" height={64} />
-            <Skeleton variant="rounded" width="100%" height={64} />
-          </Box>
+          <POSkeleton />
         )}
       </Box>
 

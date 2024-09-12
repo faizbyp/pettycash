@@ -6,6 +6,7 @@ import { Box, Button, MenuItem, Skeleton, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
 import AddIcon from "@mui/icons-material/Add";
 import Link from "next/link";
+import { TableSkeleton } from "../Skeleton";
 
 const MyPO = () => {
   const { data: session } = useSession();
@@ -23,15 +24,7 @@ const MyPO = () => {
           </Button>
         </Link>
       </Box>
-      {po ? (
-        <POTable data={po.data} />
-      ) : (
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-          <Skeleton variant="rounded" width="100%" height={64} />
-          <Skeleton variant="rounded" width="100%" height={64} />
-          <Skeleton variant="rounded" width="100%" height={64} />
-        </Box>
-      )}
+      {po ? <POTable data={po.data} /> : <TableSkeleton column={7} />}
     </Box>
   );
 };
