@@ -1,4 +1,4 @@
-import Login from "@/components/pages/Login";
+import Login from "@/components/pages/auth/Login";
 
 export const metadata = {
   title: "Login - Petty Cash KPN",
