@@ -10,7 +10,6 @@ import {
   Typography,
   Skeleton,
   Paper,
-  Chip,
   IconButton,
   Box,
   Button,
@@ -29,7 +28,8 @@ import toast from "react-hot-toast";
 import { isAxiosError } from "axios";
 
 function CompanyPage() {
-  const { data: companies, refetch } = useFetch("/company");
+  const { data: companies } = useFetch("/company?type=group");
+  const { data: DWCompanies, refetch } = useFetch("/company?type=sub&group=DW");
   const [openForm, setOpenForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const { control, handleSubmit, reset } = useForm({
@@ -118,13 +118,13 @@ function CompanyPage() {
       <Box component="section">
         <Box sx={{ mb: 1, display: "flex", gap: 2, alignItems: "center" }}>
           <Typography variant="h2" sx={{ m: 0, color: "primary.main" }}>
-            Upstream Companies
+            Downstream Companies
           </Typography>
           <Button variant="outlined" startIcon={<AddIcon />} onClick={handleOpenForm} disabled>
             Add Company
           </Button>
         </Box>
-        {companies ? (
+        {DWCompanies ? (
           <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
             <Table stickyHeader aria-label="PO Table">
               <TableHead>
@@ -138,7 +138,7 @@ function CompanyPage() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {companies.data.map((row) => (
+                {DWCompanies.data.map((row) => (
                   <TableRow
                     hover
                     key={row.id}
