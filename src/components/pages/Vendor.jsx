@@ -154,6 +154,7 @@ const Vendor = () => {
           name="vendor_addr"
           control={control}
           label="Address"
+          multiline
           rules={{
             required: "Field required",
           }}

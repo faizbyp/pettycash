@@ -156,7 +156,7 @@ const Company = () => {
                     <TableCell>{row.company_phone}</TableCell>
                     <TableCell>{row.company_fax}</TableCell>
                     <TableCell align="right">
-                      <Link href={`/admin/vendor/${row.id_vendor}`} passHref>
+                      <Link href={`/admin/company/${row.id_company}`} passHref>
                         <IconButton>
                           <InfoIcon />
                         </IconButton>
@@ -197,6 +197,7 @@ const Company = () => {
           name="company_addr"
           control={control}
           label="Address"
+          multiline
           rules={{
             required: "Field required",
           }}
