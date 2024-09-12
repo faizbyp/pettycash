@@ -26,6 +26,7 @@ import CheckboxCtrl from "@/components/forms/Checkbox";
 import API from "@/services/api";
 import toast from "react-hot-toast";
 import { isAxiosError } from "axios";
+import NumericFieldCtrl from "@/components/forms/NumericField";
 
 function CompanyPage() {
   const { data: companies } = useFetch("/company?type=group");
@@ -34,9 +35,12 @@ function CompanyPage() {
   const [loading, setLoading] = useState(false);
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
-      vendor_name: "",
-      vendor_addr: "",
-      is_active: true,
+      company_name: "",
+      company_addr: "",
+      company_phone: "",
+      company_fax: "",
+      company_type: "sub",
+      company_group: "DW",
     },
   });
 
@@ -50,12 +54,12 @@ function CompanyPage() {
     setOpenForm(false);
   };
 
-  const addVendor = async (values) => {
+  const addCompany = async (values) => {
     setLoading(true);
     console.log(values);
 
     try {
-      const res = await API.post("/vendor", values);
+      const res = await API.post("/company", values);
       toast.success(`${res.data.message}:
         ${res.data.data}`);
       refetch();
@@ -120,7 +124,7 @@ function CompanyPage() {
           <Typography variant="h2" sx={{ m: 0, color: "primary.main" }}>
             Downstream Companies
           </Typography>
-          <Button variant="outlined" startIcon={<AddIcon />} onClick={handleOpenForm} disabled>
+          <Button variant="outlined" startIcon={<AddIcon />} onClick={handleOpenForm}>
             Add Company
           </Button>
         </Box>
@@ -169,35 +173,50 @@ function CompanyPage() {
       </Box>
 
       <DialogComp
-        title="Add Vendor"
+        title="Add Company"
         open={openForm}
         onClose={handleCloseForm}
         actions={
           <>
             <Button onClick={handleCloseForm}>Cancel</Button>
-            <Button variant="contained" onClick={handleSubmit(addVendor)} disabled={loading}>
+            <Button variant="contained" onClick={handleSubmit(addCompany)} disabled={loading}>
               Add
             </Button>
           </>
         }
       >
         <TextFieldCtrl
-          name="vendor_name"
+          name="company_name"
           control={control}
-          label="Vendor Name"
+          label="Company Name"
           rules={{
             required: "Field required",
           }}
         />
         <TextFieldCtrl
-          name="vendor_addr"
+          name="company_addr"
           control={control}
           label="Address"
           rules={{
             required: "Field required",
           }}
         />
-        <CheckboxCtrl name="is_active" control={control} label="Active" noMargin />
+        <NumericFieldCtrl
+          name="company_phone"
+          control={control}
+          label="Phone"
+          rules={{
+            required: "Field required",
+          }}
+        />
+        <NumericFieldCtrl
+          name="company_fax"
+          control={control}
+          label="Fax"
+          rules={{
+            required: "Field required",
+          }}
+        />
       </DialogComp>
     </>
   );
