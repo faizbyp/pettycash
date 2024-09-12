@@ -39,7 +39,7 @@ const PODetails = ({ idPO }) => {
             }}
           />
           {po.data.status === "pending" && (
-            <ApprovalAction id_user={session?.user?.id_user} id_po={idPO} />
+            <ApprovalAction id_user={session?.user?.id_user} id_po={encodeURIComponent(idPO)} />
           )}
         </>
       ) : (

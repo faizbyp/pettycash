@@ -15,16 +15,25 @@ const NewPO1 = () => {
   const { data: companies } = useFetch("/company");
   const { data: vendors } = useFetch("/vendor");
 
-  const { control, handleSubmit, getValues, setValue } = useForm({
+  const { control, handleSubmit, setValue, watch } = useForm({
     defaultValues: {
       company: "",
+      sub_company: "",
       po_date: moment(),
       vendor: "",
     },
   });
 
-  const onNext = () => {
-    setPoData(getValues());
+  const onNext = (values) => {
+    console.log(values);
+    if (values.sub_company)
+      values = {
+        ...values,
+        company: values.sub_company,
+      };
+    delete values.sub_company;
+    console.log(values);
+    setPoData(values);
     router.push("/dashboard/my-po/new-2");
   };
 
@@ -36,7 +45,7 @@ const NewPO1 = () => {
       <Grid container spacing={4}>
         <Grid size={{ xs: 12, md: 6 }}>
           {companies && vendors ? (
-            <form>
+            <Box component="form" onSubmit={handleSubmit(onNext)} sx={{ width: "100%" }}>
               <SelectCtrl
                 name="company"
                 label="Company"
@@ -45,12 +54,33 @@ const NewPO1 = () => {
                   required: "Field required",
                 }}
               >
-                {companies.data.map((data) => (
-                  <MenuItem key={data.id_company} value={data.id_company}>
-                    {data.company_name}
-                  </MenuItem>
-                ))}
+                {companies.data
+                  .filter((data) => data.company_type === "group")
+                  .map((data) => (
+                    <MenuItem key={data.id_company} value={data.id_company}>
+                      {data.company_name}
+                    </MenuItem>
+                  ))}
               </SelectCtrl>
+              {watch("company") === "DW" && (
+                <SelectCtrl
+                  name="sub_company"
+                  label="Sub Company"
+                  control={control}
+                  rules={{
+                    required: "Field required",
+                  }}
+                >
+                  {companies.data
+                    .filter((data) => data.company_type === "sub")
+                    .map((data) => (
+                      <MenuItem key={data.id_company} value={data.id_company}>
+                        {data.company_name}
+                      </MenuItem>
+                    ))}
+                </SelectCtrl>
+              )}
+
               <DatePickerCtrl
                 name="po_date"
                 label="PO Date"
@@ -75,11 +105,11 @@ const NewPO1 = () => {
                 ))}
               </SelectCtrl>
               <Box sx={{ textAlign: "right" }}>
-                <Button variant="contained" onClick={handleSubmit(onNext)}>
+                <Button type="submit" variant="contained">
                   Next
                 </Button>
               </Box>
-            </form>
+            </Box>
           ) : (
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
               <Skeleton variant="rounded" width="100%" height={64} />
