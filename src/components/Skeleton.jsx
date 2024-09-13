@@ -31,11 +31,11 @@ export const TableSkeleton = ({ row = 3, column }) => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
       <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
-        {[...Array(column)].map((index) => (
+        {[...Array(column)].map((key, index) => (
           <Skeleton key={index} variant="rounded" width="100%" height={64} />
         ))}
       </Box>
-      {[...Array(row)].map((index) => (
+      {[...Array(row)].map((key, index) => (
         <Skeleton key={index} variant="rounded" width="100%" height={64} />
       ))}
     </Box>
