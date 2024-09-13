@@ -1,27 +1,8 @@
 "use client";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-  Skeleton,
-  Paper,
-  Chip,
-  IconButton,
-  Box,
-  Button,
-  List,
-  ListItem,
-  ListItemText,
-} from "@mui/material";
+import { Typography, Box, Button, List, ListItem, ListItemText } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import InfoIcon from "@mui/icons-material/Info";
 import useFetch from "@/hooks/useFetch";
-import Link from "next/link";
 import { useForm } from "react-hook-form";
 import DialogComp from "@/components/Dialog";
 import { useState } from "react";
@@ -38,9 +19,7 @@ const UOM = () => {
   const [loading, setLoading] = useState(false);
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
-      vendor_name: "",
-      vendor_addr: "",
-      is_active: true,
+      uom: "",
     },
   });
 
@@ -54,12 +33,12 @@ const UOM = () => {
     setOpenForm(false);
   };
 
-  const addVendor = async (values) => {
+  const addUOM = async (values) => {
     setLoading(true);
     console.log(values);
 
     try {
-      const res = await API.post("/vendor", values);
+      const res = await API.post("/uom", values);
       toast.success(`${res.data.message}:
         ${res.data.data}`);
       refetch();
@@ -96,40 +75,32 @@ const UOM = () => {
           ))}
         </List>
       ) : (
-        <ListSkeleton />
+        <Box sx={{ width: "40%" }}>
+          <ListSkeleton />
+        </Box>
       )}
 
       <DialogComp
-        title="Add Vendor"
+        title="Add UOM"
         open={openForm}
         onClose={handleCloseForm}
         actions={
           <>
             <Button onClick={handleCloseForm}>Cancel</Button>
-            <Button variant="contained" onClick={handleSubmit(addVendor)} disabled={loading}>
+            <Button variant="contained" onClick={handleSubmit(addUOM)} disabled={loading}>
               Add
             </Button>
           </>
         }
       >
         <TextFieldCtrl
-          name="vendor_name"
+          name="uom"
           control={control}
-          label="Vendor Name"
+          label="UOM"
           rules={{
             required: "Field required",
           }}
         />
-        <TextFieldCtrl
-          name="vendor_addr"
-          control={control}
-          label="Address"
-          multiline
-          rules={{
-            required: "Field required",
-          }}
-        />
-        <CheckboxCtrl name="is_active" control={control} label="Active" noMargin />
       </DialogComp>
     </>
   );
