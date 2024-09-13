@@ -80,7 +80,7 @@ const Admin = () => {
               xAxis={[{ scaleType: "band", data: companyNames.map((label) => wrapLabel(label)) }]}
               series={[{ data: companyCounts }]}
               margin={{ bottom: 100 }}
-              width={500}
+              width={600}
               height={350}
             />
           ) : (
