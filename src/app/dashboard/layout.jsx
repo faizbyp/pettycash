@@ -24,6 +24,11 @@ export default function DashboardLayout({ children }) {
       url: "/dashboard/my-po/new",
       icon: <AddCircleIcon />,
     },
+    {
+      name: "Create GR",
+      url: "/dashboard/gr",
+      icon: <AddCircleIcon />,
+    },
   ];
 
   return (

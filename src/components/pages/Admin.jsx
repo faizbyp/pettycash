@@ -1,11 +1,13 @@
 "use client";
 
 import POTable from "@/components/POTable";
-import { Typography, Box, Skeleton, Grid2 as Grid } from "@mui/material";
+import { Typography, Box, Skeleton, Grid2 as Grid, IconButton } from "@mui/material";
 import useSWR from "swr";
 import { TableSkeleton } from "../Skeleton";
 import { PieChart, BarChart } from "@mui/x-charts";
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import InfoIcon from "@mui/icons-material/Info";
 
 const Admin = () => {
   const { data: po } = useSWR(`/po`);
@@ -29,6 +31,14 @@ const Admin = () => {
     const words = label.split(" ");
     return words.length > 1 ? words.join("\n") : label;
   };
+
+  const tableAction = (row) => (
+    <Link href={`/admin/approval/${encodeURIComponent(row.id_po)}`} passHref>
+      <IconButton>
+        <InfoIcon />
+      </IconButton>
+    </Link>
+  );
 
   return (
     <Box component="main">
@@ -91,7 +101,7 @@ const Admin = () => {
       <Typography variant="h1" sx={{ color: "primary.main" }}>
         Purchase Orders
       </Typography>
-      {po ? <POTable data={po.data} admin /> : <TableSkeleton column={8} />}
+      {po ? <POTable data={po.data} admin actions={tableAction} /> : <TableSkeleton column={8} />}
     </Box>
   );
 };

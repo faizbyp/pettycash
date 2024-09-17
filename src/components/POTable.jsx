@@ -14,7 +14,7 @@ import moment from "moment";
 import InfoIcon from "@mui/icons-material/Info";
 import Link from "next/link";
 
-const POTable = ({ data, admin }) => {
+const POTable = ({ data, admin, actions }) => {
   return (
     <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
       <Table stickyHeader aria-label="PO Table">
@@ -27,7 +27,7 @@ const POTable = ({ data, admin }) => {
             <TableCell>Vendor</TableCell>
             <TableCell align="right">Grand Total</TableCell>
             <TableCell>Status</TableCell>
-            <TableCell align="right"></TableCell>
+            {actions && <TableCell align="right"></TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -44,20 +44,7 @@ const POTable = ({ data, admin }) => {
               <TableCell>
                 <Chip color={statusColor(row.status)} label={row.status} />
               </TableCell>
-              <TableCell align="right">
-                <Link
-                  href={
-                    admin
-                      ? `/admin/approval/${encodeURIComponent(row.id_po)}`
-                      : `/dashboard/po/${encodeURIComponent(row.id_po)}`
-                  }
-                  passHref
-                >
-                  <IconButton>
-                    <InfoIcon />
-                  </IconButton>
-                </Link>
-              </TableCell>
+              {actions && <TableCell align="right">{actions(row)}</TableCell>}
             </TableRow>
           ))}
         </TableBody>
