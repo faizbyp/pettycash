@@ -24,7 +24,7 @@ const GR = () => {
   return (
     <Box component="main">
       <Typography variant="h1" sx={{ color: "primary.main" }}>
-        Create Order Purchase
+        Create Order Confirmation
       </Typography>
       {po ? <POTable data={po.data} actions={tableAction} /> : <TableSkeleton column={7} />}
     </Box>
