@@ -17,13 +17,22 @@ const Admin = () => {
   useEffect(() => {
     let companyCount = {};
     if (po) {
-      po.data.map((item) => {
+      po.data.forEach((item) => {
         const company = item.company_name;
         companyCount[company] = (companyCount[company] || 0) + 1;
       });
 
-      setCompanyNames(Object.keys(companyCount));
-      setCompanyCounts(Object.values(companyCount));
+      // Create an array of [company, count] pairs
+      const sortedCompanies = Object.entries(companyCount).sort(
+        ([, countA], [, countB]) => countB - countA
+      );
+
+      // Separate the sorted names and counts
+      const sortedCompanyNames = sortedCompanies.map(([company]) => company).slice(0, 5);
+      const sortedCompanyCounts = sortedCompanies.map(([, count]) => count).slice(0, 5);
+
+      setCompanyNames(sortedCompanyNames);
+      setCompanyCounts(sortedCompanyCounts);
     }
   }, [po]);
 
@@ -42,10 +51,11 @@ const Admin = () => {
 
   return (
     <Box component="main">
-      <Grid container spacing={2} sx={{ mb: 6 }}>
+      <Typography variant="h1">Admin Dashboard</Typography>
+      <Grid container spacing={2} sx={{ mb: 4 }}>
         <Grid size={{ xs: 12, md: 6 }}>
-          <Typography variant="h1" sx={{ color: "primary.main" }}>
-            PO Status
+          <Typography variant="h2" sx={{ color: "primary.main" }}>
+            Order Plan Status
           </Typography>
           {po ? (
             <PieChart
@@ -82,8 +92,8 @@ const Admin = () => {
           )}
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
-          <Typography variant="h1" sx={{ color: "primary.main" }}>
-            Company PO Count
+          <Typography variant="h2" sx={{ color: "primary.main" }}>
+            Companies with the Most Order Plans
           </Typography>
           {po && companyNames && companyCounts ? (
             <BarChart

@@ -154,7 +154,7 @@ export default function PersistentDrawer({ title, menu, children }) {
   };
 
   return (
-    <SessionContext.Provider value={session?.user?.name}>
+    <SessionContext.Provider value={session?.user}>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <AppBar position="fixed" open={open}>
@@ -220,4 +220,4 @@ export default function PersistentDrawer({ title, menu, children }) {
   );
 }
 
-export const useSessionName = () => useContext(SessionContext);
+export const useSessionData = () => useContext(SessionContext);

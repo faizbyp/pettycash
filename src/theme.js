@@ -7,6 +7,11 @@ const theme = createTheme({
   //   },
   // },
   typography: {
+    display: {
+      fontSize: "4rem",
+      fontWeight: "bold",
+      marginBottom: "0.5rem",
+    },
     h1: {
       fontSize: "2rem",
       fontWeight: "bold",
@@ -26,6 +31,15 @@ const theme = createTheme({
       fontSize: "1rem",
       fontWeight: "bold",
       marginBottom: "0.5rem",
+    },
+  },
+  components: {
+    MuiTypography: {
+      defaultProps: {
+        variantMapping: {
+          display: "h1",
+        },
+      },
     },
   },
 });
