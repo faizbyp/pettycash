@@ -41,7 +41,7 @@ const NewPO1 = () => {
   return (
     <Box component="main">
       <Typography variant="h1" sx={{ color: "primary.main" }}>
-        Create New PO
+        Create New Plan
       </Typography>
       <Grid container spacing={4}>
         <Grid size={{ xs: 12, md: 6 }}>
@@ -84,7 +84,7 @@ const NewPO1 = () => {
 
               <DatePickerCtrl
                 name="po_date"
-                label="PO Date"
+                label="Plan Date"
                 control={control}
                 rules={{
                   required: "Field required",

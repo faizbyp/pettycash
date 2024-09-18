@@ -15,17 +15,17 @@ export default function DashboardLayout({ children }) {
       icon: <HomeIcon />,
     },
     {
-      name: "My PO",
+      name: "My Planning",
       url: "/dashboard/my-po",
       icon: <ContactPageIcon />,
     },
     {
-      name: "Request PO",
+      name: "Request Planning",
       url: "/dashboard/my-po/new",
       icon: <AddCircleIcon />,
     },
     {
-      name: "Create GR",
+      name: "Create Purchase",
       url: "/dashboard/gr",
       icon: <AddCircleIcon />,
     },

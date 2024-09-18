@@ -99,7 +99,7 @@ const Admin = () => {
         </Grid>
       </Grid>
       <Typography variant="h1" sx={{ color: "primary.main" }}>
-        Purchase Orders
+        Order Planning
       </Typography>
       {po ? <POTable data={po.data} admin actions={tableAction} /> : <TableSkeleton column={8} />}
     </Box>

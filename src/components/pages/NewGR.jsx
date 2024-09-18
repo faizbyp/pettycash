@@ -152,7 +152,7 @@ const NewGR = ({ idPO }) => {
     <>
       <Box component="main">
         <Typography variant="h1" sx={{ color: "primary.main" }}>
-          Create New GR
+          Create New Purchase
         </Typography>
         <Typography variant="h2">PO: {idPO}</Typography>
         {/* {company && vendor && poData ? (

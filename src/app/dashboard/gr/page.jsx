@@ -1,7 +1,7 @@
 import GR from "@/components/pages/GR";
 
 export const metadata = {
-  title: "Goods Receipt - Petty Cash KPN",
+  title: "Order Purchase - Petty Cash KPN",
 };
 
 export default function GRPage() {

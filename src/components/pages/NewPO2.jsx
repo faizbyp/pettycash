@@ -153,7 +153,7 @@ const NewPO2 = () => {
       <Box component="main">
         <Button onClick={() => onPrev()}>Back</Button>
         <Typography variant="h1" sx={{ color: "primary.main" }}>
-          Create New PO - 2
+          Create New Plan - 2
         </Typography>
         {company && vendor && poData ? (
           <>

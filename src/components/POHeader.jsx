@@ -14,7 +14,7 @@ const POHeader = ({ company, vendor, po_date, idPO }) => {
           <Typography>Fax: {company.company_fax}</Typography>
         </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
-          <Typography>Purchase Order</Typography>
+          <Typography>Order Planning</Typography>
           <Box sx={{ display: "flex", gap: 8 }}>
             {idPO && (
               <Box>

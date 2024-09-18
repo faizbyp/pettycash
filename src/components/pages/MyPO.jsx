@@ -25,11 +25,11 @@ const MyPO = () => {
     <Box component="main">
       <Box sx={{ mb: 1, display: "flex", gap: 2, alignItems: "center" }}>
         <Typography variant="h1" sx={{ m: 0, color: "primary.main" }}>
-          My Purchase Orders
+          My Order Planning
         </Typography>
         <Link href="/dashboard/my-po/new" passHref>
           <Button variant="outlined" startIcon={<AddIcon />}>
-            Add PO
+            Add Plan
           </Button>
         </Link>
       </Box>
