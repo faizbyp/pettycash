@@ -19,7 +19,8 @@ const NewPO1 = () => {
   const { control, handleSubmit, setValue, watch } = useForm({
     defaultValues: {
       company: "",
-      sub_company: "",
+      dw_company: "",
+      up_company: "",
       po_date: moment(),
       vendor: "",
     },
@@ -27,12 +28,18 @@ const NewPO1 = () => {
 
   const onNext = (values) => {
     console.log(values);
-    if (values.sub_company)
+    if (values.dw_company)
       values = {
         ...values,
-        company: values.sub_company,
+        company: values.dw_company,
       };
-    delete values.sub_company;
+    if (values.up_company)
+      values = {
+        ...values,
+        company: values.up_company,
+      };
+    delete values.dw_company;
+    delete values.up_company;
     console.log(values);
     setPoData(values);
     router.push("/dashboard/my-po/new-2");
@@ -65,7 +72,7 @@ const NewPO1 = () => {
               </SelectCtrl>
               {watch("company") === "DW" && (
                 <SelectCtrl
-                  name="sub_company"
+                  name="dw_company"
                   label="Sub Company"
                   control={control}
                   rules={{
@@ -73,7 +80,25 @@ const NewPO1 = () => {
                   }}
                 >
                   {companies.data
-                    .filter((data) => data.company_type === "sub")
+                    .filter((data) => data.company_group === "DW")
+                    .map((data) => (
+                      <MenuItem key={data.id_company} value={data.id_company}>
+                        {data.company_name}
+                      </MenuItem>
+                    ))}
+                </SelectCtrl>
+              )}
+              {watch("company") === "UP" && (
+                <SelectCtrl
+                  name="up_company"
+                  label="Sub Company"
+                  control={control}
+                  rules={{
+                    required: "Field required",
+                  }}
+                >
+                  {companies.data
+                    .filter((data) => data.company_group === "UP")
                     .map((data) => (
                       <MenuItem key={data.id_company} value={data.id_company}>
                         {data.company_name}
