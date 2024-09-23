@@ -66,9 +66,10 @@ const PODetails = ({ idPO }) => {
               />
             </Box>
           </Paper>
-          {po.data.status === "pending" && (
-            <ApprovalAction id_user={session?.user?.id_user} id_po={encodeURIComponent(idPO)} />
-          )}
+          {session?.user?.id_role === process.env.NEXT_PUBLIC_ADMIN_ID &&
+            po.data.status === "pending" && (
+              <ApprovalAction id_user={session?.user?.id_user} id_po={encodeURIComponent(idPO)} />
+            )}
         </>
       ) : (
         <POSkeleton />
