@@ -6,16 +6,16 @@ import moment from "moment";
 const POHeader = ({ company, vendor, po_date, idPO }) => {
   return (
     <>
-      <Grid container spacing={2}>
-        <Grid size={{ xs: 12, md: 6 }}>
+      <Grid container spacing={4}>
+        <Grid size={{ xs: 12, sm: 6 }}>
           <Typography>{company.company_name}</Typography>
           <Typography>{company.company_addr}</Typography>
           <Typography>Phone: {company.company_phone}</Typography>
           <Typography>Fax: {company.company_fax}</Typography>
         </Grid>
-        <Grid size={{ xs: 12, md: 6 }}>
+        <Grid size={{ xs: 12, sm: 6 }}>
           <Typography>Order Planning</Typography>
-          <Box sx={{ display: "flex", gap: 8 }}>
+          <Box sx={{ display: "flex", gap: 6 }}>
             {idPO && (
               <Box>
                 <Typography>Number</Typography>
