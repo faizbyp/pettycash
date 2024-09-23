@@ -64,11 +64,11 @@ const PODetails = ({ idPO }) => {
                   grand_total: po.data.grand_total,
                 }}
               />
-              {po.data.status === "pending" && (
-                <ApprovalAction id_user={session?.user?.id_user} id_po={encodeURIComponent(idPO)} />
-              )}
             </Box>
           </Paper>
+          {po.data.status === "pending" && (
+            <ApprovalAction id_user={session?.user?.id_user} id_po={encodeURIComponent(idPO)} />
+          )}
         </>
       ) : (
         <POSkeleton />

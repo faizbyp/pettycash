@@ -53,7 +53,7 @@ const ApprovalAction = ({ id_user, id_po }) => {
   };
 
   return (
-    <Grid container spacing={4} sx={{ justifyContent: "end", textAlign: "right", mt: 4 }}>
+    <Grid container spacing={4} sx={{ mt: 4 }}>
       <Grid size={{ xs: 12, md: 6 }}>
         <Typography variant="h2">Approval</Typography>
         <Box component="form" onSubmit={handleSubmit(handleApproval)} sx={{ width: "100%" }}>
@@ -62,12 +62,11 @@ const ApprovalAction = ({ id_user, id_po }) => {
             control={control}
             name="status"
             render={({ field }) => (
-              <RadioGroup {...field} row sx={{ justifyContent: "end" }}>
+              <RadioGroup {...field} row>
                 <FormControlLabel
                   value="approved"
                   control={<Radio />}
                   label="Approve"
-                  labelPlacement="start"
                   onClick={() => {
                     setReject(false);
                     setApprove(true);
@@ -78,7 +77,6 @@ const ApprovalAction = ({ id_user, id_po }) => {
                   value="rejected"
                   control={<Radio />}
                   label="Reject"
-                  labelPlacement="start"
                   onClick={() => {
                     setApprove(false);
                     setReject(true);
@@ -115,7 +113,7 @@ const ApprovalAction = ({ id_user, id_po }) => {
                 variant="contained"
                 color="error"
                 disabled={loading}
-                sx={{ mt: 2 }}
+                sx={{ mt: 1 }}
               >
                 Reject
               </Button>
