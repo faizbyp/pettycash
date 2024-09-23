@@ -23,14 +23,15 @@ import DialogComp from "@/components/Dialog";
 import { useState } from "react";
 import TextFieldCtrl from "@/components/forms/TextField";
 import CheckboxCtrl from "@/components/forms/Checkbox";
-import API from "@/services/api";
 import toast from "react-hot-toast";
 import { isAxiosError } from "axios";
 import NumericFieldCtrl from "@/components/forms/NumericField";
 import { TableSkeleton } from "../Skeleton";
 import { getValueToPositionMapper } from "@mui/x-charts";
+import useAPI from "@/hooks/useAPI";
 
 const Company = () => {
+  const API = useAPI();
   const { data: companies } = useFetch("/company?type=group");
   const { data: DWCompanies, refetch: DWRefetch } = useFetch("/company?type=sub&group=DW");
   const { data: UPCompanies, refetch: UPRefetch } = useFetch("/company?type=sub&group=UP");

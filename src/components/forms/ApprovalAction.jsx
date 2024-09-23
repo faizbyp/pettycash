@@ -13,11 +13,12 @@ import {
 } from "@mui/material";
 import TextFieldCtrl from "./TextField";
 import { useState } from "react";
-import API from "@/services/api";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import useAPI from "@/hooks/useAPI";
 
 const ApprovalAction = ({ id_user, id_po }) => {
+  const API = useAPI();
   const [reject, setReject] = useState(false);
   const [approve, setApprove] = useState(false);
   const [loading, setLoading] = useState(false);

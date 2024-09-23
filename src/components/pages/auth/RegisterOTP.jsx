@@ -1,7 +1,7 @@
 "use client";
 
 import TextFieldCtrl from "@/components/forms/TextField";
-import API from "@/services/api";
+import useAPI from "@/hooks/useAPI";
 import { Box, Button, CircularProgress, Container, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 const RegisterOTP = () => {
+  const API = useAPI();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { control, handleSubmit, resetField } = useForm({

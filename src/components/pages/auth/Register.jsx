@@ -2,8 +2,8 @@
 
 import { PasswordWithEye } from "@/components/forms/PasswordWithEye";
 import TextFieldCtrl from "@/components/forms/TextField";
+import useAPI from "@/hooks/useAPI";
 import useSessionStorage from "@/hooks/useSessionStorage";
-import API from "@/services/api";
 import {
   Box,
   Button,
@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 const Register = () => {
+  const API = useAPI();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [email, setEmail] = useSessionStorage("userEmail");

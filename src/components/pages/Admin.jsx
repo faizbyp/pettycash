@@ -2,15 +2,18 @@
 
 import POTable from "@/components/POTable";
 import { Typography, Box, Skeleton, Grid2 as Grid, IconButton } from "@mui/material";
-import useSWR from "swr";
+import useSWR, { SWRConfig } from "swr";
 import { TableSkeleton } from "../Skeleton";
 import { PieChart, BarChart } from "@mui/x-charts";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import InfoIcon from "@mui/icons-material/Info";
+import useAPI from "@/hooks/useAPI";
 
 const Admin = () => {
-  const { data: po } = useSWR(`/po`);
+  const API = useAPI();
+  const fetcher = (url) => API.get(url).then((res) => res.data);
+  const { data: po } = useSWR(`/po`, fetcher);
   const [companyNames, setCompanyNames] = useState([]);
   const [companyCounts, setCompanyCounts] = useState([]);
 

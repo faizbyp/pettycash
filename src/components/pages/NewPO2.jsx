@@ -13,7 +13,6 @@ import NumericFieldCtrl from "@/components/forms/NumericField";
 import CurrencyField from "@/components/forms/CurrencyField";
 import ItemTable from "@/components/ItemTable";
 import { calculateTotal } from "@/helper/helper";
-import API from "@/services/api";
 import toast from "react-hot-toast";
 import { isAxiosError } from "axios";
 import { useSession } from "next-auth/react";
@@ -21,8 +20,10 @@ import POFooter from "@/components/POFooter";
 import POHeader from "@/components/POHeader";
 import DialogComp from "@/components/Dialog";
 import { POSkeleton } from "../Skeleton";
+import useAPI from "@/hooks/useAPI";
 
 const NewPO2 = () => {
+  const API = useAPI();
   const router = useRouter();
   const { data: session } = useSession();
   const [poData, setPoData] = useSessionStorage("poData");
