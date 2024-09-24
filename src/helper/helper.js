@@ -24,3 +24,9 @@ export const statusColor = (status) => {
       return "default";
   }
 };
+
+export const appendToFormData = (formData, data) => {
+  Object.keys(data).forEach((key) => {
+    formData.append(key, data[key]);
+  });
+};

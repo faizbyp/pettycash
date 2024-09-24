@@ -2,7 +2,7 @@ import { Box, TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
 
-const CurrencyField = ({ name, control, label, rules = {} }) => {
+const CurrencyField = ({ name, control, label, disabled, rules = {} }) => {
   return (
     <Controller
       name={name}
@@ -28,6 +28,7 @@ const CurrencyField = ({ name, control, label, rules = {} }) => {
             fullWidth
             label={label}
             variant="outlined"
+            disabled={disabled}
             slotProps={{
               input: {
                 min: 0,

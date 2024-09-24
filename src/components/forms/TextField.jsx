@@ -15,6 +15,8 @@ const TextFieldCtrl = ({
   numericInput,
   multiline,
   rows,
+  disabled,
+  endAdornment,
 }) => {
   return (
     <>
@@ -48,10 +50,12 @@ const TextFieldCtrl = ({
             variant="outlined"
             multiline={multiline}
             rows={rows}
+            disabled={disabled}
             slotProps={{
               input: {
                 readOnly: readOnly,
                 inputMode: numericInput ? "numeric" : "text",
+                endAdornment: endAdornment,
               },
             }}
             sx={{ mb: 2 }}
