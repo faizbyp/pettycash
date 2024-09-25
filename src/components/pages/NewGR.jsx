@@ -128,11 +128,13 @@ const NewGR = ({ idPO }) => {
       amount: values.amount,
       notes: "",
     });
+    setSameData(true);
     setOpenForm(true);
   };
 
   const handleCloseForm = (event, reason) => {
     if (reason && reason === "backdropClick") return;
+    setSameData(true);
     setOpenForm(false);
   };
 
