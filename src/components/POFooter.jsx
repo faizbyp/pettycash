@@ -12,8 +12,9 @@ import {
   FormControlLabel,
   Paper,
 } from "@mui/material";
+import { memo } from "react";
 
-const POFooter = ({ control, watch, notes, total }) => {
+const POFooter = memo(function POFooter({ control, watch, notes, total }) {
   return (
     <>
       <Grid container spacing={4}>
@@ -101,6 +102,6 @@ const POFooter = ({ control, watch, notes, total }) => {
       )}
     </>
   );
-};
+});
 
 export default POFooter;

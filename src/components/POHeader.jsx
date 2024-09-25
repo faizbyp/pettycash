@@ -5,7 +5,6 @@ import moment from "moment";
 import { memo } from "react";
 
 const POHeader = memo(function POHeader({ company, vendor, po_date, idPO }) {
-  console.log("poheader");
   return (
     <>
       <Grid container spacing={4}>
