@@ -7,7 +7,7 @@ import TextFieldCtrl from "@/components/forms/TextField";
 import { Box, Button, MenuItem, Skeleton, Typography } from "@mui/material";
 import moment from "moment";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import NumericFieldCtrl from "@/components/forms/NumericField";
 import CurrencyField from "@/components/forms/CurrencyField";
@@ -118,9 +118,12 @@ const NewPO2 = () => {
     handleCloseForm();
   };
 
-  const deleteItem = async (index) => {
-    remove(index);
-  };
+  const deleteItem = useCallback(
+    async (index) => {
+      remove(index);
+    },
+    [remove]
+  );
 
   const onSubmit = async (values) => {
     setLoading(true);
