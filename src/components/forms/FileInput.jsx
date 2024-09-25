@@ -12,11 +12,11 @@ const FileInput = ({ control, name, rules }) => {
       control={control}
       rules={rules}
       render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-        <>
+        <Box sx={{ mb: 2 }}>
           <Box display="flex" alignItems="center">
             <input
               type="file"
-              accept="image/*" // Change this based on the file types you want to allow
+              // accept="image/*"
               onChange={(e) => {
                 onChange(e.target.files[0]); // Set the file object
               }}
@@ -37,11 +37,11 @@ const FileInput = ({ control, name, rules }) => {
             </Typography>
           </Box>
           {error && (
-            <FormHelperText error>
+            <FormHelperText error sx={{ mx: "14px" }}>
               {error.message} {/* Display error message */}
             </FormHelperText>
           )}
-        </>
+        </Box>
       )}
     />
   );

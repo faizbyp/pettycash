@@ -38,6 +38,7 @@ import { POSkeleton } from "../Skeleton";
 import FileInput from "@/components/forms/FileInput";
 
 const NewGR = ({ idPO }) => {
+  const router = useRouter();
   const { data: session } = useSession();
   const { data: po } = useFetch(`/po/${encodeURIComponent(idPO)}`);
   const [openForm, setOpenForm] = useState(false);
@@ -129,8 +130,8 @@ const NewGR = ({ idPO }) => {
     if (po) {
       resetPoItem({ poItems: po.data.items });
       resetGr({ id_po: po.data.id_po });
-      console.log(getPoItemValues());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [po]);
 
   useEffect(() => {
@@ -192,10 +193,38 @@ const NewGR = ({ idPO }) => {
     removeGrItem(index);
   };
 
-  const onSubmit = (values) => {
+  const onSubmit = async (values) => {
+    setLoading(true);
     console.log(values);
     // add form data
     // override API content type to form data
+    const formData = new FormData();
+    formData.append("file", values.invoice_file, values.invoice_file.name);
+    values = { ...values, invoice_file: values.invoice_file.name };
+    formData.append("data", JSON.stringify(values));
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+
+    try {
+      const res = await API.post("/gr", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      toast.success(`${res.data.message}`);
+      router.push("/dashboard");
+    } catch (error) {
+      if (isAxiosError(error)) {
+        const data = error.response?.data;
+        toast.error(data.message);
+      } else {
+        toast.error("Error");
+      }
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -248,7 +277,12 @@ const NewGR = ({ idPO }) => {
               label="Upload Invoice"
               rules={{ required: "Invoice is required" }}
             />
-            <Button variant="contained" color="primary" onClick={handleSubmit(onSubmit)}>
+            <Button
+              variant="contained"
+              color="primary"
+              disabled={loading}
+              onClick={handleSubmit(onSubmit)}
+            >
               Submit
             </Button>
           </>
