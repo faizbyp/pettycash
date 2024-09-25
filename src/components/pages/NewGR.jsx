@@ -156,24 +156,6 @@ const NewGR = ({ idPO }) => {
     [grFields, removeGrItem]
   );
 
-  // const deletePoItem = (id) => {
-  //   const item = poItems.find((i) => i.id === id);
-  //   if (item) {
-  //     // Remove person from people and add to removedPeople
-  //     setPeople(people.filter((person) => person.id !== id));
-  //     setRemovedPeople([...removedPeople, personToRemove]);
-  //   }
-  // };
-
-  // const handleRestore = (id) => {
-  //   const personToRestore = removedPeople.find((person) => person.id === id);
-  //   if (personToRestore) {
-  //     // Restore person to people and remove from removedPeople
-  //     setRemovedPeople(removedPeople.filter((person) => person.id !== id));
-  //     setPeople([...people, personToRestore]);
-  //   }
-  // };
-
   const onSubmit = async (values) => {
     setLoading(true);
     console.log(values);
@@ -295,7 +277,15 @@ const NewGR = ({ idPO }) => {
           disabled
         />
         <FormControlLabel
-          control={<Checkbox checked={sameData} onChange={() => setSameData(!sameData)} />}
+          control={
+            <Checkbox
+              checked={sameData}
+              onChange={() => {
+                setSameData(!sameData);
+                resetGrItem();
+              }}
+            />
+          }
           label="Same data as plan"
           sx={{ mb: 2 }}
         />
