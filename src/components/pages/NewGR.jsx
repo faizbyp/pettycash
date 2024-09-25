@@ -21,7 +21,7 @@ import {
 } from "@mui/material";
 import moment from "moment";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import NumericFieldCtrl from "@/components/forms/NumericField";
 import CurrencyField from "@/components/forms/CurrencyField";
@@ -43,8 +43,8 @@ const NewGR = ({ idPO }) => {
   const { data: po } = useFetch(`/po/${encodeURIComponent(idPO)}`);
   const [openForm, setOpenForm] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [itemIndex, setItemIndex] = useState(null);
   const [sameData, setSameData] = useState(true);
+  const [poItems, setPoItems] = useState([]);
 
   const {
     control: grControl,
@@ -72,11 +72,6 @@ const NewGR = ({ idPO }) => {
     getValues: getGrItem,
   } = useForm({
     defaultValues: {
-      // id_gr_item: "",
-      // id_gr: "",
-      // id_po_item: "",
-      // qty: "",
-      // notes: "",
       id_po_item: "",
       id_po: "",
       description: "",
@@ -86,32 +81,6 @@ const NewGR = ({ idPO }) => {
       amount: 0,
       notes: "",
     },
-  });
-
-  const {
-    control: poItemControl,
-    handleSubmit: handlePoItem,
-    reset: resetPoItem,
-    getValues: getPoItemValues,
-  } = useForm({
-    defaultValues: {
-      id_po_item: "",
-      id_po: "",
-      description: "",
-      unit_price: 0,
-      qty: 0,
-      uom: "",
-      amount: 0,
-    },
-  });
-
-  const {
-    fields: poFields,
-    append: appendPoItem,
-    remove: removePoItem,
-  } = useFieldArray({
-    control: poItemControl,
-    name: "poItems",
   });
 
   const {
@@ -128,7 +97,7 @@ const NewGR = ({ idPO }) => {
 
   useEffect(() => {
     if (po) {
-      resetPoItem({ poItems: po.data.items });
+      setPoItems(po.data.items);
       resetGr({ id_po: po.data.id_po });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -144,21 +113,11 @@ const NewGR = ({ idPO }) => {
     );
     console.log("grand totalll", getGrValues("grand_total"));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setGrValue, getGrValues, watchGr("ppn"), grFields]);
+  }, [setGrValue, watchGr("ppn"), grFields]);
 
   const handleOpenForm = (values, index) => {
     console.log("ITEM INDEX", index);
-    setItemIndex(index);
-    console.log("PO FIELDS", poFields);
-    resetPoItem({
-      id_po_item: values.id_po_item,
-      id_po: values.id_po,
-      description: values.description,
-      unit_price: values.unit_price,
-      qty: values.qty,
-      uom: values.uom,
-      amount: values.amount,
-    });
+    console.log("PO ITEMS", poItems);
     resetGrItem({
       id_po_item: values.id_po_item,
       id_po: values.id_po,
@@ -167,6 +126,7 @@ const NewGR = ({ idPO }) => {
       qty: values.qty,
       uom: values.uom,
       amount: values.amount,
+      notes: "",
     });
     setOpenForm(true);
   };
@@ -177,21 +137,39 @@ const NewGR = ({ idPO }) => {
   };
 
   const addItem = (values) => {
-    console.log("REMOVE INDEX", itemIndex);
     values = {
       ...values,
       amount: values.unit_price * values.qty,
     };
     console.log(values);
     appendGrItem(values);
-    // removePoItem(itemIndex);
+    setPoItems((prev) => prev.filter((item) => item.id_po_item !== values.id_po_item));
     handleCloseForm();
   };
 
   const deleteItem = (values, index) => {
-    // appendPoItem(values);
+    const restoredItem = grFields.find((item) => item.id_po_item === values.id_po_item);
+    setPoItems((prev) => [...prev, restoredItem]);
     removeGrItem(index);
   };
+
+  // const deletePoItem = (id) => {
+  //   const item = poItems.find((i) => i.id === id);
+  //   if (item) {
+  //     // Remove person from people and add to removedPeople
+  //     setPeople(people.filter((person) => person.id !== id));
+  //     setRemovedPeople([...removedPeople, personToRemove]);
+  //   }
+  // };
+
+  // const handleRestore = (id) => {
+  //   const personToRestore = removedPeople.find((person) => person.id === id);
+  //   if (personToRestore) {
+  //     // Restore person to people and remove from removedPeople
+  //     setRemovedPeople(removedPeople.filter((person) => person.id !== id));
+  //     setPeople([...people, personToRestore]);
+  //   }
+  // };
 
   const onSubmit = async (values) => {
     setLoading(true);
@@ -233,7 +211,7 @@ const NewGR = ({ idPO }) => {
         <Typography variant="h1" sx={{ color: "primary.main" }}>
           Create New Order Confirmation
         </Typography>
-        <Typography variant="h2">PO: {idPO}</Typography>
+        <Typography variant="h2">Order Plan: {idPO}</Typography>
         {po ? (
           <>
             <Paper sx={{ p: 2, mb: 2 }}>
@@ -241,7 +219,7 @@ const NewGR = ({ idPO }) => {
                 Add Items From Order Plan
               </Typography>
               <MenuList>
-                {poFields.map((data, index) => (
+                {poItems.map((data, index) => (
                   <MenuItem
                     key={data.id_po_item}
                     value={data}
@@ -337,12 +315,11 @@ const NewGR = ({ idPO }) => {
             rules={{
               required: "Field required",
               validate: {
-                max: (values) =>
-                  values <= getPoItemValues("qty") || "Cannot exceed planned quantity",
+                max: (values) => values <= getGrItem("qty") || "Cannot exceed planned quantity",
               },
             }}
           />
-          <Typography>{getPoItemValues("uom")}</Typography>
+          <Typography>{getGrItem("uom")}</Typography>
         </Box>
         <TextFieldCtrl control={grItemControl} name="notes" label="Notes" />
       </DialogComp>
