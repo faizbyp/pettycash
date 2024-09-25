@@ -10,8 +10,10 @@ import {
   IconButton,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { memo } from "react";
 
-const ItemTable = ({ data, onDelete, GR }) => {
+const ItemTable = memo(function ItemTable({ data, onDelete, GR }) {
+  console.log("item table", data);
   return (
     <TableContainer component={Paper} sx={{ mb: 4 }}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -42,7 +44,7 @@ const ItemTable = ({ data, onDelete, GR }) => {
               {/* check this */}
               {onDelete && (
                 <TableCell align="right">
-                  <IconButton edge="end" aria-label="delete" onClick={() => onDelete(item)}>
+                  <IconButton edge="end" aria-label="delete" onClick={() => onDelete(item, index)}>
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>
@@ -53,6 +55,6 @@ const ItemTable = ({ data, onDelete, GR }) => {
       </Table>
     </TableContainer>
   );
-};
+});
 
 export default ItemTable;

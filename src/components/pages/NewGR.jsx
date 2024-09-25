@@ -147,11 +147,14 @@ const NewGR = ({ idPO }) => {
     handleCloseForm();
   };
 
-  const deleteItem = (values, index) => {
-    const restoredItem = grFields.find((item) => item.id_po_item === values.id_po_item);
-    setPoItems((prev) => [...prev, restoredItem]);
-    removeGrItem(index);
-  };
+  const deleteItem = useCallback(
+    (values, index) => {
+      const restoredItem = grFields.find((item) => item.id_po_item === values.id_po_item);
+      setPoItems((prev) => [...prev, restoredItem]);
+      removeGrItem(index);
+    },
+    [grFields, removeGrItem]
+  );
 
   // const deletePoItem = (id) => {
   //   const item = poItems.find((i) => i.id === id);
