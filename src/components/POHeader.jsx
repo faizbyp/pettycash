@@ -2,8 +2,10 @@
 
 import { Box, Typography, Grid2 as Grid, Divider } from "@mui/material";
 import moment from "moment";
+import { memo } from "react";
 
-const POHeader = ({ company, vendor, po_date, idPO }) => {
+const POHeader = memo(function POHeader({ company, vendor, po_date, idPO }) {
+  console.log("poheader");
   return (
     <>
       <Grid container spacing={4}>
@@ -33,6 +35,6 @@ const POHeader = ({ company, vendor, po_date, idPO }) => {
       <Typography>Vendor: {vendor.vendor_name}</Typography>
     </>
   );
-};
+});
 
 export default POHeader;
