@@ -19,6 +19,8 @@ import {
   MenuList,
   Paper,
   TextField,
+  ListItemIcon,
+  ListItemText,
 } from "@mui/material";
 import moment from "moment";
 import { useRouter } from "next/navigation";
@@ -37,6 +39,7 @@ import POHeader from "@/components/POHeader";
 import DialogComp from "@/components/Dialog";
 import { POSkeleton } from "../Skeleton";
 import FileInput from "@/components/forms/FileInput";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
 
 const NewGR = ({ idPO }) => {
   const router = useRouter();
@@ -213,13 +216,20 @@ const NewGR = ({ idPO }) => {
                     value={data}
                     onClick={() => handleOpenForm(data, index)}
                   >
-                    {data.description}
+                    <ListItemIcon>
+                      <AddRoundedIcon />
+                    </ListItemIcon>
+                    <ListItemText>{data.description}</ListItemText>
                   </MenuItem>
                 ))}
               </MenuList>
             </Paper>
             <POHeader company={po.data.company} vendor={po.data.vendor} po_date={po.data.po_date} />
-            <Typography variant="h2">Items</Typography>
+            <Box sx={{ mt: 2 }}>
+              <Typography variant="h2" sx={{ color: "primary.main" }}>
+                Items
+              </Typography>
+            </Box>
             <ItemTable data={grFields} onDelete={deleteItem} GR />
             <POFooter
               control={grControl}
@@ -228,7 +238,9 @@ const NewGR = ({ idPO }) => {
                 grand_total: watchGr("grand_total"),
               }}
             />
-            <Typography variant="h2">Invoice</Typography>
+            <Typography variant="h2" sx={{ color: "primary.main" }}>
+              Invoice
+            </Typography>
             <TextFieldCtrl
               control={grControl}
               name="invoice_num"
@@ -243,14 +255,11 @@ const NewGR = ({ idPO }) => {
               label="Upload Invoice"
               rules={{ required: "Invoice is required" }}
             />
-            <Button
-              variant="contained"
-              color="primary"
-              disabled={loading}
-              onClick={handleSubmit(onSubmit)}
-            >
-              Submit
-            </Button>
+            <Box sx={{ textAlign: "right", mt: 2 }}>
+              <Button variant="contained" disabled={loading} onClick={handleSubmit(onSubmit)}>
+                Submit
+              </Button>
+            </Box>
           </>
         ) : (
           <POSkeleton />

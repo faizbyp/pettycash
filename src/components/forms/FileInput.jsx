@@ -26,6 +26,7 @@ const FileInput = ({ control, name, rules }) => {
             />
             <Button
               variant="outlined"
+              color={error && "error"}
               onClick={() => inputRef.current.click()} // Safely trigger the file input
               sx={{ marginRight: 1 }} // Add some spacing between button and text
               startIcon={<UploadFileIcon />}
