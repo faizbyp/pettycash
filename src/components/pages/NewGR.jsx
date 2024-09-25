@@ -18,6 +18,7 @@ import {
   InputAdornment,
   MenuList,
   Paper,
+  TextField,
 } from "@mui/material";
 import moment from "moment";
 import { useRouter } from "next/navigation";
@@ -300,7 +301,7 @@ const NewGR = ({ idPO }) => {
           }}
           disabled={sameData}
         />
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+        <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
           <NumericFieldCtrl
             control={grItemControl}
             name="qty"
@@ -314,7 +315,15 @@ const NewGR = ({ idPO }) => {
               },
             }}
           />
-          <Typography>{getGrItem("uom")}</Typography>
+          {/* <Typography>{getGrItem("uom")}</Typography> */}
+          <TextField
+            label="UOM"
+            value={getGrItem("uom")}
+            variant="outlined"
+            disabled
+            fullWidth
+            sx={{ mb: 2 }}
+          />
         </Box>
         <TextFieldCtrl control={grItemControl} name="notes" label="Notes" />
       </DialogComp>
