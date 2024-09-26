@@ -21,6 +21,7 @@ import {
   TextField,
   ListItemIcon,
   ListItemText,
+  FormHelperText,
 } from "@mui/material";
 import moment from "moment";
 import { useRouter } from "next/navigation";
@@ -48,7 +49,11 @@ const NewGR = ({ idPO }) => {
   const [openForm, setOpenForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [sameData, setSameData] = useState(true);
-  const [poItems, setPoItems] = useState([]);
+  const [poItems, setPoItems] = useState([
+    {
+      id_po_item: "",
+    },
+  ]);
 
   const {
     control: grControl,
@@ -119,6 +124,16 @@ const NewGR = ({ idPO }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setGrValue, watchGr("ppn"), grFields]);
 
+  const getRemainingQty = (array, id) => {
+    const filter = array.filter((item) => item.id_po_item === id);
+
+    if (filter.length > 0 && filter[0].hasOwnProperty("remaining_qty")) {
+      return Number(filter[0].remaining_qty);
+    } else {
+      return id;
+    }
+  };
+
   const handleOpenForm = (values, index) => {
     console.log("ITEM INDEX", index);
     console.log("PO ITEMS", poItems);
@@ -131,6 +146,7 @@ const NewGR = ({ idPO }) => {
       uom: values.uom,
       amount: values.amount,
       notes: "",
+      is_complete: values.is_complete,
     });
     setSameData(true);
     setOpenForm(true);
@@ -320,11 +336,12 @@ const NewGR = ({ idPO }) => {
             rules={{
               required: "Field required",
               validate: {
-                max: (values) => values <= getGrItem("qty") || "Cannot exceed planned quantity",
+                max: (values) =>
+                  values <= getRemainingQty(poItems, getGrItem("id_po_item")) ||
+                  "Cannot exceed remaining quantity",
               },
             }}
           />
-          {/* <Typography>{getGrItem("uom")}</Typography> */}
           <TextField
             label="UOM"
             value={getGrItem("uom")}
@@ -333,6 +350,9 @@ const NewGR = ({ idPO }) => {
             fullWidth
             sx={{ mb: 2 }}
           />
+          <FormHelperText>
+            {`Remaining Qty: ${getRemainingQty(poItems, getGrItem("id_po_item"))}`}
+          </FormHelperText>
         </Box>
         <TextFieldCtrl control={grItemControl} name="notes" label="Notes" />
       </DialogComp>
