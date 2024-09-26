@@ -14,19 +14,18 @@ import moment from "moment";
 import InfoIcon from "@mui/icons-material/Info";
 import Link from "next/link";
 
-const POTable = ({ data, admin, actions }) => {
+const GRTable = ({ data, admin, actions }) => {
   return (
     <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
-      <Table stickyHeader aria-label="PO Table">
+      <Table stickyHeader aria-label="GR Table">
         <TableHead>
           <TableRow>
             <TableCell>ID Plan</TableCell>
             <TableCell>Plan Date</TableCell>
-            {admin && <TableCell>Req By</TableCell>}
+            <TableCell>Conf. Date</TableCell>
             <TableCell>Company</TableCell>
             <TableCell>Vendor</TableCell>
             <TableCell align="right">Grand Total</TableCell>
-            <TableCell>Status</TableCell>
             {actions && <TableCell align="right"></TableCell>}
           </TableRow>
         </TableHead>
@@ -37,13 +36,10 @@ const POTable = ({ data, admin, actions }) => {
                 {row.id_po}
               </TableCell>
               <TableCell>{moment(row.po_date).format("DD/MM/YYYY")}</TableCell>
-              {admin && <TableCell>{row.user_name}</TableCell>}
+              <TableCell>{moment(row.gr_date).format("DD/MM/YYYY")}</TableCell>
               <TableCell>{row.company_name}</TableCell>
               <TableCell>{row.vendor_name}</TableCell>
               <TableCell align="right">{formatThousand(row.grand_total)}</TableCell>
-              <TableCell>
-                <Chip color={statusColor(row.status)} label={row.status} />
-              </TableCell>
               {actions && <TableCell align="right">{actions(row)}</TableCell>}
             </TableRow>
           ))}
@@ -53,4 +49,4 @@ const POTable = ({ data, admin, actions }) => {
   );
 };
 
-export default POTable;
+export default GRTable;

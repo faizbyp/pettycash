@@ -14,7 +14,7 @@ const GR = () => {
     session ? `/po/user/${session.user.id_user}?status=approved` : null
   );
   const tableAction = (row) => (
-    <Link href={`/dashboard/gr/new/${encodeURIComponent(row.id_po)}`} passHref>
+    <Link href={`/dashboard/my-gr/new/${encodeURIComponent(row.id_po)}`} passHref>
       <IconButton>
         <AddCircleIcon />
       </IconButton>
