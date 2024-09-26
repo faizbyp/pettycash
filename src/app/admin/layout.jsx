@@ -3,37 +3,74 @@ import HomeIcon from "@mui/icons-material/Home";
 import StoreIcon from "@mui/icons-material/Store";
 import BusinessIcon from "@mui/icons-material/Business";
 import ScaleIcon from "@mui/icons-material/Scale";
+import {
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  ListSubheader,
+} from "@mui/material";
+import Link from "next/link";
 
 export const metadata = {
   title: "Admin Dashboard",
 };
 
-export default function DashboardLayout({ children }) {
-  const menu = [
-    {
-      name: "Admin",
-      url: "/admin",
-      icon: <HomeIcon />,
-    },
-    {
-      name: "Vendor",
-      url: "/admin/vendor",
-      icon: <StoreIcon />,
-    },
-    {
-      name: "Company",
-      url: "/admin/company",
-      icon: <BusinessIcon />,
-    },
-    {
-      name: "UOM",
-      url: "/admin/uom",
-      icon: <ScaleIcon />,
-    },
-  ];
-
+const AdminMenu = () => {
   return (
-    <PersistentDrawer title="Admin - Petty Cash KPN" menu={menu}>
+    <>
+      <List>
+        <ListItem disablePadding>
+          <Link href="/admin" passHref legacyBehavior>
+            <ListItemButton>
+              <ListItemIcon>
+                <HomeIcon />
+              </ListItemIcon>
+              <ListItemText primary="Admin" />
+            </ListItemButton>
+          </Link>
+        </ListItem>
+      </List>
+      <List subheader={<ListSubheader>Master Data</ListSubheader>}>
+        <ListItem disablePadding>
+          <Link href="/admin/vendor" passHref legacyBehavior>
+            <ListItemButton>
+              <ListItemIcon>
+                <StoreIcon />
+              </ListItemIcon>
+              <ListItemText primary="Vendor" />
+            </ListItemButton>
+          </Link>
+        </ListItem>
+        <ListItem disablePadding>
+          <Link href="/admin/company" passHref legacyBehavior>
+            <ListItemButton>
+              <ListItemIcon>
+                <BusinessIcon />
+              </ListItemIcon>
+              <ListItemText primary="Company" />
+            </ListItemButton>
+          </Link>
+        </ListItem>
+        <ListItem disablePadding>
+          <Link href="/admin/uom" passHref legacyBehavior>
+            <ListItemButton>
+              <ListItemIcon>
+                <ScaleIcon />
+              </ListItemIcon>
+              <ListItemText primary="UOM" />
+            </ListItemButton>
+          </Link>
+        </ListItem>
+      </List>
+    </>
+  );
+};
+
+export default function DashboardLayout({ children }) {
+  return (
+    <PersistentDrawer title="Admin - Petty Cash KPN" menu={<AdminMenu />}>
       {children}
     </PersistentDrawer>
   );

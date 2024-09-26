@@ -198,18 +198,7 @@ export default function PersistentDrawer({ title, menu, children }) {
             </IconButton>
           </DrawerHeader>
           <Divider />
-          <List>
-            {menu.map((item) => (
-              <ListItem key={item.name} disablePadding>
-                <Link href={item.url} passHref legacyBehavior>
-                  <ListItemButton>
-                    <ListItemIcon>{item.icon}</ListItemIcon>
-                    <ListItemText primary={item.name} />
-                  </ListItemButton>
-                </Link>
-              </ListItem>
-            ))}
-          </List>
+          {menu}
         </Drawer>
         <Main open={open}>
           <DrawerHeader />
