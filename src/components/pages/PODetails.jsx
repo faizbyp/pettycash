@@ -47,33 +47,35 @@ const PODetails = ({ idPO }) => {
       </Box>
       {po && session ? (
         <>
-          <Paper>
-            <Box
-              ref={docRef}
-              sx={{
-                p: 8,
-                "& *": {
-                  fontSize: "12px !important", // Apply the inherited font size to all direct children
-                },
-              }}
-            >
-              <POHeader
-                company={po.data.company}
-                vendor={po.data.vendor}
-                idPO={idPO}
-                po_date={po.data.po_date}
-              />
-              <ItemTable data={po.data.items} />
-              <POFooter
-                notes={po.data.notes}
-                total={{
-                  sub_total: po.data.sub_total,
-                  ppn: parseFloat(po.data.ppn),
-                  grand_total: po.data.grand_total,
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Paper sx={{ width: "210mm" }}>
+              <Box
+                ref={docRef}
+                sx={{
+                  p: 8,
+                  "& *": {
+                    fontSize: "12px !important", // Apply the inherited font size to all direct children
+                  },
                 }}
-              />
-            </Box>
-          </Paper>
+              >
+                <POHeader
+                  company={po.data.company}
+                  vendor={po.data.vendor}
+                  idPO={idPO}
+                  po_date={po.data.po_date}
+                />
+                <ItemTable data={po.data.items} />
+                <POFooter
+                  notes={po.data.notes}
+                  total={{
+                    sub_total: po.data.sub_total,
+                    ppn: parseFloat(po.data.ppn),
+                    grand_total: po.data.grand_total,
+                  }}
+                />
+              </Box>
+            </Paper>
+          </Box>
           {session?.user?.id_role === process.env.NEXT_PUBLIC_ADMIN_ID &&
             po.data.status === "pending" && (
               <ApprovalAction id_user={session?.user?.id_user} id_po={encodeURIComponent(idPO)} />
