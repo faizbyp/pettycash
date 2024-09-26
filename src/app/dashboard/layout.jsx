@@ -2,6 +2,8 @@ import PersistentDrawer from "@/components/PersistentDrawer";
 import HomeIcon from "@mui/icons-material/Home";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ContactPageIcon from "@mui/icons-material/ContactPage";
+import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
+import DescriptionIcon from "@mui/icons-material/Description";
 import {
   List,
   ListItem,
@@ -33,6 +35,16 @@ const DashboardMenu = () => {
       </List>
       <List subheader={<ListSubheader>Order Plan</ListSubheader>}>
         <ListItem disablePadding>
+          <Link href="/dashboard/my-po" passHref legacyBehavior>
+            <ListItemButton>
+              <ListItemIcon>
+                <DescriptionIcon />
+              </ListItemIcon>
+              <ListItemText primary="My Order Planning" />
+            </ListItemButton>
+          </Link>
+        </ListItem>
+        <ListItem disablePadding>
           <Link href="/dashboard/my-po/new" passHref legacyBehavior>
             <ListItemButton>
               <ListItemIcon>
@@ -45,7 +57,17 @@ const DashboardMenu = () => {
       </List>
       <List subheader={<ListSubheader>Order Confirmation</ListSubheader>}>
         <ListItem disablePadding>
-          <Link href="/dashboard/gr" passHref legacyBehavior>
+          <Link href="/dashboard/my-gr" passHref legacyBehavior>
+            <ListItemButton>
+              <ListItemIcon>
+                <RequestQuoteIcon />
+              </ListItemIcon>
+              <ListItemText primary="My Order Confirmation" />
+            </ListItemButton>
+          </Link>
+        </ListItem>
+        <ListItem disablePadding>
+          <Link href="/dashboard/my-gr/new" passHref legacyBehavior>
             <ListItemButton>
               <ListItemIcon>
                 <AddCircleIcon />
