@@ -48,7 +48,15 @@ const PODetails = ({ idPO }) => {
       {po && session ? (
         <>
           <Paper>
-            <Box ref={docRef} sx={{ p: 8 }}>
+            <Box
+              ref={docRef}
+              sx={{
+                p: 8,
+                "& *": {
+                  fontSize: "12px !important", // Apply the inherited font size to all direct children
+                },
+              }}
+            >
               <POHeader
                 company={po.data.company}
                 vendor={po.data.vendor}
