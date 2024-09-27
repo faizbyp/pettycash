@@ -41,6 +41,7 @@ import DialogComp from "@/components/Dialog";
 import { POSkeleton } from "../Skeleton";
 import FileInput from "@/components/forms/FileInput";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import CheckboxCtrl from "../forms/Checkbox";
 
 const NewGR = ({ idPO }) => {
   const router = useRouter();
@@ -49,6 +50,7 @@ const NewGR = ({ idPO }) => {
   const [openForm, setOpenForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [sameData, setSameData] = useState(true);
+  const [refPoItems, setRefPoItems] = useState([]);
   const [poItems, setPoItems] = useState([
     {
       id_po_item: "",
@@ -89,6 +91,7 @@ const NewGR = ({ idPO }) => {
       uom: "",
       amount: 0,
       notes: "",
+      is_complete: true,
     },
   });
 
@@ -107,6 +110,7 @@ const NewGR = ({ idPO }) => {
   useEffect(() => {
     if (po) {
       setPoItems(po.data.items);
+      setRefPoItems(po.data.items);
       resetGr({ id_po: po.data.id_po });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -120,17 +124,15 @@ const NewGR = ({ idPO }) => {
         ? getGrValues("sub_total") + getGrValues("sub_total") * (11 / 100)
         : getGrValues("sub_total")
     );
-    console.log("grand totalll", getGrValues("grand_total"));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setGrValue, watchGr("ppn"), grFields]);
 
   const getRemainingQty = (array, id) => {
     const filter = array.filter((item) => item.id_po_item === id);
-
     if (filter.length > 0 && filter[0].hasOwnProperty("remaining_qty")) {
       return Number(filter[0].remaining_qty);
     } else {
-      return id;
+      return "N/A";
     }
   };
 
@@ -163,7 +165,10 @@ const NewGR = ({ idPO }) => {
       ...values,
       amount: values.unit_price * values.qty,
     };
-    console.log(values);
+    console.log("valueeee", values);
+    if (values.qty === getRemainingQty(poItems, getGrItem("id_po_item"))) {
+      values["is_complete"] = true;
+    }
     appendGrItem(values);
     setPoItems((prev) => prev.filter((item) => item.id_po_item !== values.id_po_item));
     handleCloseForm();
@@ -171,11 +176,12 @@ const NewGR = ({ idPO }) => {
 
   const deleteItem = useCallback(
     (values, index) => {
-      const restoredItem = grFields.find((item) => item.id_po_item === values.id_po_item);
+      const restoredItem = refPoItems.find((item) => item.id_po_item === values.id_po_item);
+      console.log("restored item", restoredItem);
       setPoItems((prev) => [...prev, restoredItem]);
       removeGrItem(index);
     },
-    [grFields, removeGrItem]
+    [refPoItems, removeGrItem]
   );
 
   const onSubmit = async (values) => {
@@ -282,80 +288,88 @@ const NewGR = ({ idPO }) => {
         )}
       </Box>
 
-      <DialogComp
-        title="Add Item"
-        open={openForm}
-        onClose={handleCloseForm}
-        actions={
-          <>
-            <Button onClick={handleCloseForm}>Cancel</Button>
-            <Button variant="contained" onClick={handleGrItem(addItem)}>
-              Add
-            </Button>
-          </>
-        }
-      >
-        <TextFieldCtrl
-          control={grItemControl}
-          name="description"
-          label="Description"
-          rules={{
-            required: "Field required",
-          }}
-          disabled
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={sameData}
-              onChange={() => {
-                setSameData(!sameData);
-                resetGrItem();
-              }}
-            />
+      {poItems && (
+        <DialogComp
+          title="Add Item"
+          open={openForm}
+          onClose={handleCloseForm}
+          actions={
+            <>
+              <Button onClick={handleCloseForm}>Cancel</Button>
+              <Button variant="contained" onClick={handleGrItem(addItem)}>
+                Add
+              </Button>
+            </>
           }
-          label="Same data as plan"
-          sx={{ mb: 2 }}
-        />
-        <CurrencyField
-          control={grItemControl}
-          name="unit_price"
-          label="Unit Price"
-          rules={{
-            required: "Field required",
-          }}
-          disabled={sameData}
-        />
-        <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
-          <NumericFieldCtrl
+        >
+          <TextFieldCtrl
             control={grItemControl}
-            name="qty"
-            label="Quantity"
-            disabled={sameData}
-            min={0}
+            name="description"
+            label="Description"
             rules={{
               required: "Field required",
-              validate: {
-                max: (values) =>
-                  values <= getRemainingQty(poItems, getGrItem("id_po_item")) ||
-                  "Cannot exceed remaining quantity",
-              },
             }}
-          />
-          <TextField
-            label="UOM"
-            value={getGrItem("uom")}
-            variant="outlined"
             disabled
-            fullWidth
-            sx={{ mb: 2 }}
           />
-          <FormHelperText>
-            {`Remaining Qty: ${getRemainingQty(poItems, getGrItem("id_po_item"))}`}
-          </FormHelperText>
-        </Box>
-        <TextFieldCtrl control={grItemControl} name="notes" label="Notes" />
-      </DialogComp>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={sameData}
+                onChange={() => {
+                  setSameData(!sameData);
+                  resetGrItem();
+                }}
+              />
+            }
+            label="Same data as plan"
+            sx={{ m: 0, mb: 2 }}
+          />
+          <CurrencyField
+            control={grItemControl}
+            name="unit_price"
+            label="Unit Price"
+            rules={{
+              required: "Field required",
+            }}
+            disabled={sameData}
+          />
+          <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+            <NumericFieldCtrl
+              control={grItemControl}
+              name="qty"
+              label="Quantity"
+              disabled={sameData}
+              min={0}
+              rules={{
+                required: "Field required",
+                validate: {
+                  max: (values) =>
+                    values <= getRemainingQty(poItems, getGrItem("id_po_item")) ||
+                    "Cannot exceed remaining quantity",
+                },
+              }}
+            />
+            <TextField
+              label="UOM"
+              value={getGrItem("uom")}
+              variant="outlined"
+              disabled
+              fullWidth
+              sx={{ mb: 2 }}
+            />
+            <FormHelperText>
+              {`Remaining Qty: ${getRemainingQty(poItems, getGrItem("id_po_item"))}`}
+            </FormHelperText>
+          </Box>
+          <TextFieldCtrl control={grItemControl} name="notes" label="Notes" />
+          <CheckboxCtrl
+            name="is_complete"
+            control={grItemControl}
+            label="Mark as completed (no further purchases will be added)"
+            noMargin
+          />
+        </DialogComp>
+      )}
     </>
   );
 };

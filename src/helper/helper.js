@@ -30,3 +30,13 @@ export const appendToFormData = (formData, data) => {
     formData.append(key, data[key]);
   });
 };
+
+export const getFromArray = (prop, array, id, src) => {
+  const filter = array.filter((item) => item.id_po_item == id);
+  console.log("this is filtered result", filter, src);
+  if (filter.length > 0 && filter[0].hasOwnProperty(prop)) {
+    return filter[0][prop];
+  } else {
+    return "N/A";
+  }
+};

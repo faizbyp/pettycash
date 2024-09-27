@@ -3,7 +3,7 @@
 import CloseIcon from "@mui/icons-material/Close";
 import { Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from "@mui/material";
 
-const DialogComp = ({ title, actions, open, onClose, children }) => {
+const DialogComp = ({ title, actions, open, onClose, keepMounted, children }) => {
   return (
     <Dialog
       open={open}
@@ -12,6 +12,7 @@ const DialogComp = ({ title, actions, open, onClose, children }) => {
       fullWidth
       maxWidth="sm"
       closeAfterTransition
+      keepMounted={keepMounted}
     >
       <DialogTitle>{title}</DialogTitle>
       <IconButton

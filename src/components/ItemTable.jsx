@@ -8,6 +8,7 @@ import {
   TableRow,
   Paper,
   IconButton,
+  Checkbox,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { memo } from "react";
@@ -25,7 +26,12 @@ const ItemTable = memo(function ItemTable({ data, onDelete, GR }) {
             <TableCell>UOM</TableCell>
             <TableCell align="right">Unit Price</TableCell>
             <TableCell align="right">Amount</TableCell>
-            {GR && <TableCell>Notes</TableCell>}
+            {GR && (
+              <>
+                <TableCell>Notes</TableCell>
+                <TableCell>Completed</TableCell>
+              </>
+            )}
             {onDelete && <TableCell align="right">Action</TableCell>}
           </TableRow>
         </TableHead>
@@ -40,7 +46,19 @@ const ItemTable = memo(function ItemTable({ data, onDelete, GR }) {
               <TableCell>{item.uom}</TableCell>
               <TableCell align="right">{formatThousand(item.unit_price)}</TableCell>
               <TableCell align="right">{formatThousand(item.amount)}</TableCell>
-              {GR && <TableCell>{item.notes}</TableCell>}
+              {GR && (
+                <>
+                  <TableCell>{item.notes}</TableCell>
+                  <TableCell>
+                    <Checkbox
+                      checked={item.is_complete}
+                      inputProps={{
+                        readOnly: true,
+                      }}
+                    />
+                  </TableCell>
+                </>
+              )}
               {/* check this */}
               {onDelete && (
                 <TableCell align="right">
