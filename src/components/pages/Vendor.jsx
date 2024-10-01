@@ -88,7 +88,14 @@ const Vendor = () => {
         <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="PO Table">
             <TableHead>
-              <TableRow>
+              <TableRow
+                sx={{
+                  "& th": {
+                    color: "white",
+                    backgroundColor: "primary.main",
+                  },
+                }}
+              >
                 <TableCell>ID</TableCell>
                 <TableCell>Vendor Name</TableCell>
                 <TableCell>Address</TableCell>

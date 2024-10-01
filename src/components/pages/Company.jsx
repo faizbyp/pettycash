@@ -97,7 +97,14 @@ const Company = () => {
           <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
             <Table stickyHeader aria-label="PO Table">
               <TableHead>
-                <TableRow>
+                <TableRow
+                  sx={{
+                    "& th": {
+                      color: "white",
+                      backgroundColor: "primary.main",
+                    },
+                  }}
+                >
                   <TableCell>ID</TableCell>
                   <TableCell>Company Name</TableCell>
                   <TableCell>Address</TableCell>
@@ -142,7 +149,14 @@ const Company = () => {
           <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
             <Table stickyHeader aria-label="PO Table">
               <TableHead>
-                <TableRow>
+                <TableRow
+                  sx={{
+                    "& th": {
+                      color: "white",
+                      backgroundColor: "primary.main",
+                    },
+                  }}
+                >
                   <TableCell>ID</TableCell>
                   <TableCell>Company Name</TableCell>
                   <TableCell>Address</TableCell>
@@ -194,7 +208,14 @@ const Company = () => {
         {UPCompanies ? (
           <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
             <Table stickyHeader aria-label="PO Table">
-              <TableHead>
+              <TableHead
+                sx={{
+                  "& th": {
+                    color: "white",
+                    backgroundColor: "primary.main",
+                  },
+                }}
+              >
                 <TableRow>
                   <TableCell>ID</TableCell>
                   <TableCell>Company Name</TableCell>

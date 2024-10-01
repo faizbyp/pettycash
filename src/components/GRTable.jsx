@@ -19,7 +19,14 @@ const GRTable = ({ data, admin, actions }) => {
     <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
       <Table stickyHeader aria-label="GR Table">
         <TableHead>
-          <TableRow>
+          <TableRow
+            sx={{
+              "& th": {
+                color: "white",
+                backgroundColor: "primary.main",
+              },
+            }}
+          >
             <TableCell>ID Conf.</TableCell>
             <TableCell>Plan Date</TableCell>
             <TableCell>Conf. Date</TableCell>

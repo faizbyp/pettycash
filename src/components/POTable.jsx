@@ -19,7 +19,14 @@ const POTable = ({ data, admin, actions }) => {
     <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
       <Table stickyHeader aria-label="PO Table">
         <TableHead>
-          <TableRow>
+          <TableRow
+            sx={{
+              "& th": {
+                color: "white",
+                backgroundColor: "primary.main",
+              },
+            }}
+          >
             <TableCell>ID Plan</TableCell>
             <TableCell>Plan Date</TableCell>
             {admin && <TableCell>Req By</TableCell>}
