@@ -109,8 +109,9 @@ const NewGR = ({ idPO }) => {
 
   useEffect(() => {
     if (po) {
-      setPoItems(po.data.items);
-      setRefPoItems(po.data.items);
+      const items = po.data.items.filter((item) => item.is_complete !== true);
+      setPoItems(items);
+      setRefPoItems(items);
       resetGr({ id_po: po.data.id_po });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
