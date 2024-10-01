@@ -46,7 +46,7 @@ import CheckboxCtrl from "../forms/Checkbox";
 const NewGR = ({ idPO }) => {
   const router = useRouter();
   const { data: session } = useSession();
-  const { data: po } = useFetch(`/po/${encodeURIComponent(idPO)}`);
+  const { data: po } = useFetch(`/gr/po/${encodeURIComponent(idPO)}`);
   const [openForm, setOpenForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [sameData, setSameData] = useState(true);
@@ -109,9 +109,8 @@ const NewGR = ({ idPO }) => {
 
   useEffect(() => {
     if (po) {
-      const items = po.data.items.filter((item) => item.is_complete !== true);
-      setPoItems(items);
-      setRefPoItems(items);
+      setPoItems(po.data.items);
+      setRefPoItems(po.data.items);
       resetGr({ id_po: po.data.id_po });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -11,7 +11,7 @@ import { TableSkeleton } from "../Skeleton";
 const GR = () => {
   const { data: session } = useSession();
   const { data: po } = useFetch(
-    session ? `/po/user/${session.user.id_user}?status=approved` : null
+    session ? `/po/user/${session.user.id_user}?status=approved&is_complete=false` : null
   );
   const tableAction = (row) => (
     <Link href={`/dashboard/my-gr/new/${encodeURIComponent(row.id_po)}`} passHref>
