@@ -20,7 +20,7 @@ const GRTable = ({ data, admin, actions }) => {
       <Table stickyHeader aria-label="GR Table">
         <TableHead>
           <TableRow>
-            <TableCell>ID Plan</TableCell>
+            <TableCell>ID Conf.</TableCell>
             <TableCell>Plan Date</TableCell>
             <TableCell>Conf. Date</TableCell>
             <TableCell>Company</TableCell>
@@ -33,7 +33,7 @@ const GRTable = ({ data, admin, actions }) => {
           {data.map((row) => (
             <TableRow hover key={row.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
               <TableCell component="th" scope="row">
-                {row.id_po}
+                {row.id_gr}
               </TableCell>
               <TableCell>{moment(row.po_date).format("DD/MM/YYYY")}</TableCell>
               <TableCell>{moment(row.gr_date).format("DD/MM/YYYY")}</TableCell>

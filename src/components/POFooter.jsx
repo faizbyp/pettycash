@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { memo } from "react";
 
-const POFooter = memo(function POFooter({ control, watch, notes, total }) {
+const POFooter = memo(function POFooter({ control, watch, notes, total, GR }) {
   return (
     <>
       <Grid container spacing={4}>
@@ -68,7 +68,7 @@ const POFooter = memo(function POFooter({ control, watch, notes, total }) {
           </Box>
         </Grid>
       </Grid>
-      {!control && !watch && (
+      {!control && !watch && !GR && (
         <Grid container spacing={24} sx={{ mt: 8 }}>
           <Grid size={{ xs: 6 }}>
             <Paper

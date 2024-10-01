@@ -14,7 +14,7 @@ const MyGR = () => {
   const { data: gr } = useFetch(session ? `/gr/user/${session.user.id_user}` : null);
 
   const tableAction = (row) => (
-    <Link href={`/dashboard/po/${encodeURIComponent(row.id_po)}`} passHref>
+    <Link href={`/dashboard/gr/${encodeURIComponent(row.id_gr)}`} passHref>
       <IconButton>
         <InfoIcon />
       </IconButton>
@@ -33,14 +33,7 @@ const MyGR = () => {
           </Button>
         </Link>
       </Box>
-      {gr ? (
-        <GRTable
-          data={gr.data}
-          // actions={tableAction}
-        />
-      ) : (
-        <TableSkeleton column={7} />
-      )}
+      {gr ? <GRTable data={gr.data} actions={tableAction} /> : <TableSkeleton column={7} />}
     </Box>
   );
 };

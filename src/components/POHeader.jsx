@@ -15,7 +15,7 @@ const POHeader = memo(function POHeader({ company, vendor, po_date, idPO, title 
           <Typography>Fax: {company.company_fax}</Typography>
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>
-          <Typography>{title}</Typography>
+          <Typography sx={{ fontWeight: "bold" }}>{title}</Typography>
           <Box sx={{ display: "flex", gap: 6 }}>
             {idPO && (
               <Box>
