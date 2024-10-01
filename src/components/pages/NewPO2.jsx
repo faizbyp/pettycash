@@ -160,7 +160,12 @@ const NewPO2 = () => {
         </Typography>
         {company && vendor && poData ? (
           <>
-            <POHeader company={company.data} vendor={vendor.data} po_date={poData.po_date} />
+            <POHeader
+              company={company.data}
+              vendor={vendor.data}
+              po_date={poData.po_date}
+              title="Order Planning"
+            />
             <form>
               <Box sx={{ mt: 4, display: "flex", gap: 2, alignItems: "center" }}>
                 <Typography variant="h2" sx={{ m: 0 }}>

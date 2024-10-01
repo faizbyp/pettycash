@@ -63,6 +63,7 @@ const PODetails = ({ idPO }) => {
                   vendor={po.data.vendor}
                   idPO={idPO}
                   po_date={po.data.po_date}
+                  title="Print Order Planning"
                 />
                 <ItemTable data={po.data.items} />
                 <POFooter

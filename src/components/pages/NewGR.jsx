@@ -246,7 +246,12 @@ const NewGR = ({ idPO }) => {
                 ))}
               </MenuList>
             </Paper>
-            <POHeader company={po.data.company} vendor={po.data.vendor} po_date={po.data.po_date} />
+            <POHeader
+              company={po.data.company}
+              vendor={po.data.vendor}
+              po_date={po.data.po_date}
+              title="Order Confirmation"
+            />
             <Box sx={{ mt: 2 }}>
               <Typography variant="h2" sx={{ color: "primary.main" }}>
                 Items

@@ -4,7 +4,7 @@ import { Box, Typography, Grid2 as Grid, Divider } from "@mui/material";
 import moment from "moment";
 import { memo } from "react";
 
-const POHeader = memo(function POHeader({ company, vendor, po_date, idPO }) {
+const POHeader = memo(function POHeader({ company, vendor, po_date, idPO, title }) {
   return (
     <>
       <Grid container spacing={4}>
@@ -15,7 +15,7 @@ const POHeader = memo(function POHeader({ company, vendor, po_date, idPO }) {
           <Typography>Fax: {company.company_fax}</Typography>
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>
-          <Typography>Order Planning</Typography>
+          <Typography>{title}</Typography>
           <Box sx={{ display: "flex", gap: 6 }}>
             {idPO && (
               <Box>
