@@ -66,6 +66,10 @@ const GRDetails = ({ idGR }) => {
                 <ItemTable data={gr.data.items} />
                 <POFooter
                   GR
+                  invoice={{
+                    number: gr.data.invoice_num,
+                    file: gr.data.invoice_file,
+                  }}
                   notes={gr.data.notes}
                   total={{
                     sub_total: gr.data.sub_total,

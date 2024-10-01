@@ -11,10 +11,12 @@ import {
   Checkbox,
   FormControlLabel,
   Paper,
+  Link as MuiLink,
 } from "@mui/material";
+import Link from "next/link";
 import { memo } from "react";
 
-const POFooter = memo(function POFooter({ control, watch, notes, total, GR }) {
+const POFooter = memo(function POFooter({ control, watch, notes, total, GR, invoice }) {
   return (
     <>
       <Grid container spacing={4}>
@@ -68,6 +70,18 @@ const POFooter = memo(function POFooter({ control, watch, notes, total, GR }) {
           </Box>
         </Grid>
       </Grid>
+      {GR && (
+        <Box sx={{ my: 2 }}>
+          <Typography>Invoice No: {invoice.number}</Typography>
+          <MuiLink
+            href={`${process.env.NEXT_PUBLIC_APPURL}/static/invoice/${invoice.file}`}
+            component={Link}
+            target="_blank"
+          >
+            {invoice.file}
+          </MuiLink>
+        </Box>
+      )}
       {!control && !watch && !GR && (
         <Grid container spacing={24} sx={{ mt: 8 }}>
           <Grid size={{ xs: 6 }}>
