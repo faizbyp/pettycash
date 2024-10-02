@@ -4,10 +4,16 @@ import { useEffect } from "react";
 import useRefreshToken from "./useRefreshToken";
 import API from "@/services/api";
 import { signOut, useSession, getSession } from "next-auth/react";
+import axios from "axios";
 
 const useAPI = () => {
   const refresh = useRefreshToken();
   const { data: session, update } = useSession();
+
+  const reloadSession = () => {
+    const event = new Event("visibilitychange");
+    document.dispatchEvent(event);
+  };
 
   useEffect(() => {
     const requestIntercept = API.interceptors.request.use(
@@ -30,6 +36,8 @@ const useAPI = () => {
           prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
           console.log("BEFORE UPDATE", session.user.accessToken);
           await update({ ...session, user: { ...session.user, accessToken: newAccessToken } });
+          await axios.get("/api/auth/session?update");
+          // reloadSession();
           console.log("NEW TOKEN", newAccessToken);
           console.log("AFTER UPDATE", session.user.accessToken);
           return API(prevRequest);

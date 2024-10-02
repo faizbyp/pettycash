@@ -1,9 +1,11 @@
 "use client";
 
-import API from "@/services/api";
+// import API from "@/services/api";
 import { useState, useEffect, useCallback } from "react";
+import useAPI from "./useAPI";
 
 const useFetch = (url) => {
+  const API = useAPI();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,7 +22,7 @@ const useFetch = (url) => {
     } finally {
       setLoading(false);
     }
-  }, [url]);
+  }, [url, API]);
 
   useEffect(() => {
     if (url) fetchData();
