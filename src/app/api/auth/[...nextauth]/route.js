@@ -17,7 +17,6 @@ const handler = NextAuth({
             password: credentials?.password,
           });
           const user = auth.data.data;
-          console.log("USER", user);
 
           return user;
         } catch (error) {
@@ -42,11 +41,16 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
+      if (trigger === "update") {
+        const userObject = session.user;
+        return { ...token, ...userObject };
+      }
       return { ...token, ...user };
     },
     async session({ session, token }) {
       session.user = token;
+
       return session;
     },
   },

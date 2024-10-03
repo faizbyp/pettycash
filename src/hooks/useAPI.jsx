@@ -10,16 +10,11 @@ const useAPI = () => {
   const refresh = useRefreshToken();
   const { data: session, update } = useSession();
 
-  const reloadSession = () => {
-    const event = new Event("visibilitychange");
-    document.dispatchEvent(event);
-  };
-
   useEffect(() => {
     const requestIntercept = API.interceptors.request.use(
       (config) => {
         if (!config.headers["Authorization"]) {
-          config.headers["Authorization"] = `Bearer ${session.user.accessToken}`;
+          config.headers["Authorization"] = `Bearer ${session?.user?.accessToken}`;
         }
         return config;
       },
@@ -34,12 +29,8 @@ const useAPI = () => {
           prevRequest.sent = true;
           const newAccessToken = await refresh();
           prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-          console.log("BEFORE UPDATE", session.user.accessToken);
           await update({ ...session, user: { ...session.user, accessToken: newAccessToken } });
           await axios.get("/api/auth/session?update");
-          // reloadSession();
-          console.log("NEW TOKEN", newAccessToken);
-          console.log("AFTER UPDATE", session.user.accessToken);
           return API(prevRequest);
         }
         return Promise.reject(error);
