@@ -15,6 +15,14 @@ export default withAuth(
     }
 
     if (
+      req.nextUrl.pathname.startsWith("/finance") &&
+      req.nextauth.token?.id_role !== process.env.NEXT_PUBLIC_FINANCE_ID
+    ) {
+      console.error("Unauthorized: You are not finance");
+      return NextResponse.rewrite(new URL("/login", req.url));
+    }
+
+    if (
       req.nextUrl.pathname.startsWith("/admin") &&
       req.nextauth.token?.id_role !== process.env.NEXT_PUBLIC_ADMIN_ID
     ) {

@@ -1,6 +1,7 @@
 "use client";
 
 import { PasswordWithEye } from "@/components/forms/PasswordWithEye";
+import SelectCtrl from "@/components/forms/Select";
 import TextFieldCtrl from "@/components/forms/TextField";
 import useSessionStorage from "@/hooks/useSessionStorage";
 import API from "@/services/api";
@@ -9,6 +10,7 @@ import {
   Button,
   CircularProgress,
   Container,
+  MenuItem,
   Link as MuiLink,
   Typography,
 } from "@mui/material";
@@ -28,6 +30,7 @@ const Register = () => {
       email: "",
       username: "",
       password: "",
+      role: "",
     },
   });
 
@@ -94,6 +97,17 @@ const Register = () => {
             label="Password"
             rules={{ required: "Field required" }}
           />
+          <SelectCtrl
+            name="role"
+            label="Role"
+            control={control}
+            rules={{
+              required: "Field required",
+            }}
+          >
+            <MenuItem value="user">User</MenuItem>
+            <MenuItem value="finance">Finance</MenuItem>
+          </SelectCtrl>
           <Box sx={{ textAlign: "right" }}>
             <Button type="submit" variant="contained" disabled={loading}>
               {!loading ? "Verify" : <CircularProgress size="1.8rem" />}
