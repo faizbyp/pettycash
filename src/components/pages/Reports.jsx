@@ -1,29 +1,40 @@
 "use client";
 
-import CheckboxCtrl from "@/components/forms/Checkbox";
-import TextFieldCtrl from "@/components/forms/TextField";
 import useFetch from "@/hooks/useFetch";
-import API from "@/services/api";
-import { Box, Skeleton, Typography, Grid2 as Grid, Button } from "@mui/material";
-import { isAxiosError } from "axios";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import {
+  Box,
+  Typography,
+  Button,
+  IconButton,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import ComparisonTable from "../ComparisonTable";
 import useAPI from "@/hooks/useAPI";
 import DownloadIcon from "@mui/icons-material/Download";
 import { TableSkeleton } from "../Skeleton";
+import { DatePicker } from "@mui/x-date-pickers";
+import moment from "moment";
+import BackspaceIcon from "@mui/icons-material/Backspace";
 
 const Reports = () => {
   const API = useAPI();
-  const { data: comparison } = useFetch("/report/comparison");
   const [loading, setLoading] = useState(false);
+  const [grDate, setGrDate] = useState("");
+  const [poDate, setPoDate] = useState("");
+  const [company, setCompany] = useState("");
+  const { data: comparison } = useFetch(
+    `/report/comparison?po_date=${poDate}&gr_date=${grDate}&company=${company}`
+  );
 
   const downloadExcel = async () => {
     try {
       setLoading(true);
-      const response = await API.get("/report/comparison/xlsx", {
+      const response = await API.get(`/report/comparison/xlsx`, {
         responseType: "blob",
       });
       const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -44,6 +55,19 @@ const Reports = () => {
     }
   };
 
+  const filterPoDate = (value) => {
+    setPoDate(moment(value).format("YYYY-MM-DD"));
+  };
+
+  const filterGrDate = (value) => {
+    setGrDate(moment(value).format("YYYY-MM-DD"));
+  };
+
+  const filterCompany = (e) => {
+    const comp = e.target.value;
+    setCompany(comp);
+  };
+
   return (
     <>
       <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
@@ -60,6 +84,51 @@ const Reports = () => {
             Download
           </Button>
         )}
+      </Box>
+      <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+        <Box sx={{ display: "flex", gap: 1, alignItems: "center", width: "100%" }}>
+          <DatePicker
+            onChange={filterPoDate}
+            sx={{ width: "100%" }}
+            value={poDate ? moment(poDate) : null}
+            label="Plan Date"
+            format="DD/MM/YYYY"
+          />
+          <IconButton
+            aria-label="clear"
+            onClick={() => {
+              setPoDate("");
+            }}
+          >
+            <BackspaceIcon />
+          </IconButton>
+        </Box>
+        <Box sx={{ display: "flex", gap: 1, alignItems: "center", width: "100%" }}>
+          <DatePicker
+            onChange={filterGrDate}
+            sx={{ width: "100%" }}
+            value={grDate ? moment(grDate) : null}
+            label="Confirmation Date"
+            format="DD/MM/YYYY"
+          />
+          <IconButton
+            aria-label="clear"
+            onClick={() => {
+              setGrDate("");
+            }}
+          >
+            <BackspaceIcon />
+          </IconButton>
+        </Box>
+        <FormControl fullWidth>
+          <InputLabel>Company</InputLabel>
+          <Select value={company} label="Company" onChange={filterCompany}>
+            <MenuItem value="">---</MenuItem>
+            <MenuItem value="CG">Cemindo</MenuItem>
+            <MenuItem value="UP">Upstream</MenuItem>
+            <MenuItem value="DW">Downstream</MenuItem>
+          </Select>
+        </FormControl>
       </Box>
       {comparison ? <ComparisonTable data={comparison.data} /> : <TableSkeleton column={8} />}
     </>
