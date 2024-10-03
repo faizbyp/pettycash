@@ -28,15 +28,18 @@ const Reports = () => {
   const [poDate, setPoDate] = useState("");
   const [company, setCompany] = useState("");
   const { data: comparison } = useFetch(
-    `/report/comparison?po_date=${poDate}&gr_date=${grDate}&company=${company}`
+    `/report/comparison?gr_date=${grDate}&po_date=${poDate}&company=${company}`
   );
 
   const downloadExcel = async () => {
     try {
       setLoading(true);
-      const response = await API.get(`/report/comparison/xlsx`, {
-        responseType: "blob",
-      });
+      const response = await API.get(
+        `/report/comparison/xlsx?gr_date=${grDate}&po_date=${poDate}&company=${company}`,
+        {
+          responseType: "blob",
+        }
+      );
       const url = window.URL.createObjectURL(new Blob([response.data]));
 
       const link = document.createElement("a");
