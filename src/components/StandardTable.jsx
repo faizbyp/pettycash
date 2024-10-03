@@ -1,3 +1,5 @@
+"use client";
+
 import {
   flexRender,
   getCoreRowModel,
@@ -26,7 +28,7 @@ const StandardTable = memo(function StandardTable({ data, columns, renderSubComp
 
   return (
     <TableContainer component={Paper} sx={{ mb: 4 }}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="simple table">
+      <Table stickyHeader sx={{ minWidth: 650 }} size="small" aria-label="simple table">
         <TableHead>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow
@@ -35,7 +37,6 @@ const StandardTable = memo(function StandardTable({ data, columns, renderSubComp
                 "& th": {
                   color: "white",
                   backgroundColor: "primary.main",
-                  borderLeft: 1,
                   borderRight: 1,
                 },
               }}

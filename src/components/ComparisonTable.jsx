@@ -1,9 +1,11 @@
+"use client";
+
 import { memo, useMemo } from "react";
 import StandardTable from "./StandardTable";
 import moment from "moment";
 import useFetch from "@/hooks/useFetch";
 import { formatPercent, formatThousand } from "@/helper/helper";
-import { IconButton } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 
@@ -29,13 +31,13 @@ const ComparisonTable = memo(function ComparisonTable({ data }) {
         header: "ID",
         columns: [
           {
-            header: "Plan",
-            accessorKey: "id_po",
+            header: "Conf.",
+            accessorKey: "id_gr",
             cell: (props) => props.getValue(),
           },
           {
-            header: "Conf.",
-            accessorKey: "id_gr",
+            header: "Plan",
+            accessorKey: "id_po",
             cell: (props) => props.getValue(),
           },
         ],
@@ -44,16 +46,21 @@ const ComparisonTable = memo(function ComparisonTable({ data }) {
         header: "Date",
         columns: [
           {
-            header: "Plan",
-            accessorKey: "po_date",
-            cell: (props) => moment(props.getValue()).format("DD/MM/YYYY"),
-          },
-          {
             header: "Conf.",
             accessorKey: "gr_date",
             cell: (props) => moment(props.getValue()).format("DD/MM/YYYY"),
           },
+          {
+            header: "Plan",
+            accessorKey: "po_date",
+            cell: (props) => moment(props.getValue()).format("DD/MM/YYYY"),
+          },
         ],
+      },
+      {
+        header: "User",
+        accessorKey: "user_name",
+        cell: (props) => props.getValue(),
       },
       {
         header: "Company",
@@ -69,13 +76,13 @@ const ComparisonTable = memo(function ComparisonTable({ data }) {
         header: "Sub Total",
         columns: [
           {
-            header: "Plan",
-            accessorKey: "po_sub",
+            header: "Conf.",
+            accessorKey: "gr_sub",
             cell: (props) => formatThousand(props.getValue()),
           },
           {
-            header: "Conf.",
-            accessorKey: "gr_sub",
+            header: "Plan",
+            accessorKey: "po_sub",
             cell: (props) => formatThousand(props.getValue()),
           },
         ],
@@ -84,13 +91,13 @@ const ComparisonTable = memo(function ComparisonTable({ data }) {
         header: "PPN",
         columns: [
           {
-            header: "Plan",
-            accessorKey: "po_ppn",
+            header: "Conf.",
+            accessorKey: "gr_ppn",
             cell: (props) => formatPercent(props.getValue()),
           },
           {
-            header: "Conf.",
-            accessorKey: "gr_ppn",
+            header: "Plan",
+            accessorKey: "po_ppn",
             cell: (props) => formatPercent(props.getValue()),
           },
         ],
@@ -99,13 +106,13 @@ const ComparisonTable = memo(function ComparisonTable({ data }) {
         header: "Grand Total",
         columns: [
           {
-            header: "Plan",
-            accessorKey: "po_total",
+            header: "Conf.",
+            accessorKey: "gr_total",
             cell: (props) => formatThousand(props.getValue()),
           },
           {
-            header: "Conf.",
-            accessorKey: "gr_total",
+            header: "Plan",
+            accessorKey: "po_total",
             cell: (props) => formatThousand(props.getValue()),
           },
         ],
@@ -176,7 +183,12 @@ const ComparisonTable = memo(function ComparisonTable({ data }) {
   );
 
   const itemTable = ({ row }) => {
-    return <StandardTable columns={itemColumns} data={row.original.items} />;
+    return (
+      <>
+        <Typography sx={{ fontWeight: "bold" }}>{row.original.id_gr}</Typography>
+        <StandardTable columns={itemColumns} data={row.original.items} />
+      </>
+    );
   };
 
   return <StandardTable columns={columns} data={data} renderSubComponent={itemTable} />;
