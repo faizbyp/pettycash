@@ -1,9 +1,9 @@
 import PersistentDrawer from "@/components/PersistentDrawer";
 import HomeIcon from "@mui/icons-material/Home";
-import StoreIcon from "@mui/icons-material/Store";
-import BusinessIcon from "@mui/icons-material/Business";
-import ScaleIcon from "@mui/icons-material/Scale";
-import ArticleIcon from "@mui/icons-material/Article";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import ContactPageIcon from "@mui/icons-material/ContactPage";
+import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
+import DescriptionIcon from "@mui/icons-material/Description";
 import {
   List,
   ListItem,
@@ -15,64 +15,64 @@ import {
 import Link from "next/link";
 
 export const metadata = {
-  title: "Admin Dashboard",
+  title: "Finance Dashboard - Petty Cash KPN",
 };
 
-const AdminMenu = () => {
+const FinanceMenu = () => {
   return (
     <>
       <List>
         <ListItem disablePadding>
-          <Link href="/admin" passHref legacyBehavior>
+          <Link href="/dashboard" passHref legacyBehavior>
             <ListItemButton>
               <ListItemIcon>
                 <HomeIcon />
               </ListItemIcon>
-              <ListItemText primary="Admin" />
+              <ListItemText primary="Dashboard" />
             </ListItemButton>
           </Link>
         </ListItem>
       </List>
-      <List subheader={<ListSubheader>Master Data</ListSubheader>}>
+      <List subheader={<ListSubheader>Order Plan</ListSubheader>}>
         <ListItem disablePadding>
-          <Link href="/admin/vendor" passHref legacyBehavior>
+          <Link href="/dashboard/my-po" passHref legacyBehavior>
             <ListItemButton>
               <ListItemIcon>
-                <StoreIcon />
+                <DescriptionIcon />
               </ListItemIcon>
-              <ListItemText primary="Vendor" />
+              <ListItemText primary="My Order Planning" />
             </ListItemButton>
           </Link>
         </ListItem>
         <ListItem disablePadding>
-          <Link href="/admin/company" passHref legacyBehavior>
+          <Link href="/dashboard/my-po/new" passHref legacyBehavior>
             <ListItemButton>
               <ListItemIcon>
-                <BusinessIcon />
+                <AddCircleIcon />
               </ListItemIcon>
-              <ListItemText primary="Company" />
-            </ListItemButton>
-          </Link>
-        </ListItem>
-        <ListItem disablePadding>
-          <Link href="/admin/uom" passHref legacyBehavior>
-            <ListItemButton>
-              <ListItemIcon>
-                <ScaleIcon />
-              </ListItemIcon>
-              <ListItemText primary="UOM" />
+              <ListItemText primary="Add Order Planning" />
             </ListItemButton>
           </Link>
         </ListItem>
       </List>
-      <List subheader={<ListSubheader>Reports</ListSubheader>}>
+      <List subheader={<ListSubheader>Order Confirmation</ListSubheader>}>
         <ListItem disablePadding>
-          <Link href="/admin/reports" passHref legacyBehavior>
+          <Link href="/dashboard/my-gr" passHref legacyBehavior>
             <ListItemButton>
               <ListItemIcon>
-                <ArticleIcon />
+                <RequestQuoteIcon />
               </ListItemIcon>
-              <ListItemText primary="Reports" />
+              <ListItemText primary="My Order Confirmation" />
+            </ListItemButton>
+          </Link>
+        </ListItem>
+        <ListItem disablePadding>
+          <Link href="/dashboard/my-gr/new" passHref legacyBehavior>
+            <ListItemButton>
+              <ListItemIcon>
+                <AddCircleIcon />
+              </ListItemIcon>
+              <ListItemText primary="Create Order Confirmation" />
             </ListItemButton>
           </Link>
         </ListItem>
@@ -81,9 +81,9 @@ const AdminMenu = () => {
   );
 };
 
-export default function DashboardLayout({ children }) {
+export default function FinanceLayout({ children }) {
   return (
-    <PersistentDrawer title="Admin - Petty Cash KPN" menu={<AdminMenu />}>
+    <PersistentDrawer title="Finance - Petty Cash KPN" menu={<FinanceMenu />}>
       {children}
     </PersistentDrawer>
   );
