@@ -15,6 +15,7 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Box,
 } from "@mui/material";
 
 const StandardTable = memo(function StandardTable({ data, columns, renderSubComponent }) {
@@ -27,53 +28,58 @@ const StandardTable = memo(function StandardTable({ data, columns, renderSubComp
   });
 
   return (
-    <TableContainer component={Paper} sx={{ mb: 4 }}>
-      <Table stickyHeader sx={{ minWidth: 650 }} size="small" aria-label="simple table">
-        <TableHead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow
-              key={headerGroup.id}
-              sx={{
-                "& th": {
-                  color: "white",
-                  backgroundColor: "primary.main",
-                  borderRight: 1,
-                },
-              }}
-            >
-              {headerGroup.headers.map((header) => (
-                <TableCell key={header.id} colSpan={header.colSpan}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(header.column.columnDef.header, header.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableHead>
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <Fragment key={row.id}>
-              <TableRow>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+    <Box>
+      <TableContainer
+        component={Paper}
+        sx={{ mb: 4, maxWidth: "92vw", overflow: "scroll", maxHeight: 440 }}
+      >
+        <Table stickyHeader size="small" aria-label="simple table">
+          <TableHead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow
+                key={headerGroup.id}
+                sx={{
+                  "& th": {
+                    color: "white",
+                    backgroundColor: "primary.main",
+                    borderRight: 1,
+                  },
+                }}
+              >
+                {headerGroup.headers.map((header) => (
+                  <TableCell key={header.id} colSpan={header.colSpan}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableCell>
                 ))}
               </TableRow>
-              {renderSubComponent && row.getIsExpanded() && (
+            ))}
+          </TableHead>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <Fragment key={row.id}>
                 <TableRow>
-                  {/* 2nd row is a custom 1 cell row */}
-                  <TableCell colSpan={row.getVisibleCells().length}>
-                    {renderSubComponent({ row })}
-                  </TableCell>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
                 </TableRow>
-              )}
-            </Fragment>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+                {renderSubComponent && row.getIsExpanded() && (
+                  <TableRow>
+                    {/* 2nd row is a custom 1 cell row */}
+                    <TableCell colSpan={row.getVisibleCells().length}>
+                      {renderSubComponent({ row })}
+                    </TableCell>
+                  </TableRow>
+                )}
+              </Fragment>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 });
 export default StandardTable;
