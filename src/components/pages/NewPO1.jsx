@@ -14,7 +14,7 @@ const NewPO1 = () => {
   const router = useRouter();
   const [poData, setPoData] = useSessionStorage("poData");
   const { data: companies } = useFetch("/company");
-  const { data: vendors } = useFetch("/vendor");
+  const { data: vendors } = useFetch("/vendor?is_active=true");
 
   const { control, handleSubmit, setValue, watch } = useForm({
     defaultValues: {
