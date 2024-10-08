@@ -1,11 +1,11 @@
 import { createTheme } from "@mui/material";
 
 const theme = createTheme({
-  // palette: {
-  //   primary: {
-  //     main: "#009788",
-  //   },
-  // },
+  palette: {
+    primary: {
+      main: "#0297b5",
+    },
+  },
   typography: {
     display: {
       fontSize: "4rem",
