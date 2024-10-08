@@ -6,7 +6,6 @@ export default withAuth(
     console.log("Middleware is running");
 
     const userRoleId = req.nextauth.token?.id_role;
-    const url = req.nextUrl.pathname;
 
     const rolePermissions = {
       [process.env.NEXT_PUBLIC_ADMIN_ID]: [
@@ -38,9 +37,9 @@ export default withAuth(
     const currentPath = new URL(req.url).pathname;
 
     // Use a more flexible matching that accounts for dynamic routes
-    const isAllowed = rolePermissions[userRoleId]?.some(
-      (route) => currentPath === route || currentPath.startsWith(`${route}/`)
-    );
+    const isAllowed = rolePermissions[userRoleId]?.some((route) => {
+      return currentPath === route || route.startsWith(`${currentPath}/`);
+    });
 
     if (!isAllowed) {
       console.error("Unauthorized");
