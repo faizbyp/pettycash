@@ -8,9 +8,11 @@ import { PieChart, BarChart } from "@mui/x-charts";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import InfoIcon from "@mui/icons-material/Info";
+import GRTable from "../GRTable";
 
 const Admin = () => {
   const { data: po } = useSWR(`/po`);
+  const { data: gr } = useSWR(`/gr`);
   const [companyNames, setCompanyNames] = useState([]);
   const [companyCounts, setCompanyCounts] = useState([]);
 
@@ -41,8 +43,16 @@ const Admin = () => {
     return words.length > 1 ? words.join("\n") : label;
   };
 
-  const tableAction = (row) => (
+  const poTableAction = (row) => (
     <Link href={`/dashboard/approval/${encodeURIComponent(row.id_po)}`} passHref>
+      <IconButton>
+        <InfoIcon />
+      </IconButton>
+    </Link>
+  );
+
+  const grTableAction = (row) => (
+    <Link href={`/dashboard/gr/${encodeURIComponent(row.id_gr)}`} passHref>
       <IconButton>
         <InfoIcon />
       </IconButton>
@@ -111,7 +121,11 @@ const Admin = () => {
       <Typography variant="h1" sx={{ color: "primary.main" }}>
         Order Planning
       </Typography>
-      {po ? <POTable data={po.data} admin actions={tableAction} /> : <TableSkeleton column={8} />}
+      {po ? <POTable data={po.data} admin actions={poTableAction} /> : <TableSkeleton column={8} />}
+      <Typography variant="h1" sx={{ color: "primary.main", mt: 2 }}>
+        Order Confirmation
+      </Typography>
+      {gr ? <GRTable data={gr.data} admin actions={grTableAction} /> : <TableSkeleton column={8} />}
     </Box>
   );
 };

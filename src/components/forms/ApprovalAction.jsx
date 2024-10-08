@@ -17,7 +17,7 @@ import API from "@/services/api";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-const ApprovalAction = ({ id_user, id_po }) => {
+const ApprovalAction = ({ id_user, id_po, id_gr }) => {
   const [reject, setReject] = useState(false);
   const [approve, setApprove] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -33,10 +33,13 @@ const ApprovalAction = ({ id_user, id_po }) => {
 
   const handleApproval = async (values) => {
     setLoading(true);
-    console.log(values, id_po);
+    console.log(values);
+    let url;
+    if (id_po) url = `/po/approval/${id_po}`;
+    if (id_gr) url = `/gr/approval/${id_gr}`;
 
     try {
-      const res = await API.patch(`/po/approval/${id_po}`, values);
+      const res = await API.patch(url, values);
       toast.success(`${res.data.message}`);
       router.push("/dashboard");
     } catch (error) {

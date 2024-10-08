@@ -9,7 +9,7 @@ import useFetch from "@/hooks/useFetch";
 import { Box, Skeleton, Typography, Chip, Button, Paper } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { POSkeleton } from "../Skeleton";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import PrintIcon from "@mui/icons-material/Print";
 
@@ -37,11 +37,13 @@ const GRDetails = ({ idGR }) => {
           <Typography variant="h1" sx={{ color: "primary.main", m: 0 }}>
             {idGR}
           </Typography>
-          {/* {gr && <Chip color={statusColor(gr.data.status)} label={gr.data.status} />} */}
+          {gr && <Chip color={statusColor(gr.data.status)} label={gr.data.status} />}
         </Box>
-        <Button onClick={handlePrint} variant="contained" startIcon={<PrintIcon />}>
-          Print
-        </Button>
+        {gr && gr.data.status === "approved" && (
+          <Button onClick={handlePrint} variant="contained" startIcon={<PrintIcon />}>
+            Print
+          </Button>
+        )}
       </Box>
       {gr && session ? (
         <>
@@ -80,6 +82,10 @@ const GRDetails = ({ idGR }) => {
               </Box>
             </Paper>
           </Box>
+          {session?.user?.id_role === process.env.NEXT_PUBLIC_ADMIN_ID &&
+            gr.data.status === "pending" && (
+              <ApprovalAction id_user={session?.user?.id_user} id_gr={encodeURIComponent(idGR)} />
+            )}
         </>
       ) : (
         <POSkeleton />

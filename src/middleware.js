@@ -9,7 +9,6 @@ export default withAuth(
 
     const rolePermissions = {
       [process.env.NEXT_PUBLIC_ADMIN_ID]: [
-        "/dashboard",
         "/dashboard/gr",
         "/dashboard/my-gr",
         "/dashboard/my-po",
@@ -19,9 +18,9 @@ export default withAuth(
         "/dashboard/vendor",
         "/dashboard/approval",
         "/dashboard/reports",
+        "/dashboard",
       ],
       [process.env.NEXT_PUBLIC_USER_ID]: [
-        "/dashboard",
         "/dashboard/gr",
         "/dashboard/my-gr",
         "/dashboard/my-po",
@@ -29,8 +28,9 @@ export default withAuth(
         "/dashboard/company",
         "/dashboard/uom",
         "/dashboard/vendor",
+        "/dashboard",
       ],
-      [process.env.NEXT_PUBLIC_FINANCE_ID]: ["/dashboard", "/dashboard/reports"],
+      [process.env.NEXT_PUBLIC_FINANCE_ID]: ["/dashboard/reports", "/dashboard"],
     };
 
     // Extract only the pathname from the URL (ignoring the query and hash parts)
@@ -38,7 +38,7 @@ export default withAuth(
 
     // Use a more flexible matching that accounts for dynamic routes
     const isAllowed = rolePermissions[userRoleId]?.some((route) => {
-      return currentPath === route || route.startsWith(`${currentPath}/`);
+      return currentPath === route || currentPath.startsWith(`${route}/`);
     });
 
     if (!isAllowed) {
