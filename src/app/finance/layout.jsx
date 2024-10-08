@@ -1,4 +1,4 @@
-import PersistentDrawer from "@/components/PersistentDrawer";
+import PersistentDrawer from "@/components/dashboard/PersistentDrawer";
 import HomeIcon from "@mui/icons-material/Home";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ContactPageIcon from "@mui/icons-material/ContactPage";

@@ -42,7 +42,7 @@ const Admin = () => {
   };
 
   const tableAction = (row) => (
-    <Link href={`/admin/approval/${encodeURIComponent(row.id_po)}`} passHref>
+    <Link href={`/dashboard/approval/${encodeURIComponent(row.id_po)}`} passHref>
       <IconButton>
         <InfoIcon />
       </IconButton>

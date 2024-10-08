@@ -1,4 +1,4 @@
-import PersistentDrawer from "@/components/PersistentDrawer";
+import PersistentDrawer from "@/components/dashboard/PersistentDrawer";
 import HomeIcon from "@mui/icons-material/Home";
 import StoreIcon from "@mui/icons-material/Store";
 import BusinessIcon from "@mui/icons-material/Business";
