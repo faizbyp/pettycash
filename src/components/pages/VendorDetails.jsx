@@ -45,7 +45,7 @@ const VendorDetails = ({ idVendor }) => {
     try {
       const res = await API.patch(`/vendor/${idVendor}`, values);
       toast.success(`${res.data.message}`);
-      router.push("/admin/vendor");
+      router.push("/dashboard/vendor");
     } catch (error) {
       if (isAxiosError(error)) {
         const data = error.response?.data;

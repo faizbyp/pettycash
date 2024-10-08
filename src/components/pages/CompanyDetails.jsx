@@ -48,7 +48,7 @@ const CompanyDetails = ({ idCompany }) => {
     try {
       const res = await API.patch(`/company/${idCompany}`, values);
       toast.success(`${res.data.message}`);
-      router.push("/admin/company");
+      router.push("/dashboard/company");
     } catch (error) {
       if (isAxiosError(error)) {
         const data = error.response?.data;

@@ -122,7 +122,7 @@ const Vendor = () => {
                     />
                   </TableCell>
                   <TableCell align="right">
-                    <Link href={`/admin/vendor/${row.id_vendor}`} passHref>
+                    <Link href={`/dashboard/vendor/${row.id_vendor}`} passHref>
                       <IconButton>
                         <InfoIcon />
                       </IconButton>

@@ -37,12 +37,8 @@ const Login = () => {
 
       if (res?.status === 200) {
         const session = await getSession();
-        if (session?.user.id_role === process.env.NEXT_PUBLIC_USER_ID) {
+        if (session?.user.id_role) {
           location.replace("/dashboard");
-        } else if (session?.user.id_role === process.env.NEXT_PUBLIC_ADMIN_ID) {
-          location.replace("/admin");
-        } else if (session?.user.id_role === process.env.NEXT_PUBLIC_FINANCE_ID) {
-          location.replace("/finance/reports");
         } else {
           toast("Please try again");
         }

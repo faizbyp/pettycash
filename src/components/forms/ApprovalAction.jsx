@@ -38,7 +38,7 @@ const ApprovalAction = ({ id_user, id_po }) => {
     try {
       const res = await API.patch(`/po/approval/${id_po}`, values);
       toast.success(`${res.data.message}`);
-      router.push("/admin");
+      router.push("/dashboard");
     } catch (error) {
       if (isAxiosError(error)) {
         const data = error.response?.data;

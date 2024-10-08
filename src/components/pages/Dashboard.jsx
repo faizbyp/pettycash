@@ -1,6 +1,6 @@
 "use client";
 
-import { useSessionData } from "@/components/PersistentDrawer";
+import { useSessionData } from "@/components/dashboard/PersistentDrawer";
 import { Typography, Skeleton, Box, Grid2 as Grid } from "@mui/material";
 import MyPO from "@/components/pages/MyPO";
 import { PieChart } from "@mui/x-charts";
@@ -8,7 +8,6 @@ import useFetch from "@/hooks/useFetch";
 
 const Dashboard = () => {
   const sessionData = useSessionData();
-  console.log(sessionData);
   const { data: po } = useFetch(sessionData ? `/po/user/${sessionData.id_user}` : null);
 
   return (

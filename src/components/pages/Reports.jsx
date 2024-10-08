@@ -24,18 +24,20 @@ import BackspaceIcon from "@mui/icons-material/Backspace";
 const Reports = () => {
   const API = useAPI();
   const [loading, setLoading] = useState(false);
-  const [grDate, setGrDate] = useState("");
-  const [poDate, setPoDate] = useState("");
+  const [grStartDate, setGrStartDate] = useState("");
+  const [grEndDate, setGrEndDate] = useState("");
+  const [poStartDate, setPoStartDate] = useState("");
+  const [poEndDate, setPoEndDate] = useState("");
   const [company, setCompany] = useState("");
   const { data: comparison } = useFetch(
-    `/report/comparison?gr_date=${grDate}&po_date=${poDate}&company=${company}`
+    `/report/comparison?gr_start_date=${grStartDate}&gr_end_date=${grEndDate}&po_start_date=${poStartDate}&po_end_date=${poEndDate}&company=${company}`
   );
 
   const downloadExcel = async () => {
     try {
       setLoading(true);
       const response = await API.get(
-        `/report/comparison/xlsx?gr_date=${grDate}&po_date=${poDate}&company=${company}`,
+        `/report/comparison/xlsx?gr_start_date=${grStartDate}&gr_end_date=${grEndDate}&po_start_date=${poStartDate}&po_end_date=${poEndDate}&company=${company}`,
         {
           responseType: "blob",
         }
@@ -58,12 +60,18 @@ const Reports = () => {
     }
   };
 
-  const filterPoDate = (value) => {
-    setPoDate(moment(value).format("YYYY-MM-DD"));
+  const filterPoStartDate = (value) => {
+    setPoStartDate(moment(value).format("YYYY-MM-DD"));
+  };
+  const filterPoEndDate = (value) => {
+    setPoEndDate(moment(value).format("YYYY-MM-DD"));
   };
 
-  const filterGrDate = (value) => {
-    setGrDate(moment(value).format("YYYY-MM-DD"));
+  const filterGrStartDate = (value) => {
+    setGrStartDate(moment(value).format("YYYY-MM-DD"));
+  };
+  const filterGrEndDate = (value) => {
+    setGrEndDate(moment(value).format("YYYY-MM-DD"));
   };
 
   const filterCompany = (e) => {
@@ -91,16 +99,24 @@ const Reports = () => {
       <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
         <Box sx={{ display: "flex", gap: 1, alignItems: "center", width: "100%" }}>
           <DatePicker
-            onChange={filterPoDate}
+            onChange={filterPoStartDate}
             sx={{ width: "100%" }}
-            value={poDate ? moment(poDate) : null}
-            label="Plan Date"
+            value={poStartDate ? moment(poStartDate) : null}
+            label="Plan Start Date"
+            format="DD/MM/YYYY"
+          />
+          <DatePicker
+            onChange={filterPoEndDate}
+            sx={{ width: "100%" }}
+            value={poEndDate ? moment(poEndDate) : null}
+            label="Plan End Date"
             format="DD/MM/YYYY"
           />
           <IconButton
             aria-label="clear"
             onClick={() => {
-              setPoDate("");
+              setPoStartDate("");
+              setPoEndDate("");
             }}
           >
             <BackspaceIcon />
@@ -108,16 +124,24 @@ const Reports = () => {
         </Box>
         <Box sx={{ display: "flex", gap: 1, alignItems: "center", width: "100%" }}>
           <DatePicker
-            onChange={filterGrDate}
+            onChange={filterGrStartDate}
             sx={{ width: "100%" }}
-            value={grDate ? moment(grDate) : null}
-            label="Confirmation Date"
+            value={grStartDate ? moment(grStartDate) : null}
+            label="Conf. Start Date"
+            format="DD/MM/YYYY"
+          />
+          <DatePicker
+            onChange={filterGrEndDate}
+            sx={{ width: "100%" }}
+            value={grEndDate ? moment(grEndDate) : null}
+            label="Conf. End Date"
             format="DD/MM/YYYY"
           />
           <IconButton
             aria-label="clear"
             onClick={() => {
-              setGrDate("");
+              setGrStartDate("");
+              setGrEndDate("");
             }}
           >
             <BackspaceIcon />
