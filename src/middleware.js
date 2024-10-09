@@ -38,6 +38,7 @@ export default withAuth(
 
     // Use a more flexible matching that accounts for dynamic routes
     const isAllowed = rolePermissions[userRoleId]?.some((route) => {
+      if (route === "/dashboard") return currentPath === route;
       return currentPath === route || currentPath.startsWith(`${route}/`);
     });
 
