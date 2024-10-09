@@ -73,6 +73,11 @@ const ComparisonTable = memo(function ComparisonTable({ data }) {
         cell: (props) => props.getValue(),
       },
       {
+        header: "Invoice Number",
+        accessorKey: "invoice_num",
+        cell: (props) => props.getValue(),
+      },
+      {
         header: "Sub Total",
         columns: [
           {
