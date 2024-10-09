@@ -21,6 +21,25 @@ import { DatePicker } from "@mui/x-date-pickers";
 import moment from "moment";
 import BackspaceIcon from "@mui/icons-material/Backspace";
 
+const compArray = [
+  {
+    name: "---",
+    value: "",
+  },
+  {
+    value: "CG",
+    name: "Cemindo",
+  },
+  {
+    value: "UP",
+    name: "Upstream",
+  },
+  {
+    value: "DW",
+    name: "Downstream",
+  },
+];
+
 const Reports = () => {
   const API = useAPI();
   const [loading, setLoading] = useState(false);
@@ -150,10 +169,11 @@ const Reports = () => {
         <FormControl fullWidth>
           <InputLabel>Company</InputLabel>
           <Select value={company} label="Company" onChange={filterCompany}>
-            <MenuItem value="">---</MenuItem>
-            <MenuItem value="CG">Cemindo</MenuItem>
-            <MenuItem value="UP">Upstream</MenuItem>
-            <MenuItem value="DW">Downstream</MenuItem>
+            {compArray.map((comp, index) => (
+              <MenuItem key={index} value={comp.value}>
+                {comp.name}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       </Box>

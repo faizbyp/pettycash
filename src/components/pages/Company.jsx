@@ -94,7 +94,10 @@ const Company = () => {
           Companies
         </Typography>
         {companies ? (
-          <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
+          <TableContainer
+            component={Paper}
+            sx={{ maxWidth: "92vw", overflow: "scroll", maxHeight: 440 }}
+          >
             <Table stickyHeader aria-label="PO Table">
               <TableHead>
                 <TableRow
@@ -146,7 +149,10 @@ const Company = () => {
           </Button>
         </Box>
         {DWCompanies ? (
-          <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
+          <TableContainer
+            component={Paper}
+            sx={{ maxWidth: "92vw", overflow: "scroll", maxHeight: 440 }}
+          >
             <Table stickyHeader aria-label="PO Table">
               <TableHead>
                 <TableRow
@@ -206,7 +212,10 @@ const Company = () => {
           </Button>
         </Box>
         {UPCompanies ? (
-          <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
+          <TableContainer
+            component={Paper}
+            sx={{ maxWidth: "92vw", overflow: "scroll", maxHeight: 440 }}
+          >
             <Table stickyHeader aria-label="PO Table">
               <TableHead
                 sx={{
