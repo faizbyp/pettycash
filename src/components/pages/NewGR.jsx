@@ -42,6 +42,7 @@ import { POSkeleton } from "../Skeleton";
 import FileInput from "@/components/forms/FileInput";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import CheckboxCtrl from "../forms/Checkbox";
+import DatePickerCtrl from "../forms/DatePicker";
 
 const NewGR = ({ idPO }) => {
   const router = useRouter();
@@ -225,6 +226,19 @@ const NewGR = ({ idPO }) => {
           Create New Order Confirmation
         </Typography>
         <Typography variant="h2">Order Plan: {idPO}</Typography>
+        <Box sx={{ width: "50%" }}>
+          <DatePickerCtrl
+            name="gr_date"
+            label="Order Conf. Date"
+            control={grControl}
+            rules={{
+              required: "Field required",
+            }}
+            onChange={(value) => {
+              setGrValue("gr_date", value);
+            }}
+          />
+        </Box>
         {po ? (
           <>
             <Paper sx={{ p: 2, mb: 2 }}>
