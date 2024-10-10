@@ -16,10 +16,7 @@ import { memo } from "react";
 const ItemTable = memo(function ItemTable({ data, onDelete, GR }) {
   console.log("item table", data);
   return (
-    <TableContainer
-      component={Paper}
-      sx={{ mb: 4, maxWidth: "92vw", overflow: "scroll", maxHeight: 440 }}
-    >
+    <TableContainer component={Paper} sx={{ mb: 4 }}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>

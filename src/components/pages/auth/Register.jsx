@@ -23,7 +23,7 @@ import toast from "react-hot-toast";
 const Register = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const [email, setEmail] = useSessionStorage("userEmail");
+  // const [email, setEmail] = useSessionStorage("userEmail");
   const { control, handleSubmit, getValues } = useForm({
     defaultValues: {
       name: "",
@@ -41,9 +41,9 @@ const Register = () => {
     try {
       const res = await API.post("/user/register", values);
       if (res?.status === 200) {
-        sessionStorage.setItem("userEmail", values.email);
+        // sessionStorage.setItem("userEmail", values.email);
         toast.success(res.data.message);
-        router.replace("/register/otp");
+        router.replace("/register/verify");
       } else {
         toast.error("Failed to register", res.data.message);
       }
