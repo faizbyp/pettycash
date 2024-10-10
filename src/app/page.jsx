@@ -3,6 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
+  // const redDataURL =
+  // "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMSIgaGVpZ2h0PSIxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiNmZjNkM2QiLz48L3N2Zz4=";
+
   return (
     <Box
       sx={{
@@ -20,6 +23,7 @@ export default function Home() {
             height={200}
             // placeholder="blur"
             alt="KPN Corp"
+            // blurDataURL={redDataURL}
           />
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>

@@ -43,7 +43,7 @@ const Register = () => {
       if (res?.status === 200) {
         sessionStorage.setItem("userEmail", values.email);
         toast.success(res.data.message);
-        router.replace("/register/otp");
+        router.replace("/register/verify");
       } else {
         toast.error("Failed to register", res.data.message);
       }
