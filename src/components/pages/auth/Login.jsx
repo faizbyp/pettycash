@@ -86,6 +86,11 @@ const Login = () => {
           </Box>
         </Box>
         <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+          <MuiLink href="/reset-pass" component={Link}>
+            Reset Password
+          </MuiLink>
+        </Box>
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
           <MuiLink href="/register" component={Link}>
             Register
           </MuiLink>
