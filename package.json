@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3001",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -30,6 +30,7 @@
     "react-hot-toast": "^2.4.1",
     "react-number-format": "^5.4.1",
     "react-to-print": "^2.15.1",
+    "sharp": "^0.33.5",
     "swr": "^2.2.5"
   },
   "devDependencies": {
