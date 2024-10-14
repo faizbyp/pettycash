@@ -27,6 +27,9 @@ const menuItems = {
       items: [{ name: "Admin", link: "/dashboard", icon: <HomeIcon /> }],
     },
     {
+      items: [{ name: "Reports", link: "/dashboard/reports", icon: <ArticleIcon /> }],
+    },
+    {
       subheader: "Order Plan",
       items: [
         { name: "My Order Planning", link: "/dashboard/my-po", icon: <DescriptionIcon /> },
