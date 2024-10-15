@@ -75,19 +75,57 @@ const Admin = () => {
                   data: [
                     {
                       id: 0,
-                      value: po.data.filter((item) => item.status === "pending").length,
+                      value: po.status_count?.pending || 0,
                       label: "Pending",
                       color: "orange",
                     },
                     {
                       id: 1,
-                      value: po.data.filter((item) => item.status === "approved").length,
+                      value: po.status_count?.approved || 0,
                       label: "Approved",
                       color: "green",
                     },
                     {
                       id: 2,
-                      value: po.data.filter((item) => item.status === "rejected").length,
+                      value: po.status_count?.rejected || 0,
+                      label: "Rejected",
+                      color: "red",
+                    },
+                  ],
+                },
+              ]}
+              width={450}
+              height={250}
+            />
+          ) : (
+            <Skeleton variant="circular" width={300} height={300} />
+          )}
+        </Grid>
+        <Grid size={{ xs: 12, md: 6 }}>
+          <Typography variant="h2" sx={{ color: "primary.main" }}>
+            Order Confirmation Status
+          </Typography>
+          {gr ? (
+            <PieChart
+              colors={["orange", "red", "green"]}
+              series={[
+                {
+                  data: [
+                    {
+                      id: 0,
+                      value: gr.status_count?.pending || 0,
+                      label: "Pending",
+                      color: "orange",
+                    },
+                    {
+                      id: 1,
+                      value: gr.status_count?.approved || 0,
+                      label: "Approved",
+                      color: "green",
+                    },
+                    {
+                      id: 2,
+                      value: gr.status_count?.rejected || 0,
                       label: "Rejected",
                       color: "red",
                     },
