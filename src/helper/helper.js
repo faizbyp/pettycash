@@ -40,3 +40,24 @@ export const getFromArray = (prop, array, id, src) => {
     return "N/A";
   }
 };
+
+export const allowedFormat = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+  "application/pdf",
+  "text/csv",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // XLSX
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // DOCX
+  "application/vnd.oasis.opendocument.text", // ODT
+  "application/vnd.oasis.opendocument.spreadsheet", // ODS
+];
+
+export const varcharPattern = /^[a-zA-Z0-9\s.,!?@#&$%^*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
+
+// const varcharValidation = (value) => {
+//   return varcharPattern.test(value)
+//     ? true
+//     : "Only standard alphanumeric and punctuation characters are allowed";
+// };

@@ -30,7 +30,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import NumericFieldCtrl from "@/components/forms/NumericField";
 import CurrencyField from "@/components/forms/CurrencyField";
 import ItemTable from "@/components/ItemTable";
-import { calculateTotal } from "@/helper/helper";
+import { allowedFormat, calculateTotal } from "@/helper/helper";
 import API from "@/services/api";
 import toast from "react-hot-toast";
 import { isAxiosError } from "axios";
@@ -294,7 +294,14 @@ const NewGR = ({ idPO }) => {
               control={grControl}
               name="invoice_file"
               label="Upload Invoice"
-              rules={{ required: "Invoice is required" }}
+              rules={{
+                required: "Invoice is required",
+                validate: {
+                  maxSize: (files) => files?.size < 10485760 || "Max 10MB Allowed",
+                  format: (files) =>
+                    allowedFormat.includes(files?.type) || "File format not allowed",
+                },
+              }}
             />
             <Box sx={{ textAlign: "right", mt: 2 }}>
               <Button variant="contained" disabled={loading} onClick={handleSubmit(onSubmit)}>

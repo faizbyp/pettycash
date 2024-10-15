@@ -33,7 +33,10 @@ const FileInput = ({ control, name, rules }) => {
             >
               Upload Invoice
             </Button>
-            <Typography variant="body1" color={value ? "text.primary" : "text.secondary"}>
+            <Typography
+              variant="body1"
+              color={error ? "error.main" : value ? "text.primary" : "text.secondary"}
+            >
               {value ? value.name : "No file selected"}
             </Typography>
           </Box>
