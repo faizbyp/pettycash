@@ -4,39 +4,16 @@ import POTable from "@/components/POTable";
 import { Typography, Box, Skeleton, Grid2 as Grid, IconButton } from "@mui/material";
 import useSWR from "swr";
 import { TableSkeleton } from "../Skeleton";
-import { PieChart, BarChart } from "@mui/x-charts";
+import { PieChart, BarChart, blueberryTwilightPaletteLight } from "@mui/x-charts";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import InfoIcon from "@mui/icons-material/Info";
 import GRTable from "../GRTable";
+import { formatThousand } from "@/helper/helper";
 
 const Admin = () => {
   const { data: po } = useSWR(`/po`);
   const { data: gr } = useSWR(`/gr`);
-  const [companyNames, setCompanyNames] = useState([]);
-  const [companyCounts, setCompanyCounts] = useState([]);
-
-  useEffect(() => {
-    let companyCount = {};
-    if (po) {
-      po.data.forEach((item) => {
-        const company = item.company_name;
-        companyCount[company] = (companyCount[company] || 0) + 1;
-      });
-
-      // Create an array of [company, count] pairs
-      const sortedCompanies = Object.entries(companyCount).sort(
-        ([, countA], [, countB]) => countB - countA
-      );
-
-      // Separate the sorted names and counts
-      const sortedCompanyNames = sortedCompanies.map(([company]) => company).slice(0, 5);
-      const sortedCompanyCounts = sortedCompanies.map(([, count]) => count).slice(0, 5);
-
-      setCompanyNames(sortedCompanyNames);
-      setCompanyCounts(sortedCompanyCounts);
-    }
-  }, [po]);
 
   const wrapLabel = (label) => {
     const words = label.split(" ");
@@ -63,6 +40,43 @@ const Admin = () => {
     <Box component="main">
       <Typography variant="h1">Admin Dashboard</Typography>
       <Grid container spacing={2} sx={{ mb: 4 }}>
+        <Grid size={{ xs: 12, md: 6 }} sx={{ color: "primary.main" }}>
+          <Typography variant="h2">Petty Cash Spent</Typography>
+          <Typography variant="display">
+            {gr && `Rp${formatThousand(gr.money_spent.sum)}`}
+          </Typography>
+        </Grid>
+        <Grid size={{ xs: 12, md: 6 }}>
+          <Typography variant="h2" sx={{ color: "primary.main" }}>
+            Companies with the Most Order
+          </Typography>
+          {po ? (
+            <BarChart
+              colors={blueberryTwilightPaletteLight}
+              xAxis={[
+                {
+                  scaleType: "band",
+                  data: po.company_count.map((company) => wrapLabel(company.company_name)),
+                },
+              ]}
+              series={[
+                {
+                  data: po.company_count.map((company) => company.company_count),
+                  label: "Order Plan",
+                },
+                {
+                  data: gr.company_count.map((company) => company.company_count),
+                  label: "Order Confirmation",
+                },
+              ]}
+              margin={{ bottom: 100 }}
+              width={600}
+              height={350}
+            />
+          ) : (
+            <Skeleton variant="rounded" width={500} height={300} />
+          )}
+        </Grid>
         <Grid size={{ xs: 12, md: 6 }}>
           <Typography variant="h2" sx={{ color: "primary.main" }}>
             Order Plan Status
@@ -137,22 +151,6 @@ const Admin = () => {
             />
           ) : (
             <Skeleton variant="circular" width={300} height={300} />
-          )}
-        </Grid>
-        <Grid size={{ xs: 12, md: 6 }}>
-          <Typography variant="h2" sx={{ color: "primary.main" }}>
-            Companies with the Most Order Plans
-          </Typography>
-          {po && companyNames && companyCounts ? (
-            <BarChart
-              xAxis={[{ scaleType: "band", data: companyNames.map((label) => wrapLabel(label)) }]}
-              series={[{ data: companyCounts }]}
-              margin={{ bottom: 100 }}
-              width={600}
-              height={350}
-            />
-          ) : (
-            <Skeleton variant="rounded" width={500} height={300} />
           )}
         </Grid>
       </Grid>
