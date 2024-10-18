@@ -2,7 +2,7 @@
 
 import Admin from "@/components/pages/Admin";
 import Dashboard from "@/components/pages/Dashboard";
-import Reports from "@/components/pages/Reports";
+import Finance from "@/components/pages/Finance";
 import { Box, CircularProgress } from "@mui/material";
 import { useSession } from "next-auth/react";
 
@@ -22,7 +22,7 @@ const DashboardSelect = () => {
     case process.env.NEXT_PUBLIC_USER_ID:
       return <Dashboard />;
     case process.env.NEXT_PUBLIC_FINANCE_ID:
-      return <Reports />;
+      return <Finance />;
     default:
       console.error("NO ID_ROLE");
       return <Dashboard />;

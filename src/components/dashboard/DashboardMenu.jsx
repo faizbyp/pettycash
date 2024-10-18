@@ -105,6 +105,9 @@ const menuItems = {
   ],
   finance: [
     {
+      items: [{ name: "Home", link: "/dashboard", icon: <HomeIcon /> }],
+    },
+    {
       subheader: "Reports",
       items: [{ name: "Reports", link: "/dashboard/reports", icon: <ArticleIcon /> }],
     },
