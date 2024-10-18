@@ -1,6 +1,6 @@
 "use client";
 
-import { Typography, Skeleton, Grid2 as Grid } from "@mui/material";
+import { Typography, Skeleton, Grid2 as Grid, Tooltip } from "@mui/material";
 import { PieChart, BarChart, blueberryTwilightPaletteLight } from "@mui/x-charts";
 import { formatThousand } from "@/helper/helper";
 import { memo } from "react";
@@ -20,7 +20,9 @@ const ReportCharts = memo(function ReportCharts({
     <Grid container spacing={2} sx={{ mb: 4 }}>
       <Grid size={{ xs: 12, md: 6 }} sx={{ color: "primary.main" }}>
         <Typography variant="h2">Petty Cash Spent</Typography>
-        <Typography variant="display">{amount && `Rp${formatThousand(amount)}`}</Typography>
+        <Tooltip title="Sum of approved Order Confirmation grand total">
+          <Typography variant="display">{amount && `Rp${formatThousand(amount)}`}</Typography>
+        </Tooltip>
       </Grid>
       <Grid size={{ xs: 12, md: 6 }}>
         <Typography variant="h2" sx={{ color: "primary.main" }}>
