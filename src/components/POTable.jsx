@@ -9,6 +9,7 @@ import {
   Paper,
   Chip,
   IconButton,
+  Checkbox,
 } from "@mui/material";
 import moment from "moment";
 import InfoIcon from "@mui/icons-material/Info";
@@ -37,6 +38,7 @@ const POTable = ({ data, admin, actions }) => {
             <TableCell>Vendor</TableCell>
             <TableCell align="right">Grand Total</TableCell>
             <TableCell>Status</TableCell>
+            <TableCell>Completed</TableCell>
             {actions && <TableCell align="right"></TableCell>}
           </TableRow>
         </TableHead>
@@ -53,6 +55,14 @@ const POTable = ({ data, admin, actions }) => {
               <TableCell align="right">{formatThousand(row.grand_total)}</TableCell>
               <TableCell>
                 <Chip color={statusColor(row.status)} label={row.status} />
+              </TableCell>
+              <TableCell>
+                <Checkbox
+                  checked={row.is_complete}
+                  inputProps={{
+                    readOnly: true,
+                  }}
+                />
               </TableCell>
               {actions && <TableCell align="right">{actions(row)}</TableCell>}
             </TableRow>
