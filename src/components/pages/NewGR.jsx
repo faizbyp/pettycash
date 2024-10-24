@@ -288,6 +288,12 @@ const NewGR = ({ idPO }) => {
               label="Invoice No."
               rules={{
                 required: "Field required",
+                validate: {
+                  character: (values) =>
+                    !/[\\/:*?"<>|]/.test(values) || `Cannot contain \\ / : * ? " < > |`,
+                  spaceAndDot: (values) =>
+                    !/[. ]$/.test(values) || `Cannot end with space or period`,
+                },
               }}
             />
             <FileInput
