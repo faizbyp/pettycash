@@ -150,7 +150,11 @@ const DashboardMenu = () => {
       {items &&
         items.map((menuGroup, index) => (
           <List
-            subheader={menuGroup.subheader && <ListSubheader>{menuGroup.subheader}</ListSubheader>}
+            subheader={
+              menuGroup.subheader && (
+                <ListSubheader color="primary">{menuGroup.subheader}</ListSubheader>
+              )
+            }
             key={index}
           >
             {menuGroup.items.map((item) => (
