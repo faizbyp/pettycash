@@ -34,7 +34,8 @@ const Admin = () => {
       <Typography variant="h1">Admin Dashboard</Typography>
       <ReportCharts
         amount={gr?.money_spent.sum}
-        companyCount={po?.company_count}
+        poCompanyCount={po?.company_count}
+        grCompanyCount={gr?.company_count}
         poStatusCount={po?.status_count}
         grStatusCount={gr?.status_count}
       />

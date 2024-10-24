@@ -7,7 +7,8 @@ import { memo } from "react";
 
 const ReportCharts = memo(function ReportCharts({
   amount,
-  companyCount,
+  poCompanyCount,
+  grCompanyCount,
   poStatusCount,
   grStatusCount,
 }) {
@@ -26,24 +27,24 @@ const ReportCharts = memo(function ReportCharts({
       </Grid>
       <Grid size={{ xs: 12, md: 6 }}>
         <Typography variant="h2" sx={{ color: "primary.main" }}>
-          Companies with the Most Order
+          Companies Orders
         </Typography>
-        {companyCount ? (
+        {poCompanyCount && grCompanyCount ? (
           <BarChart
             colors={blueberryTwilightPaletteLight}
             xAxis={[
               {
                 scaleType: "band",
-                data: companyCount.map((company) => wrapLabel(company.company_name)),
+                data: poCompanyCount.map((company) => wrapLabel(company.company_name)),
               },
             ]}
             series={[
               {
-                data: companyCount.map((company) => company.company_count),
+                data: poCompanyCount.map((company) => company.company_count),
                 label: "Order Plan",
               },
               {
-                data: companyCount.map((company) => company.company_count),
+                data: grCompanyCount.map((company) => company.company_count),
                 label: "Order Confirmation",
               },
             ]}
