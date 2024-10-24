@@ -6,7 +6,7 @@ import POFooter from "@/components/POFooter";
 import POHeader from "@/components/POHeader";
 import { statusColor } from "@/helper/helper";
 import useFetch from "@/hooks/useFetch";
-import { Box, Skeleton, Typography, Chip, Button, Paper } from "@mui/material";
+import { Box, Skeleton, Typography, Chip, Button, Paper, TextField } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { POSkeleton } from "../Skeleton";
 import { useRef } from "react";
@@ -47,7 +47,21 @@ const PODetails = ({ idPO }) => {
       </Box>
       {po && session ? (
         <>
-          <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
+            {po && po.data.status === "rejected" && (
+              <TextField
+                label="Reject Notes"
+                multiline
+                rows={5}
+                slotProps={{
+                  input: {
+                    readOnly: true,
+                  },
+                }}
+                value={po.data.reject_notes}
+                fullWidth
+              />
+            )}
             <Paper sx={{ width: "210mm" }}>
               <Box
                 ref={docRef}
