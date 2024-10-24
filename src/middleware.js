@@ -16,7 +16,6 @@ export default withAuth(
         "/dashboard/company",
         "/dashboard/uom",
         "/dashboard/vendor",
-        "/dashboard/approval",
         "/dashboard/reports",
         "/dashboard",
       ],

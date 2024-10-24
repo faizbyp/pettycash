@@ -14,7 +14,7 @@ const Admin = () => {
   const { data: gr } = useSWR(`/gr`);
 
   const poTableAction = (row) => (
-    <Link href={`/dashboard/approval/${encodeURIComponent(row.id_po)}`} passHref>
+    <Link href={`/dashboard/po/${encodeURIComponent(row.id_po)}`} passHref>
       <IconButton>
         <InfoIcon />
       </IconButton>
