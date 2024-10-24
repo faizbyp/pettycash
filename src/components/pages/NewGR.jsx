@@ -205,7 +205,7 @@ const NewGR = ({ idPO }) => {
         },
       });
       toast.success(`${res.data.message}`);
-      router.push("/dashboard");
+      router.replace("/dashboard");
     } catch (error) {
       if (isAxiosError(error)) {
         const data = error.response?.data;

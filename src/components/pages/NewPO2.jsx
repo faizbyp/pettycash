@@ -137,7 +137,7 @@ const NewPO2 = () => {
       const res = await API.post("/po", { data: values });
       toast.success(`${res.data.message}
         ${res.data.id_po}`);
-      router.push("/dashboard");
+      router.replace("/dashboard");
     } catch (error) {
       if (isAxiosError(error)) {
         const data = error.response?.data;
