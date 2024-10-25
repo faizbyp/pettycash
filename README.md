@@ -33,3 +33,35 @@ docker run -p 3000:3000 --env-file .env.production faizbyp/pettycash:x.x.x
 5. Push the image to Docker Hub.
 
 6. Ask the infra team to update the deployment image based on the updated tag on Docker Hub.
+
+7. Update deployment log in `README.md`
+
+## Deployment Log
+
+### `1.0.1`
+
+- update: report menu on admin
+- feat: reset password
+- feat: file validation
+- perf: update order plan and conf pie chart
+- perf: update company chart
+- fix: font load on next js
+- perf: memoize report chart component
+- update: finance dashboard
+- update: add money spent tooltip
+
+### `1.0.2`
+
+> ERROR ON DEPLOYMENT
+
+### `1.0.3`
+
+- update: remove /approval route
+  already in /po
+- update: list subheader color
+- fix: isaxioserror import
+- update: add is complete state on po table
+- update: add file name validation
+- update: router push to replace on new gr and po
+- update: add reject notes on rejected po and gr
+- update: company bar chart
