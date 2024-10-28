@@ -8,6 +8,7 @@ import StoreIcon from "@mui/icons-material/Store";
 import BusinessIcon from "@mui/icons-material/Business";
 import ScaleIcon from "@mui/icons-material/Scale";
 import ArticleIcon from "@mui/icons-material/Article";
+import CancelIcon from "@mui/icons-material/Cancel";
 import {
   Box,
   CircularProgress,
@@ -34,6 +35,7 @@ const menuItems = {
       items: [
         { name: "My Order Planning", link: "/dashboard/my-po", icon: <DescriptionIcon /> },
         { name: "Add Order Planning", link: "/dashboard/my-po/new", icon: <AddCircleIcon /> },
+        { name: "Cancel Request", link: "/dashboard/cancel-request", icon: <CancelIcon /> },
       ],
     },
     {

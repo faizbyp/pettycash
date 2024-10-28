@@ -17,6 +17,7 @@ export default withAuth(
         "/dashboard/uom",
         "/dashboard/vendor",
         "/dashboard/reports",
+        "/dashboard/cancel-request",
         "/dashboard",
       ],
       [process.env.NEXT_PUBLIC_USER_ID]: [
