@@ -277,6 +277,7 @@ const NewGR = ({ idPO }) => {
               watch={{
                 sub_total: watchGr("sub_total"),
                 grand_total: watchGr("grand_total"),
+                ppn: watch("ppn"),
               }}
             />
             <Typography variant="h2" sx={{ color: "primary.main" }}>

@@ -12,6 +12,10 @@ import {
   FormControlLabel,
   Paper,
   Link as MuiLink,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
 } from "@mui/material";
 import Link from "next/link";
 import { memo } from "react";
@@ -30,44 +34,65 @@ const POFooter = memo(function POFooter({ control, watch, notes, total, GR, invo
           )}
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>
-          <Box sx={{ display: "flex", gap: 8, justifyContent: "end" }}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-              }}
-            >
-              <Typography>Sub Total</Typography>
-              <Typography>Grand Total</Typography>
-            </Box>
-            <Box sx={{ textAlign: "right" }}>
-              {control && watch ? (
-                <>
-                  <Typography>{formatThousand(watch.sub_total)}</Typography>
-                  <CheckboxCtrl name="ppn" control={control} label="PPN 11%" noMargin />
-                  <Typography>{formatThousand(watch.grand_total)}</Typography>
-                </>
-              ) : (
-                <>
-                  <Typography>{formatThousand(total.sub_total)}</Typography>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={!!total.ppn}
-                        inputProps={{
-                          readOnly: true,
-                        }}
-                      />
-                    }
-                    label="PPN 11%"
-                    sx={{ m: 0, color: !total.ppn && "silver" }}
-                  />
-                  <Typography>{formatThousand(total.grand_total)}</Typography>
-                </>
-              )}
-            </Box>
-          </Box>
+          <Table size="small">
+            <TableBody>
+              <TableRow>
+                <TableCell>
+                  <Typography>Sub Total</Typography>
+                </TableCell>
+                <TableCell sx={{ textAlign: "right" }}>
+                  {control && watch ? (
+                    <Typography>{formatThousand(watch.sub_total)}</Typography>
+                  ) : (
+                    <Typography>{formatThousand(total.sub_total)}</Typography>
+                  )}
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>
+                  {control && watch ? (
+                    <CheckboxCtrl name="ppn" control={control} label="PPN 11%" />
+                  ) : (
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={!!total.ppn}
+                          inputProps={{
+                            readOnly: true,
+                          }}
+                        />
+                      }
+                      label="PPN 11%"
+                      sx={{ color: !total.ppn && "silver" }}
+                    />
+                  )}
+                </TableCell>
+                <TableCell sx={{ textAlign: "right" }}>
+                  {control && watch ? (
+                    <Typography>
+                      {watch.ppn ? formatThousand(watch.sub_total * 0.11) : "-"}
+                    </Typography>
+                  ) : (
+                    <Typography>
+                      {total.ppn ? formatThousand(total.sub_total * 0.11) : "-"}
+                    </Typography>
+                  )}
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>
+                  <Typography>Grand Total</Typography>
+                </TableCell>
+                <TableCell sx={{ textAlign: "right" }}>
+                  {control && watch ? (
+                    <Typography>{formatThousand(watch.grand_total)}</Typography>
+                  ) : (
+                    <Typography>{formatThousand(total.grand_total)}</Typography>
+                  )}
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
         </Grid>
       </Grid>
       {GR && (

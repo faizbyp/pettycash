@@ -181,6 +181,7 @@ const NewPO2 = () => {
                 watch={{
                   sub_total: watch("sub_total"),
                   grand_total: watch("grand_total"),
+                  ppn: watch("ppn"),
                 }}
               />
               <Box sx={{ textAlign: "right", mt: 2 }}>
