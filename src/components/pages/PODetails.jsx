@@ -86,7 +86,7 @@ const PODetails = ({ idPO }) => {
           {po && po.data.cancel_reason && <Chip color="warning" label="Waiting for cancellation" />}
         </Box>
         <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-          {po && !po.data.has_gr && !po.data.cancel_reason && po.data.status !== "canceled" && (
+          {po && !po.data.has_gr && !po.data.cancel_reason && po.data.status === "approved" && (
             <Button onClick={handleOpenForm} variant="contained" color="error">
               Cancel
             </Button>
