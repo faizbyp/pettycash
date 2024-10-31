@@ -7,7 +7,7 @@ import TextFieldCtrl from "@/components/forms/TextField";
 import { Box, Button, MenuItem, Skeleton, Typography } from "@mui/material";
 import moment from "moment";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import NumericFieldCtrl from "@/components/forms/NumericField";
 import CurrencyField from "@/components/forms/CurrencyField";
@@ -22,13 +22,23 @@ import POHeader from "@/components/POHeader";
 import DialogComp from "@/components/Dialog";
 import { POSkeleton } from "../Skeleton";
 
-const NewPO2 = () => {
+const NewPO2 = ({ idPO }) => {
   const router = useRouter();
   const { data: session } = useSession();
   const [poData, setPoData] = useSessionStorage("poData");
-  const { data: company } = useFetch(poData ? `/company/${poData.company}` : null);
-  const { data: vendor } = useFetch(poData ? `/vendor/${poData.vendor}` : null);
   const { data: uom } = useFetch("/uom");
+
+  const isEdit = Boolean(idPO);
+
+  // ADD PO FETCH
+  const { data: company } = useFetch(!isEdit && poData ? `/company/${poData.company}` : null);
+  const { data: vendor } = useFetch(!isEdit && poData ? `/vendor/${poData.vendor}` : null);
+
+  // EDIT PO FETCH
+  const { data: editData } = useFetch(isEdit && `/po/${encodeURIComponent(idPO)}`);
+  const [editIndex, setEditIndex] = useState(null);
+  const [deletedItems, setDeletedItems] = useState([]);
+
   const [openForm, setOpenForm] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -38,6 +48,8 @@ const NewPO2 = () => {
     getValues,
     setValue,
     watch,
+    reset: resetPO,
+    formState: { isDirty: isPODirty },
   } = useForm({
     defaultValues: {
       po_date: moment(),
@@ -55,6 +67,7 @@ const NewPO2 = () => {
     control: itemControl,
     handleSubmit: handleItem,
     reset: resetItemForm,
+    formState: { isDirty: isItemDirty },
   } = useForm({
     defaultValues: {
       id_po_item: "",
@@ -67,12 +80,31 @@ const NewPO2 = () => {
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, update } = useFieldArray({
     control: poControl,
     name: "items",
     rules: {
-      required: true,
+      required: !isEdit ? true : false,
     },
+  });
+
+  const {
+    fields: addedItemsFields,
+    append: appendAddedItems,
+    remove: removeAddedItems,
+  } = useFieldArray({
+    control: poControl,
+    name: "added_items",
+  });
+
+  const {
+    fields: editedItemsFields,
+    append: appendEditedItems,
+    remove: removeEditedItems,
+    update: updateEditedItems,
+  } = useFieldArray({
+    control: poControl,
+    name: "edited_items",
   });
 
   useEffect(() => {
@@ -84,16 +116,27 @@ const NewPO2 = () => {
   }, [poData, setValue]);
 
   useEffect(() => {
-    setValue("sub_total", calculateTotal(fields, "amount"));
-    setValue(
-      "grand_total",
-      watch("ppn")
-        ? getValues("sub_total") + getValues("sub_total") * (11 / 100)
-        : getValues("sub_total")
-    );
-    console.log("grand totalll", getValues("grand_total"));
+    setValue("sub_total", calculateTotal(fields.concat(addedItemsFields), "amount"));
+    setValue("grand_total", watch("ppn") ? getValues("sub_total") * 1.11 : getValues("sub_total"));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setValue, getValues, watch("ppn"), fields]);
+  }, [setValue, getValues, watch("ppn"), fields, addedItemsFields]);
+
+  useEffect(() => {
+    if (editData) {
+      const data = editData.data;
+      resetPO({
+        po_date: moment(data.po_date),
+        id_company: data.company.id_company,
+        id_vendor: data.vendor.id_vendor,
+        id_user: data.id_user,
+        notes: data.notes,
+        sub_total: data.sub_total,
+        ppn: parseFloat(data.ppn),
+        grand_total: data.grand_total,
+        items: data.items,
+      });
+    }
+  }, [editData, resetPO]);
 
   const onPrev = () => {
     router.back();
@@ -105,50 +148,104 @@ const NewPO2 = () => {
 
   const handleCloseForm = (event, reason) => {
     if (reason && reason === "backdropClick") return;
+    resetItemForm();
+    setEditIndex(null);
     setOpenForm(false);
   };
 
   const addItem = async (values) => {
     values = {
       ...values,
+      id_po: idPO,
       amount: values.unit_price * values.qty,
     };
-    append(values);
-    resetItemForm();
+    if (!isEdit) {
+      append(values);
+    } else {
+      appendAddedItems(values);
+    }
+    console.log(values);
     handleCloseForm();
   };
 
   const deleteItem = useCallback(
-    async (index) => {
-      remove(index);
+    async (item, index) => {
+      if (item.id_po_item) {
+        setDeletedItems((prev) => [...prev, item.id_po_item]);
+        remove(item);
+        removeEditedItems(item);
+      } else {
+        removeAddedItems(item);
+      }
     },
-    [remove]
+    [remove, removeAddedItems, removeEditedItems]
   );
 
+  const openEdit = useCallback(
+    async (item, index) => {
+      setEditIndex(index);
+      resetItemForm(item, {
+        keepDefaultValues: true,
+      });
+      handleOpenForm();
+    },
+    [resetItemForm]
+  );
+
+  const editItem = async (values) => {
+    values = {
+      ...values,
+      amount: values.unit_price * values.qty,
+    };
+    console.log("editedItemsFields", editedItemsFields);
+    if (editedItemsFields.some(({ id_po_item }) => id_po_item === values.id_po_item)) {
+      updateEditedItems(editIndex, values);
+      console.log("udpate");
+    } else {
+      appendEditedItems(values);
+      console.log("append", values);
+    }
+    console.log(editIndex, values);
+    update(editIndex, values);
+    handleCloseForm();
+  };
+
   const onSubmit = async (values) => {
-    setLoading(true);
+    // setLoading(true);
     values = {
       ...values,
       id_user: session?.user?.id_user,
     };
     console.log(values);
-
-    try {
-      const res = await API.post("/po", { data: values });
-      toast.success(`${res.data.message}
-        ${res.data.id_po}`);
-      router.replace("/dashboard");
-    } catch (error) {
-      if (isAxiosError(error)) {
-        const data = error.response?.data;
-        toast.error(data.message);
-      } else {
-        toast.error("Error");
-      }
-      console.error(error);
-    } finally {
-      setLoading(false);
+    if (isEdit) {
+      values = {
+        ...values,
+        added_items: addedItemsFields,
+        deleted_items: deletedItems,
+        edited_items: editedItemsFields,
+      };
+      delete values.items;
+      console.log(values);
     }
+
+    // try {
+    //   const res = !isEdit
+    //     ? await API.post("/po", { data: values })
+    //     : await API.patch("/po", { data: values });
+    //   toast.success(`${res.data.message}
+    //     ${res.data.id_po}`);
+    //   router.replace("/dashboard");
+    // } catch (error) {
+    //   if (isAxiosError(error)) {
+    //     const data = error.response?.data;
+    //     toast.error(data.message);
+    //   } else {
+    //     toast.error("Error");
+    //   }
+    //   console.error(error);
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   return (
@@ -156,15 +253,16 @@ const NewPO2 = () => {
       <Box component="main">
         <Button onClick={() => onPrev()}>Back</Button>
         <Typography variant="h1" sx={{ color: "primary.main" }}>
-          Add New Order Plan - 2
+          {!isEdit ? "Add New Order Plan - 2" : `Edit Order Plan: ${idPO}`}
         </Typography>
-        {company && vendor && poData ? (
+        {(company && vendor && poData) || editData ? (
           <>
             <POHeader
-              company={company.data}
-              vendor={vendor.data}
-              po_date={poData.po_date}
+              company={!isEdit ? company.data : editData.data.company}
+              vendor={!isEdit ? vendor.data : editData.data.vendor}
+              po_date={!isEdit ? poData.po_date : editData.data.po_date}
               title="Order Planning"
+              idPO={idPO}
             />
             <form>
               <Box sx={{ mt: 4, display: "flex", gap: 2, alignItems: "center" }}>
@@ -175,7 +273,11 @@ const NewPO2 = () => {
                   Add Item
                 </Button>
               </Box>
-              <ItemTable data={fields} onDelete={deleteItem} />
+              <ItemTable
+                data={fields.concat(addedItemsFields)}
+                onDelete={deleteItem}
+                onEdit={openEdit}
+              />
               <POFooter
                 control={poControl}
                 watch={{
@@ -185,7 +287,11 @@ const NewPO2 = () => {
                 }}
               />
               <Box sx={{ textAlign: "right", mt: 2 }}>
-                <Button variant="contained" onClick={handleSubmit(onSubmit)} disabled={loading}>
+                <Button
+                  variant="contained"
+                  onClick={handleSubmit(onSubmit)}
+                  disabled={!isPODirty || loading}
+                >
                   Submit
                 </Button>
               </Box>
@@ -197,14 +303,18 @@ const NewPO2 = () => {
       </Box>
 
       <DialogComp
-        title="Add Item"
+        title={editIndex === null ? "Add Item" : "Edit Item"}
         open={openForm}
         onClose={handleCloseForm}
         actions={
           <>
             <Button onClick={handleCloseForm}>Cancel</Button>
-            <Button variant="contained" onClick={handleItem(addItem)}>
-              Add
+            <Button
+              variant="contained"
+              onClick={editIndex === null ? handleItem(addItem) : handleItem(editItem)}
+              disabled={!isItemDirty}
+            >
+              {editIndex === null ? "Add" : "Edit"}
             </Button>
           </>
         }

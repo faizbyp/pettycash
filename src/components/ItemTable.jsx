@@ -9,11 +9,13 @@ import {
   Paper,
   IconButton,
   Checkbox,
+  Typography,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { memo } from "react";
 
-const ItemTable = memo(function ItemTable({ data, onDelete, GR }) {
+const ItemTable = memo(function ItemTable({ data, onDelete, onEdit, GR }) {
   console.log("item table", data);
   return (
     <TableContainer component={Paper} sx={{ mb: 4 }}>
@@ -32,7 +34,7 @@ const ItemTable = memo(function ItemTable({ data, onDelete, GR }) {
                 <TableCell>Completed</TableCell>
               </>
             )}
-            {onDelete && <TableCell align="right">Action</TableCell>}
+            {(onDelete || onEdit) && <TableCell align="right">Action</TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -60,9 +62,26 @@ const ItemTable = memo(function ItemTable({ data, onDelete, GR }) {
                 </>
               )}
               {/* check this */}
-              {onDelete && (
+              {(onDelete || onEdit) && (
                 <TableCell align="right">
-                  <IconButton edge="end" aria-label="delete" onClick={() => onDelete(item, index)}>
+                  {onEdit && (
+                    <>
+                      {item.id_po_item ? (
+                        <IconButton aria-label="edit" onClick={() => onEdit(item, index)}>
+                          <EditIcon />
+                        </IconButton>
+                      ) : (
+                        <Typography color="success" component="span">
+                          New item
+                        </Typography>
+                      )}
+                    </>
+                  )}
+                  <IconButton
+                    color="error"
+                    aria-label="delete"
+                    onClick={() => onDelete(item, index)}
+                  >
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>

@@ -47,6 +47,10 @@ const PODetails = ({ idPO }) => {
     setOpenForm(false);
   };
 
+  const handleEdit = () => {
+    router.push(`/dashboard/`);
+  };
+
   const onReqCancel = async (values) => {
     console.log(values);
     setLoading(true);
@@ -86,6 +90,11 @@ const PODetails = ({ idPO }) => {
           {po && po.data.cancel_reason && <Chip color="warning" label="Waiting for cancellation" />}
         </Box>
         <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+          {po && po.data.status === "canceled" && (
+            <Button onClick={handleEdit} variant="contained" color="warning">
+              Edit
+            </Button>
+          )}
           {po && !po.data.has_gr && !po.data.cancel_reason && po.data.status === "approved" && (
             <Button onClick={handleOpenForm} variant="contained" color="error">
               Cancel
