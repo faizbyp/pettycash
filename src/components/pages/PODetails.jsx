@@ -48,7 +48,7 @@ const PODetails = ({ idPO }) => {
   };
 
   const handleEdit = () => {
-    router.push(`/dashboard/`);
+    router.push(`/dashboard/my-po/edit/${encodeURIComponent(idPO)}`);
   };
 
   const onReqCancel = async (values) => {
