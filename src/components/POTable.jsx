@@ -43,8 +43,8 @@ const POTable = ({ data, admin, actions }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row) => (
-            <TableRow hover key={row.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+          {data.map((row, index) => (
+            <TableRow hover key={index} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
               <TableCell component="th" scope="row">
                 {row.id_po}
               </TableCell>
