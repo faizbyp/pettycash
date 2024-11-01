@@ -38,6 +38,7 @@ const POTable = ({ data, admin, actions }) => {
             <TableCell>Vendor</TableCell>
             <TableCell align="right">Grand Total</TableCell>
             <TableCell>Status</TableCell>
+            <TableCell>Confirmed</TableCell>
             <TableCell>Completed</TableCell>
             {actions && <TableCell align="right"></TableCell>}
           </TableRow>
@@ -55,6 +56,14 @@ const POTable = ({ data, admin, actions }) => {
               <TableCell align="right">{formatThousand(row.grand_total)}</TableCell>
               <TableCell>
                 <Chip color={statusColor(row.status)} label={row.status} />
+              </TableCell>
+              <TableCell>
+                <Checkbox
+                  checked={row.has_gr}
+                  inputProps={{
+                    readOnly: true,
+                  }}
+                />
               </TableCell>
               <TableCell>
                 <Checkbox
