@@ -52,7 +52,7 @@ const NewPO2 = ({ idPO }) => {
     formState: { isDirty: isPODirty },
   } = useForm({
     defaultValues: {
-      po_date: moment(),
+      po_date: moment().format("YYYY-MM-DD"),
       id_company: "",
       id_vendor: "",
       id_user: "",
@@ -107,9 +107,11 @@ const NewPO2 = ({ idPO }) => {
     name: "edited_items",
   });
 
+  useEffect(() => {}, []);
+
   useEffect(() => {
     if (poData) {
-      setValue("po_date", poData.po_date);
+      setValue("po_date", moment(poData.po_date).format("YYYY-MM-DD"));
       setValue("id_company", poData.company);
       setValue("id_vendor", poData.vendor);
     }
@@ -125,7 +127,7 @@ const NewPO2 = ({ idPO }) => {
     if (editData) {
       const data = editData.data;
       resetPO({
-        po_date: moment(data.po_date),
+        po_date: moment(data.po_date).format("YYYY-MM-DD"),
         id_company: data.company.id_company,
         id_vendor: data.vendor.id_vendor,
         id_user: data.id_user,
@@ -211,13 +213,14 @@ const NewPO2 = ({ idPO }) => {
   };
 
   const onSubmit = async (values) => {
-    // setLoading(true);
-    values = {
-      ...values,
-      id_user: session?.user?.id_user,
-    };
+    setLoading(true);
     console.log(values);
-    if (isEdit) {
+    if (!isEdit) {
+      values = {
+        ...values,
+        id_user: session?.user?.id_user,
+      };
+    } else {
       values = {
         ...values,
         added_items: addedItemsFields,
@@ -234,7 +237,7 @@ const NewPO2 = ({ idPO }) => {
         : await API.patch(`/po/edit/${encodeURIComponent(idPO)}`, { data: values });
       toast.success(`${res.data.message}
         ${res.data.id_po}`);
-      // router.replace("/dashboard");
+      router.replace("/dashboard");
     } catch (error) {
       if (isAxiosError(error)) {
         const data = error.response?.data;
