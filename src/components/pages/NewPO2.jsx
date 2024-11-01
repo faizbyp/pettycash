@@ -175,10 +175,10 @@ const NewPO2 = ({ idPO }) => {
         remove(index);
         removeEditedItems(item);
       } else {
-        removeAddedItems(item);
+        removeAddedItems(index - fields.length);
       }
     },
-    [remove, removeAddedItems, removeEditedItems]
+    [remove, removeAddedItems, removeEditedItems, fields.length]
   );
 
   const openEdit = useCallback(
@@ -228,24 +228,24 @@ const NewPO2 = ({ idPO }) => {
       console.log(values);
     }
 
-    // try {
-    //   const res = !isEdit
-    //     ? await API.post("/po", { data: values })
-    //     : await API.patch("/po", { data: values });
-    //   toast.success(`${res.data.message}
-    //     ${res.data.id_po}`);
-    //   router.replace("/dashboard");
-    // } catch (error) {
-    //   if (isAxiosError(error)) {
-    //     const data = error.response?.data;
-    //     toast.error(data.message);
-    //   } else {
-    //     toast.error("Error");
-    //   }
-    //   console.error(error);
-    // } finally {
-    //   setLoading(false);
-    // }
+    try {
+      const res = !isEdit
+        ? await API.post("/po", { data: values })
+        : await API.patch(`/po/edit/${encodeURIComponent(idPO)}`, { data: values });
+      toast.success(`${res.data.message}
+        ${res.data.id_po}`);
+      // router.replace("/dashboard");
+    } catch (error) {
+      if (isAxiosError(error)) {
+        const data = error.response?.data;
+        toast.error(data.message);
+      } else {
+        toast.error("Error");
+      }
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
