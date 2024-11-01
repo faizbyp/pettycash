@@ -12,6 +12,7 @@ import { POSkeleton } from "../Skeleton";
 import { useEffect, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 import PrintIcon from "@mui/icons-material/Print";
+import AddIcon from "@mui/icons-material/Add";
 import TextFieldCtrl from "../forms/TextField";
 import { useForm } from "react-hook-form";
 import DialogComp from "../Dialog";
@@ -78,6 +79,10 @@ const PODetails = ({ idPO }) => {
     }
   };
 
+  const handleConfirmation = () => {
+    router.push(`/dashboard/my-gr/new/${encodeURIComponent(idPO)}`);
+  };
+
   return (
     <>
       <Box
@@ -113,9 +118,19 @@ const PODetails = ({ idPO }) => {
             </Button>
           )}
           {po && po.data.status === "approved" && (
-            <Button onClick={handlePrint} variant="contained" startIcon={<PrintIcon />}>
-              Print
-            </Button>
+            <>
+              <Button
+                onClick={handleConfirmation}
+                variant="outlined"
+                startIcon={<AddIcon />}
+                disabled={!isTheirPO}
+              >
+                Confirmation
+              </Button>
+              <Button onClick={handlePrint} variant="contained" startIcon={<PrintIcon />}>
+                Print
+              </Button>
+            </>
           )}
         </Box>
       </Box>
