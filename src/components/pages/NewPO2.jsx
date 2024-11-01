@@ -172,7 +172,7 @@ const NewPO2 = ({ idPO }) => {
     async (item, index) => {
       if (item.id_po_item) {
         setDeletedItems((prev) => [...prev, item.id_po_item]);
-        remove(item);
+        remove(index);
         removeEditedItems(item);
       } else {
         removeAddedItems(item);
