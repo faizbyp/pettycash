@@ -6,7 +6,7 @@ import SelectCtrl from "@/components/forms/Select";
 import TextFieldCtrl from "@/components/forms/TextField";
 import { Box, Button, MenuItem, Skeleton, Typography } from "@mui/material";
 import moment from "moment";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import NumericFieldCtrl from "@/components/forms/NumericField";
@@ -107,8 +107,6 @@ const NewPO2 = ({ idPO }) => {
     name: "edited_items",
   });
 
-  useEffect(() => {}, []);
-
   useEffect(() => {
     if (poData) {
       setValue("po_date", moment(poData.po_date).format("YYYY-MM-DD"));
@@ -124,8 +122,11 @@ const NewPO2 = ({ idPO }) => {
   }, [setValue, getValues, watch("ppn"), fields, addedItemsFields]);
 
   useEffect(() => {
-    if (editData) {
+    if (editData && session?.user?.id_user) {
       const data = editData.data;
+      if (session?.user?.id_user !== data.id_user) {
+        redirect("/403");
+      }
       resetPO({
         po_date: moment(data.po_date).format("YYYY-MM-DD"),
         id_company: data.company.id_company,
@@ -138,7 +139,7 @@ const NewPO2 = ({ idPO }) => {
         items: data.items,
       });
     }
-  }, [editData, resetPO]);
+  }, [editData, resetPO, session?.user?.id_user]);
 
   const onPrev = () => {
     router.back();
@@ -220,12 +221,12 @@ const NewPO2 = ({ idPO }) => {
         ...values,
         id_user: session?.user?.id_user,
       };
+      delete values.added_items;
+      delete values.edited_items;
     } else {
       values = {
         ...values,
-        added_items: addedItemsFields,
         deleted_items: deletedItems,
-        edited_items: editedItemsFields,
       };
       delete values.items;
       console.log(values);
@@ -235,8 +236,10 @@ const NewPO2 = ({ idPO }) => {
       const res = !isEdit
         ? await API.post("/po", { data: values })
         : await API.patch(`/po/edit/${encodeURIComponent(idPO)}`, { data: values });
-      toast.success(`${res.data.message}
-        ${res.data.id_po}`);
+      !isEdit
+        ? toast.success(`${res.data.message}
+        ${res.data.id_po}`)
+        : toast.success(`${res.data.message}`);
       router.replace("/dashboard");
     } catch (error) {
       if (isAxiosError(error)) {

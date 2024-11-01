@@ -9,7 +9,7 @@ import useFetch from "@/hooks/useFetch";
 import { Box, Typography, Chip, Button, Paper, TextField } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { POSkeleton } from "../Skeleton";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 import PrintIcon from "@mui/icons-material/Print";
 import TextFieldCtrl from "../forms/TextField";
@@ -27,6 +27,7 @@ const PODetails = ({ idPO }) => {
   let { data: po } = useFetch(`/po/${encodeURIComponent(idPO)}`);
   const [openForm, setOpenForm] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isTheirPO, setIsTheirPO] = useState(false);
   const docRef = useRef();
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -37,6 +38,12 @@ const PODetails = ({ idPO }) => {
   const handlePrint = useReactToPrint({
     content: () => docRef.current,
   });
+
+  useEffect(() => {
+    if (session?.user?.id_user === po?.data?.id_user) {
+      setIsTheirPO(true);
+    }
+  }, [session, po]);
 
   const handleOpenForm = () => {
     setOpenForm(true);
@@ -91,7 +98,7 @@ const PODetails = ({ idPO }) => {
         </Box>
         <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
           {po && po.data.status === "canceled" && (
-            <Button onClick={handleEdit} variant="contained" color="warning">
+            <Button onClick={handleEdit} variant="contained" color="warning" disabled={!isTheirPO}>
               Edit
             </Button>
           )}
