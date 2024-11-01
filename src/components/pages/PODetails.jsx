@@ -103,7 +103,12 @@ const PODetails = ({ idPO }) => {
             </Button>
           )}
           {po && !po.data.has_gr && !po.data.cancel_reason && po.data.status === "approved" && (
-            <Button onClick={handleOpenForm} variant="contained" color="error">
+            <Button
+              onClick={handleOpenForm}
+              variant="contained"
+              color="error"
+              disabled={!isTheirPO}
+            >
               Cancel
             </Button>
           )}
