@@ -65,3 +65,20 @@ docker run -p 3000:3000 --env-file .env.production faizbyp/pettycash:x.x.x
 - update: router push to replace on new gr and po
 - update: add reject notes on rejected po and gr
 - update: company bar chart
+
+### `1.0.4`
+
+- feat: cancel po
+- fix: cancel button only on approved
+- update: add ppn value to pofooter
+- feat: edit po fe
+- update: add edit po button route
+- fix: remove item index bug
+- fix: remove added items index
+- fix: order plan date
+- fix: table map key
+- fix: add edit po page restriction
+- update: add po has gr status
+- fix: cancel po restriction
+- fix: watchgr import
+- update: add confirmation button on po details
