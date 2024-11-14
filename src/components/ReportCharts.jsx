@@ -57,7 +57,7 @@ const ReportCharts = memo(function ReportCharts({
         </Typography>
         {poStatusCount ? (
           <PieChart
-            colors={["orange", "red", "green"]}
+            colors={["orange", "red", "green", "grey"]}
             series={[
               {
                 data: [
@@ -79,6 +79,12 @@ const ReportCharts = memo(function ReportCharts({
                     label: "Rejected",
                     color: "red",
                   },
+                  {
+                    id: 3,
+                    value: poStatusCount.canceled || 0,
+                    label: "Canceled",
+                    color: "grey",
+                  },
                 ],
               },
             ]}
@@ -95,7 +101,7 @@ const ReportCharts = memo(function ReportCharts({
         </Typography>
         {grStatusCount ? (
           <PieChart
-            colors={["orange", "red", "green"]}
+            colors={["orange", "red", "green", "grey"]}
             series={[
               {
                 data: [
@@ -116,6 +122,12 @@ const ReportCharts = memo(function ReportCharts({
                     value: grStatusCount.rejected || 0,
                     label: "Rejected",
                     color: "red",
+                  },
+                  {
+                    id: 3,
+                    value: grStatusCount.canceled || 0,
+                    label: "Canceled",
+                    color: "grey",
                   },
                 ],
               },

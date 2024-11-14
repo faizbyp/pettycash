@@ -6,63 +6,28 @@ import MyPO from "@/components/pages/po/MyPO";
 import { PieChart } from "@mui/x-charts";
 import useFetch from "@/hooks/useFetch";
 import MyGR from "./gr/MyGR";
+import ReportCharts from "../ReportCharts";
 
 const Dashboard = () => {
   const sessionData = useSessionData();
   const { data: po } = useFetch(sessionData ? `/po/user/${sessionData.id_user}` : null);
+  const { data: chart } = useFetch("/report/chart");
 
   return (
     <>
-      <Grid container spacing={2} sx={{ mb: 4 }}>
-        <Grid size={{ xs: 12, md: 6 }}>
-          <Typography variant="display">Welcome!</Typography>
-          <Typography variant="display" sx={{ color: "primary.main" }}>
-            {sessionData ? (
-              sessionData.name
-            ) : (
-              <Skeleton variant="rounded" width={256} height={64} />
-            )}
-          </Typography>
-        </Grid>
-        <Grid size={{ xs: 12, md: 6 }}>
-          <Typography variant="h2" sx={{ color: "primary.main" }}>
-            My Order Plan Status
-          </Typography>
-          {po ? (
-            <PieChart
-              colors={["orange", "red", "green"]}
-              series={[
-                {
-                  data: [
-                    {
-                      id: 0,
-                      value: po.data.filter((item) => item.status === "pending").length,
-                      label: "Pending",
-                      color: "orange",
-                    },
-                    {
-                      id: 1,
-                      value: po.data.filter((item) => item.status === "approved").length,
-                      label: "Approved",
-                      color: "green",
-                    },
-                    {
-                      id: 2,
-                      value: po.data.filter((item) => item.status === "rejected").length,
-                      label: "Rejected",
-                      color: "red",
-                    },
-                  ],
-                },
-              ]}
-              width={450}
-              height={250}
-            />
-          ) : (
-            <Skeleton variant="circular" width={300} height={300} />
-          )}
-        </Grid>
-      </Grid>
+      <Typography variant="display">
+        {sessionData ? (
+          `Welcome! ${sessionData.name}`
+        ) : (
+          <Skeleton variant="rounded" width={256} height={64} />
+        )}
+      </Typography>
+      <ReportCharts
+        amount={chart?.data.money_spent.sum}
+        companyTotal={chart?.data.company_total}
+        poStatusCount={chart?.data.po_status}
+        grStatusCount={chart?.data.gr_status}
+      />
       <MyPO />
       <MyGR />
     </>
