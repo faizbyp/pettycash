@@ -11,7 +11,7 @@ import CheckboxCtrl from "@/components/forms/Checkbox";
 import API from "@/services/api";
 import toast from "react-hot-toast";
 import { isAxiosError } from "axios";
-import { ListSkeleton } from "../Skeleton";
+import { ListSkeleton } from "../../Skeleton";
 
 const UOM = () => {
   const { data: uom, refetch } = useFetch("/uom");

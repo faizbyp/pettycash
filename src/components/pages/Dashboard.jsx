@@ -2,10 +2,10 @@
 
 import { useSessionData } from "@/components/dashboard/PersistentDrawer";
 import { Typography, Skeleton, Box, Grid2 as Grid } from "@mui/material";
-import MyPO from "@/components/pages/MyPO";
+import MyPO from "@/components/pages/po/MyPO";
 import { PieChart } from "@mui/x-charts";
 import useFetch from "@/hooks/useFetch";
-import MyGR from "./MyGR";
+import MyGR from "./gr/MyGR";
 
 const Dashboard = () => {
   const sessionData = useSessionData();

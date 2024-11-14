@@ -10,10 +10,11 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { ListSkeleton } from "../Skeleton";
+import NumericFieldCtrl from "../../forms/NumericField";
+import { ListSkeleton } from "../../Skeleton";
 
-const VendorDetails = ({ idVendor }) => {
-  const { data: vendor } = useFetch(`/vendor/${idVendor}`);
+const CompanyDetails = ({ idCompany }) => {
+  const { data: company } = useFetch(`/company/${idCompany}`);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const {
@@ -23,29 +24,31 @@ const VendorDetails = ({ idVendor }) => {
     formState: { isDirty },
   } = useForm({
     defaultValues: {
-      vendor_name: "",
-      vendor_addr: "",
-      is_active: false,
+      company_name: "",
+      company_addr: "",
+      company_phone: "",
+      company_fax: "",
     },
   });
 
   useEffect(() => {
-    if (vendor)
+    if (company)
       reset({
-        vendor_name: vendor.data.vendor_name,
-        vendor_addr: vendor.data.vendor_addr,
-        is_active: vendor.data.is_active,
+        company_name: company.data.company_name,
+        company_addr: company.data.company_addr,
+        company_phone: company.data.company_phone,
+        company_fax: company.data.company_fax,
       });
-  }, [vendor, reset]);
+  }, [company, reset]);
 
   const onEdit = async (values) => {
     setLoading(true);
     console.log(values);
 
     try {
-      const res = await API.patch(`/vendor/${idVendor}`, values);
+      const res = await API.patch(`/company/${idCompany}`, values);
       toast.success(`${res.data.message}`);
-      router.push("/dashboard/vendor");
+      router.push("/dashboard/company");
     } catch (error) {
       if (isAxiosError(error)) {
         const data = error.response?.data;
@@ -62,25 +65,25 @@ const VendorDetails = ({ idVendor }) => {
   return (
     <Grid container spacing={2}>
       <Grid size={{ xs: 12, md: 6 }}>
-        {vendor ? (
+        {company ? (
           <>
             <Box sx={{ mb: 4 }}>
-              <Typography>{vendor.data.id_vendor}</Typography>
+              <Typography>{company.data.id_company}</Typography>
               <Typography variant="h1" sx={{ color: "primary.main" }}>
-                {vendor.data.vendor_name}
+                {company.data.company_name}
               </Typography>
               <Box component="form" onSubmit={handleSubmit(onEdit)} sx={{ width: "100%" }}>
-                <Typography variant="h2">Edit Vendor</Typography>
+                <Typography variant="h2">Edit Company</Typography>
                 <TextFieldCtrl
-                  name="vendor_name"
+                  name="company_name"
                   control={control}
-                  label="Vendor Name"
+                  label="Company Name"
                   rules={{
                     required: "Field required",
                   }}
                 />
                 <TextFieldCtrl
-                  name="vendor_addr"
+                  name="company_addr"
                   control={control}
                   label="Address"
                   multiline
@@ -88,7 +91,22 @@ const VendorDetails = ({ idVendor }) => {
                     required: "Field required",
                   }}
                 />
-                <CheckboxCtrl name="is_active" control={control} label="Active" noMargin />
+                <NumericFieldCtrl
+                  name="company_phone"
+                  control={control}
+                  label="Phone"
+                  rules={{
+                    required: "Field required",
+                  }}
+                />
+                <NumericFieldCtrl
+                  name="company_fax"
+                  control={control}
+                  label="Fax"
+                  rules={{
+                    required: "Field required",
+                  }}
+                />
                 <Box sx={{ textAlign: "right" }}>
                   <Button type="submit" variant="contained" disabled={!isDirty || loading}>
                     Edit
@@ -97,7 +115,7 @@ const VendorDetails = ({ idVendor }) => {
               </Box>
             </Box>
             {/* <Typography variant="h2" sx={{ color: "error.main" }}>
-              Delete Vendor
+              Delete company
             </Typography>
             <Button variant="contained" color="error" disabled={loading}>
               Delete
@@ -110,4 +128,4 @@ const VendorDetails = ({ idVendor }) => {
     </Grid>
   );
 };
-export default VendorDetails;
+export default CompanyDetails;

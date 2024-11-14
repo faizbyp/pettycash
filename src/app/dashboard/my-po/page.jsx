@@ -1,4 +1,4 @@
-import MyPO from "@/components/pages/MyPO";
+import MyPO from "@/components/pages/po/MyPO";
 
 export const metadata = {
   title: "My Order Plan - Petty Cash KPN",

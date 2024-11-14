@@ -6,7 +6,7 @@ import { Box, Button, MenuItem, Skeleton, Typography, IconButton } from "@mui/ma
 import { useSession } from "next-auth/react";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Link from "next/link";
-import { TableSkeleton } from "../Skeleton";
+import { TableSkeleton } from "../../Skeleton";
 
 const GR = () => {
   const { data: session } = useSession();

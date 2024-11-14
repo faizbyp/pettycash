@@ -1,4 +1,4 @@
-import Company from "@/components/pages/Company";
+import Company from "@/components/pages/master-data/Company";
 
 export const metadata = {
   title: "Company - Petty Cash KPN",

@@ -8,7 +8,7 @@ import { statusColor } from "@/helper/helper";
 import useFetch from "@/hooks/useFetch";
 import { Box, Skeleton, Typography, Chip, Button, Paper, TextField } from "@mui/material";
 import { useSession } from "next-auth/react";
-import { POSkeleton } from "../Skeleton";
+import { POSkeleton } from "../../Skeleton";
 import { useEffect, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import PrintIcon from "@mui/icons-material/Print";

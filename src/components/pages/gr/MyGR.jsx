@@ -5,9 +5,9 @@ import { Box, Button, MenuItem, Skeleton, Typography, IconButton } from "@mui/ma
 import { useSession } from "next-auth/react";
 import AddIcon from "@mui/icons-material/Add";
 import Link from "next/link";
-import { TableSkeleton } from "../Skeleton";
+import { TableSkeleton } from "../../Skeleton";
 import InfoIcon from "@mui/icons-material/Info";
-import GRTable from "../GRTable";
+import GRTable from "../../GRTable";
 
 const MyGR = () => {
   const { data: session } = useSession();

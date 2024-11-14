@@ -27,7 +27,7 @@ import API from "@/services/api";
 import toast from "react-hot-toast";
 import { isAxiosError } from "axios";
 import NumericFieldCtrl from "@/components/forms/NumericField";
-import { TableSkeleton } from "../Skeleton";
+import { TableSkeleton } from "../../Skeleton";
 import { getValueToPositionMapper } from "@mui/x-charts";
 
 const Company = () => {

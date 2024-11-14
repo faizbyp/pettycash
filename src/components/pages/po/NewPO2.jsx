@@ -20,7 +20,7 @@ import { useSession } from "next-auth/react";
 import POFooter from "@/components/POFooter";
 import POHeader from "@/components/POHeader";
 import DialogComp from "@/components/Dialog";
-import { POSkeleton } from "../Skeleton";
+import { POSkeleton } from "../../Skeleton";
 
 const NewPO2 = ({ idPO }) => {
   const router = useRouter();

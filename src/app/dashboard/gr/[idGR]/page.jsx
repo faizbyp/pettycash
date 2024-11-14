@@ -1,4 +1,4 @@
-import GRDetails from "@/components/pages/GRDetails";
+import GRDetails from "@/components/pages/gr/GRDetails";
 
 export async function generateMetadata({ params }) {
   const idGR = decodeURIComponent(params.idGR);

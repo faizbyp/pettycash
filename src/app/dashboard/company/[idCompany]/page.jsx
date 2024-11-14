@@ -1,4 +1,4 @@
-import CompanyDetails from "@/components/pages/CompanyDetails";
+import CompanyDetails from "@/components/pages/master-data/CompanyDetails";
 
 export async function generateMetadata({ params }) {
   return {

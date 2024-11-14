@@ -8,19 +8,19 @@ import { statusColor } from "@/helper/helper";
 import useFetch from "@/hooks/useFetch";
 import { Box, Typography, Chip, Button, Paper, TextField } from "@mui/material";
 import { useSession } from "next-auth/react";
-import { POSkeleton } from "../Skeleton";
+import { POSkeleton } from "../../Skeleton";
 import { useEffect, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 import PrintIcon from "@mui/icons-material/Print";
 import AddIcon from "@mui/icons-material/Add";
-import TextFieldCtrl from "../forms/TextField";
+import TextFieldCtrl from "../../forms/TextField";
 import { useForm } from "react-hook-form";
-import DialogComp from "../Dialog";
+import DialogComp from "../../Dialog";
 import API from "@/services/api";
 import { isAxiosError } from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import CancelReqAction from "../forms/CancelReqAction";
+import CancelReqAction from "../../forms/CancelReqAction";
 
 const PODetails = ({ idPO }) => {
   const router = useRouter();

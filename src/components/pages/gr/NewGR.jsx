@@ -38,11 +38,11 @@ import { useSession } from "next-auth/react";
 import POFooter from "@/components/POFooter";
 import POHeader from "@/components/POHeader";
 import DialogComp from "@/components/Dialog";
-import { POSkeleton } from "../Skeleton";
+import { POSkeleton } from "../../Skeleton";
 import FileInput from "@/components/forms/FileInput";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import CheckboxCtrl from "../forms/Checkbox";
-import DatePickerCtrl from "../forms/DatePicker";
+import CheckboxCtrl from "../../forms/Checkbox";
+import DatePickerCtrl from "../../forms/DatePicker";
 
 const NewGR = ({ idPO }) => {
   const router = useRouter();

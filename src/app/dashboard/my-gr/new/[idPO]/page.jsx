@@ -1,4 +1,4 @@
-import NewGR from "@/components/pages/NewGR";
+import NewGR from "@/components/pages/gr/NewGR";
 
 export async function generateMetadata({ params }) {
   const idPO = decodeURIComponent(params.idPO);

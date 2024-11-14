@@ -1,4 +1,4 @@
-import Vendor from "@/components/pages/Vendor";
+import Vendor from "@/components/pages/master-data/Vendor";
 
 export const metadata = {
   title: "Vendor - Petty Cash KPN",

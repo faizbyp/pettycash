@@ -1,4 +1,4 @@
-import NewPO2 from "@/components/pages/NewPO2";
+import NewPO2 from "@/components/pages/po/NewPO2";
 
 export const metadata = {
   title: "New PO/2 - Petty Cash KPN",

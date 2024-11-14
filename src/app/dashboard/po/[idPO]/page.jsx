@@ -1,4 +1,4 @@
-import PODetails from "@/components/pages/PODetails";
+import PODetails from "@/components/pages/po/PODetails";
 
 export async function generateMetadata({ params }) {
   const idPO = decodeURIComponent(params.idPO);

@@ -1,8 +1,8 @@
 "use client";
 
 import useFetch from "@/hooks/useFetch";
-import POTable from "../POTable";
-import { TableSkeleton } from "../Skeleton";
+import POTable from "../../POTable";
+import { TableSkeleton } from "../../Skeleton";
 import InfoIcon from "@mui/icons-material/Info";
 import { IconButton, Typography } from "@mui/material";
 import Link from "next/link";

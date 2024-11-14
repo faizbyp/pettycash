@@ -27,7 +27,7 @@ import CheckboxCtrl from "@/components/forms/Checkbox";
 import API from "@/services/api";
 import toast from "react-hot-toast";
 import { isAxiosError } from "axios";
-import { TableSkeleton } from "../Skeleton";
+import { TableSkeleton } from "../../Skeleton";
 
 const Vendor = () => {
   const { data: vendors, refetch } = useFetch("/vendor");

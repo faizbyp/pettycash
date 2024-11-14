@@ -1,4 +1,4 @@
-import VendorDetails from "@/components/pages/VendorDetails";
+import VendorDetails from "@/components/pages/master-data/VendorDetails";
 
 export async function generateMetadata({ params }) {
   return {

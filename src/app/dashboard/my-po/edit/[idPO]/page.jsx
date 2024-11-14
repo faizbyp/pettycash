@@ -1,4 +1,4 @@
-import NewPO2 from "@/components/pages/NewPO2";
+import NewPO2 from "@/components/pages/po/NewPO2";
 
 export async function generateMetadata({ params }) {
   const idPO = decodeURIComponent(params.idPO);
