@@ -12,6 +12,7 @@ import { POSkeleton } from "../../Skeleton";
 import { useEffect, useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import PrintIcon from "@mui/icons-material/Print";
+import moment from "moment";
 
 const GRDetails = ({ idGR }) => {
   const { data: session } = useSession();
@@ -82,6 +83,11 @@ const GRDetails = ({ idGR }) => {
                 />
                 <ItemTable data={gr.data.items} />
                 <POFooter
+                  approvalDate={
+                    gr.data.status === "approved"
+                      ? moment(gr.data.approval_date).format("DD-MM-YYYY")
+                      : undefined
+                  }
                   GR
                   invoice={{
                     number: gr.data.invoice_num,

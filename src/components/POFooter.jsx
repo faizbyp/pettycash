@@ -16,11 +16,20 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  Alert,
 } from "@mui/material";
 import Link from "next/link";
 import { memo } from "react";
 
-const POFooter = memo(function POFooter({ control, watch, notes, total, GR, invoice }) {
+const POFooter = memo(function POFooter({
+  control,
+  watch,
+  notes,
+  total,
+  GR,
+  invoice,
+  approvalDate,
+}) {
   return (
     <>
       <Grid container spacing={4}>
@@ -95,6 +104,11 @@ const POFooter = memo(function POFooter({ control, watch, notes, total, GR, invo
           </Table>
         </Grid>
       </Grid>
+      {approvalDate && (
+        <Alert severity="success" icon={false} sx={{ mt: 2 }}>
+          Approved by system on {approvalDate}
+        </Alert>
+      )}
       {GR && (
         <Box sx={{ my: 2 }}>
           <Typography>Invoice No: {invoice.number}</Typography>

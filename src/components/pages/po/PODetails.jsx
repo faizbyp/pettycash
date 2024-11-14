@@ -21,6 +21,7 @@ import { isAxiosError } from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import CancelReqAction from "../../forms/CancelReqAction";
+import moment from "moment";
 
 const PODetails = ({ idPO }) => {
   const router = useRouter();
@@ -180,6 +181,11 @@ const PODetails = ({ idPO }) => {
                 />
                 <ItemTable data={po.data.items} />
                 <POFooter
+                  approvalDate={
+                    po.data.status === "approved"
+                      ? moment(po.data.approval_date).format("DD-MM-YYYY")
+                      : undefined
+                  }
                   notes={po.data.notes}
                   total={{
                     sub_total: po.data.sub_total,
