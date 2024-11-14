@@ -76,7 +76,8 @@ const GRDetails = ({ idGR }) => {
                   company={gr.data.company}
                   vendor={gr.data.vendor}
                   idPO={idGR}
-                  po_date={gr.data.gr_date}
+                  po_date={gr.data.po_date}
+                  gr_date={gr.data.gr_date}
                   title="Print Order Confirmation"
                 />
                 <ItemTable data={gr.data.items} />
