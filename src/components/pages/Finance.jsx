@@ -11,8 +11,7 @@ const Finance = () => {
       <Typography variant="h1">Finance Dashboard</Typography>
       <ReportCharts
         amount={gr?.money_spent.sum}
-        poCompanyCount={po?.company_count}
-        grCompanyCount={gr?.company_count}
+        companyTotal={gr?.company_total}
         poStatusCount={po?.status_count}
         grStatusCount={gr?.status_count}
       />

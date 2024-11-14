@@ -3,12 +3,12 @@
 import { Typography, Skeleton, Grid2 as Grid, Tooltip } from "@mui/material";
 import { PieChart, BarChart, blueberryTwilightPaletteLight } from "@mui/x-charts";
 import { formatThousand } from "@/helper/helper";
-import { memo } from "react";
+import { memo, useMemo } from "react";
+import StandardTable from "./StandardTable";
 
 const ReportCharts = memo(function ReportCharts({
   amount,
-  poCompanyCount,
-  grCompanyCount,
+  companyTotal,
   poStatusCount,
   grStatusCount,
 }) {
@@ -16,6 +16,22 @@ const ReportCharts = memo(function ReportCharts({
     const words = label.split(" ");
     return words.length > 1 ? words.join("\n") : label;
   };
+
+  const columns = useMemo(
+    () => [
+      {
+        header: "Company",
+        accessorKey: "company_name",
+        cell: (props) => props.getValue(),
+      },
+      {
+        header: "Total Spent",
+        accessorKey: "grand_total",
+        cell: (props) => formatThousand(props.getValue()),
+      },
+    ],
+    []
+  );
 
   return (
     <Grid container spacing={2} sx={{ mb: 4 }}>
@@ -27,31 +43,10 @@ const ReportCharts = memo(function ReportCharts({
       </Grid>
       <Grid size={{ xs: 12, md: 6 }}>
         <Typography variant="h2" sx={{ color: "primary.main" }}>
-          Companies Orders
+          Companies Grand Total Spent
         </Typography>
-        {poCompanyCount && grCompanyCount ? (
-          <BarChart
-            colors={blueberryTwilightPaletteLight}
-            xAxis={[
-              {
-                scaleType: "band",
-                data: poCompanyCount.map((company) => wrapLabel(company.company_name)),
-              },
-            ]}
-            series={[
-              {
-                data: poCompanyCount.map((company) => company.company_count),
-                label: "Order Plan",
-              },
-              {
-                data: grCompanyCount.map((company) => company.company_count),
-                label: "Order Confirmation",
-              },
-            ]}
-            margin={{ bottom: 100 }}
-            width={600}
-            height={350}
-          />
+        {companyTotal ? (
+          <StandardTable columns={columns} data={companyTotal} maxHeight={256} />
         ) : (
           <Skeleton variant="rounded" width={500} height={300} />
         )}

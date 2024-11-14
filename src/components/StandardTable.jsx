@@ -18,7 +18,12 @@ import {
   Box,
 } from "@mui/material";
 
-const StandardTable = memo(function StandardTable({ data, columns, renderSubComponent }) {
+const StandardTable = memo(function StandardTable({
+  data,
+  columns,
+  renderSubComponent,
+  maxHeight = 440,
+}) {
   const table = useReactTable({
     columns,
     data,
@@ -31,7 +36,7 @@ const StandardTable = memo(function StandardTable({ data, columns, renderSubComp
     <Box>
       <TableContainer
         component={Paper}
-        sx={{ mb: 4, maxWidth: "92vw", overflow: "scroll", maxHeight: 440 }}
+        sx={{ mb: 4, maxWidth: "92vw", overflow: "scroll", maxHeight: maxHeight }}
       >
         <Table stickyHeader size="small" aria-label="simple table">
           <TableHead>
