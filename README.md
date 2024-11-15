@@ -82,3 +82,11 @@ docker run -p 3000:3000 --env-file .env.production faizbyp/pettycash:x.x.x
 - fix: cancel po restriction
 - fix: watchgr import
 - update: add confirmation button on po details
+
+### `1.0.5`
+
+- update: plan date on gr details
+- update: component pages directory
+- update: company orders to company spent
+- update: add charts on user dashboard
+- update: approval date on details
