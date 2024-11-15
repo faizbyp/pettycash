@@ -1,212 +1,269 @@
 "use client";
-
-import { styled, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import CssBaseline from "@mui/material/CssBaseline";
-import MuiAppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { createContext, useState, useContext } from "react";
+import SubjectIcon from "@mui/icons-material/Subject";
+import HomeIcon from "@mui/icons-material/Home";
+import BusinessIcon from "@mui/icons-material/Business";
+import PolicyIcon from "@mui/icons-material/Policy";
+import MenuIcon from "@mui/icons-material/Menu";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
+import SportsScoreIcon from "@mui/icons-material/SportsScore";
+import ListIcon from "@mui/icons-material/List";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import RequestQuoteIcon from "@mui/icons-material/RequestQuote";
+import DescriptionIcon from "@mui/icons-material/Description";
+import StoreIcon from "@mui/icons-material/Store";
+import ScaleIcon from "@mui/icons-material/Scale";
+import ArticleIcon from "@mui/icons-material/Article";
+import CancelIcon from "@mui/icons-material/Cancel";
+import { useEffect, useState } from "react";
+import { AppBar, IconButton, ListSubheader, Toolbar, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
+import UserMenu from "../UserMenu";
+import useAuthStore from "@/hooks/useAuthStore";
 import Link from "next/link";
-import { Avatar, Menu, MenuItem, Popover } from "@mui/material";
-import { signOut, useSession } from "next-auth/react";
 
 const drawerWidth = 240;
 
-const SessionContext = createContext();
+const items = [
+  {
+    items: [{ name: "Admin", link: "/admin", icon: <HomeIcon /> }],
+  },
+  {
+    subheader: "Master Data",
+    items: [
+      { name: "Business Unit", link: "/admin/bu", icon: <BusinessIcon /> },
+      { name: "Terms & PP", link: "/admin/terms-pp", icon: <PolicyIcon /> },
+      { name: "Short Brief", link: "/admin/short-brief", icon: <SubjectIcon /> },
+      { name: "Series", link: "/admin/series", icon: <QuestionAnswerIcon /> },
+      { name: "Criteria", link: "/admin/criteria", icon: <SportsScoreIcon /> },
+      { name: "Function Menu", link: "/admin/function-menu", icon: <ListIcon /> },
+    ],
+  },
+];
 
-const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(({ theme }) => ({
-  flexGrow: 1,
-  padding: theme.spacing(3),
-  transition: theme.transitions.create("margin", {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  marginLeft: `-${drawerWidth}px`,
-  variants: [
-    {
-      props: ({ open }) => open,
-      style: {
-        transition: theme.transitions.create("margin", {
-          easing: theme.transitions.easing.easeOut,
-          duration: theme.transitions.duration.enteringScreen,
-        }),
-        marginLeft: 0,
+const admin = [
+  {
+    items: [{ name: "Admin", link: "/dashboard", icon: <HomeIcon /> }],
+  },
+  {
+    items: [{ name: "Reports", link: "/dashboard/reports", icon: <ArticleIcon /> }],
+  },
+  {
+    subheader: "Order Plan",
+    items: [
+      { name: "My Order Planning", link: "/dashboard/my-po", icon: <DescriptionIcon /> },
+      { name: "Add Order Planning", link: "/dashboard/my-po/new", icon: <AddCircleIcon /> },
+      { name: "Cancel Request", link: "/dashboard/cancel-request", icon: <CancelIcon /> },
+    ],
+  },
+  {
+    subheader: "Order Confirmation",
+    items: [
+      { name: "My Order Confirmation", link: "/dashboard/my-gr", icon: <RequestQuoteIcon /> },
+      {
+        name: "Create Order Confirmation",
+        link: "/dashboard/my-gr/new",
+        icon: <AddCircleIcon />,
       },
-    },
-  ],
-}));
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
-})(({ theme }) => ({
-  transition: theme.transitions.create(["margin", "width"], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  variants: [
-    {
-      props: ({ open }) => open,
-      style: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: `${drawerWidth}px`,
-        transition: theme.transitions.create(["margin", "width"], {
-          easing: theme.transitions.easing.easeOut,
-          duration: theme.transitions.duration.enteringScreen,
-        }),
+    ],
+  },
+  {
+    subheader: "Master Data",
+    items: [
+      { name: "Vendor", link: "/dashboard/vendor", icon: <StoreIcon /> },
+      {
+        name: "Company",
+        link: "/dashboard/company",
+        icon: <BusinessIcon />,
       },
-    },
-  ],
-}));
+      {
+        name: "UOM",
+        link: "/dashboard/uom",
+        icon: <ScaleIcon />,
+      },
+    ],
+  },
+];
 
-const DrawerHeader = styled("div")(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-  justifyContent: "flex-end",
-}));
+const user = [
+  {
+    items: [{ name: "Dashboard", link: "/dashboard", icon: <HomeIcon /> }],
+  },
+  {
+    subheader: "Order Plan",
+    items: [
+      { name: "My Order Planning", link: "/dashboard/my-po", icon: <DescriptionIcon /> },
+      { name: "Add Order Planning", link: "/dashboard/my-po/new", icon: <AddCircleIcon /> },
+    ],
+  },
+  {
+    subheader: "Order Confirmation",
+    items: [
+      { name: "My Order Confirmation", link: "/dashboard/my-gr", icon: <RequestQuoteIcon /> },
+      {
+        name: "Create Order Confirmation",
+        link: "/dashboard/my-gr/new",
+        icon: <AddCircleIcon />,
+      },
+    ],
+  },
+  {
+    subheader: "Master Data",
+    items: [
+      { name: "Vendor", link: "/dashboard/vendor", icon: <StoreIcon /> },
+      {
+        name: "Company",
+        link: "/dashboard/company",
+        icon: <BusinessIcon />,
+      },
+      {
+        name: "UOM",
+        link: "/dashboard/uom",
+        icon: <ScaleIcon />,
+      },
+    ],
+  },
+];
+const finance = [
+  {
+    items: [{ name: "Home", link: "/dashboard", icon: <HomeIcon /> }],
+  },
+  {
+    subheader: "Reports",
+    items: [{ name: "Reports", link: "/dashboard/reports", icon: <ArticleIcon /> }],
+  },
+];
 
-const UserMenu = ({ session }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
+export default function PersistentDrawer({ children }) {
+  const id_role = useAuthStore((state) => state.id_role);
+  const [open, setOpen] = useState(true);
+  const router = useRouter();
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  // PROTECT ROUTES INSIDE ADMIN LAYOUT
+  useEffect(() => {
+    const authStorage = localStorage.getItem("auth-storage");
+    if (!authStorage) {
+      router.replace("/login");
+    }
+  }, [router]);
+
+  const toggleDrawer = () => {
+    setOpen(!open);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  let items = [];
+  switch (id_role) {
+    case process.env.NEXT_PUBLIC_ADMIN_ID:
+      items = admin;
+      break;
+    case process.env.NEXT_PUBLIC_USER_ID:
+      items = user;
+      break;
+    case process.env.NEXT_PUBLIC_FINANCE_ID:
+      items = finance;
+      break;
+    default:
+      items = user;
+  }
 
-  const handleLogout = () => {
-    signOut({ callbackUrl: "/login" });
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "user-popover" : undefined;
-
-  return (
-    <>
-      <IconButton aria-describedby={id} edge="end" onClick={handleClick}>
-        <Avatar sx={{ width: 32, height: 32 }} />
-      </IconButton>
-      <Menu
-        id={id}
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: "center",
-          horizontal: "center",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        keepMounted
-      >
-        <MenuItem sx={{ width: "10rem" }}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              width: "100%",
-            }}
-          >
-            <IconButton>
-              <Avatar>{session?.user?.username.slice(0, 1).toUpperCase()}</Avatar>
-            </IconButton>
-            <Typography>{session?.user?.username}</Typography>
-          </Box>
-        </MenuItem>
-        <MenuItem onClick={handleLogout} sx={{ width: "10rem" }}>
-          Logout
-        </MenuItem>
-      </Menu>
-    </>
-  );
-};
-
-export default function PersistentDrawer({ title, menu, children }) {
-  const theme = useTheme();
-  const [open, setOpen] = useState(false);
-  const { data: session } = useSession();
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
-  return (
-    <SessionContext.Provider value={session?.user}>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <AppBar position="fixed" open={open}>
-          <Toolbar sx={{ justifyContent: "space-between" }}>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                onClick={handleDrawerOpen}
-                edge="start"
-                sx={[
-                  {
-                    mr: 2,
-                  },
-                  open && { display: "none" },
-                ]}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="h6">{title}</Typography>
-            </Box>
-            <UserMenu session={session} />
-          </Toolbar>
-        </AppBar>
-        <Drawer
-          sx={{
-            width: drawerWidth,
-            flexShrink: 0,
-            "& .MuiDrawer-paper": {
-              width: drawerWidth,
-              boxSizing: "border-box",
-            },
-          }}
-          variant="persistent"
-          anchor="left"
-          open={open}
+  const DrawerList = (
+    <List>
+      {items.map((menuGroup, index) => (
+        <List
+          dense
+          subheader={
+            menuGroup.subheader && (
+              <ListSubheader color="primary">{menuGroup.subheader}</ListSubheader>
+            )
+          }
+          key={index}
         >
-          <DrawerHeader>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+          {menuGroup.items.map((item) => (
+            <ListItem disablePadding key={item.name}>
+              <ListItemButton component={Link} to={item.link}>
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.name} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      ))}
+    </List>
+  );
+
+  return (
+    <Box sx={{ display: "flex" }}>
+      <AppBar
+        position="fixed"
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          transition: (theme) =>
+            theme.transitions.create(["width", "margin"], {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.leavingScreen,
+            }),
+          ...(open && {
+            marginLeft: drawerWidth,
+            width: `calc(100% - ${drawerWidth}px)`,
+          }),
+        }}
+      >
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={toggleDrawer}
+              sx={{ mr: 2 }}
+            >
+              {open ? <ChevronLeftIcon /> : <MenuIcon />}
             </IconButton>
-          </DrawerHeader>
-          <Divider />
-          {menu}
-        </Drawer>
-        <Main open={open}>
-          <DrawerHeader />
-          {children}
-        </Main>
+            <Typography variant="h6" noWrap component="div">
+              Petty Cash KPN
+            </Typography>
+          </Box>
+          <UserMenu />
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: drawerWidth,
+            boxSizing: "border-box",
+          },
+        }}
+        variant="persistent"
+        anchor="left"
+        open={open}
+      >
+        <Box sx={{ overflow: "auto" }}>{DrawerList}</Box>
+      </Drawer>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          padding: 3,
+          transition: (theme) =>
+            theme.transitions.create("margin", {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.leavingScreen,
+            }),
+          marginLeft: open ? 0 : `-${drawerWidth}px`,
+        }}
+      >
+        <Toolbar />
+        <Box sx={{ width: "auto" }}>{children}</Box>
       </Box>
-    </SessionContext.Provider>
+    </Box>
   );
 }
-
-export const useSessionData = () => useContext(SessionContext);

@@ -6,16 +6,17 @@ import POFooter from "@/components/POFooter";
 import POHeader from "@/components/POHeader";
 import { statusColor } from "@/helper/helper";
 import useFetch from "@/hooks/useFetch";
-import { Box, Skeleton, Typography, Chip, Button, Paper, TextField } from "@mui/material";
-import { useSession } from "next-auth/react";
+import { Box, Typography, Chip, Button, Paper, TextField } from "@mui/material";
 import { POSkeleton } from "../../Skeleton";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
 import PrintIcon from "@mui/icons-material/Print";
 import moment from "moment";
+import useAuthStore from "@/hooks/useAuthStore";
 
 const GRDetails = ({ idGR }) => {
-  const { data: session } = useSession();
+  const id_role = useAuthStore((state) => state.id_role);
+  const id_user = useAuthStore((state) => state.id_user);
   let { data: gr } = useFetch(`/gr/${encodeURIComponent(idGR)}`);
   const docRef = useRef();
 
@@ -46,7 +47,7 @@ const GRDetails = ({ idGR }) => {
           </Button>
         )}
       </Box>
-      {gr && session ? (
+      {gr ? (
         <>
           <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
             {gr && gr.data.status === "rejected" && (
@@ -104,10 +105,9 @@ const GRDetails = ({ idGR }) => {
               </Box>
             </Paper>
           </Box>
-          {session?.user?.id_role === process.env.NEXT_PUBLIC_ADMIN_ID &&
-            gr.data.status === "pending" && (
-              <ApprovalAction id_user={session?.user?.id_user} id_gr={encodeURIComponent(idGR)} />
-            )}
+          {id_role === process.env.NEXT_PUBLIC_ADMIN_ID && gr.data.status === "pending" && (
+            <ApprovalAction id_user={id_user} id_gr={encodeURIComponent(idGR)} />
+          )}
         </>
       ) : (
         <POSkeleton />

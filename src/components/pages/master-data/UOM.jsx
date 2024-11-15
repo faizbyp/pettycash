@@ -8,12 +8,13 @@ import DialogComp from "@/components/Dialog";
 import { useState } from "react";
 import TextFieldCtrl from "@/components/forms/TextField";
 import CheckboxCtrl from "@/components/forms/Checkbox";
-import API from "@/services/api";
 import toast from "react-hot-toast";
 import { isAxiosError } from "axios";
 import { ListSkeleton } from "../../Skeleton";
+import useAPI from "@/hooks/useAPI";
 
 const UOM = () => {
+  const API = useAPI();
   const { data: uom, refetch } = useFetch("/uom");
   const [openForm, setOpenForm] = useState(false);
   const [loading, setLoading] = useState(false);

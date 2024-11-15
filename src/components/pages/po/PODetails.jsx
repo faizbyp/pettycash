@@ -7,7 +7,6 @@ import POHeader from "@/components/POHeader";
 import { statusColor } from "@/helper/helper";
 import useFetch from "@/hooks/useFetch";
 import { Box, Typography, Chip, Button, Paper, TextField } from "@mui/material";
-import { useSession } from "next-auth/react";
 import { POSkeleton } from "../../Skeleton";
 import { useEffect, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
@@ -16,16 +15,19 @@ import AddIcon from "@mui/icons-material/Add";
 import TextFieldCtrl from "../../forms/TextField";
 import { useForm } from "react-hook-form";
 import DialogComp from "../../Dialog";
-import API from "@/services/api";
 import { isAxiosError } from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import CancelReqAction from "../../forms/CancelReqAction";
 import moment from "moment";
+import useAuthStore from "@/hooks/useAuthStore";
+import useAPI from "@/hooks/useAPI";
 
 const PODetails = ({ idPO }) => {
+  const API = useAPI();
   const router = useRouter();
-  const { data: session } = useSession();
+  const id_role = useAuthStore((state) => state.id_role);
+  const id_user = useAuthStore((state) => state.id_user);
   let { data: po } = useFetch(`/po/${encodeURIComponent(idPO)}`);
   const [openForm, setOpenForm] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -42,10 +44,10 @@ const PODetails = ({ idPO }) => {
   });
 
   useEffect(() => {
-    if (session?.user?.id_user === po?.data?.id_user) {
+    if (id_user === po?.data?.id_user) {
       setIsTheirPO(true);
     }
-  }, [session, po]);
+  }, [id_user, po]);
 
   const handleOpenForm = () => {
     setOpenForm(true);
@@ -145,7 +147,7 @@ const PODetails = ({ idPO }) => {
           </Typography>
         </Box>
       )}
-      {po && session ? (
+      {po ? (
         <>
           <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
             {po && po.data.status === "rejected" && (
@@ -197,11 +199,10 @@ const PODetails = ({ idPO }) => {
               </Box>
             </Paper>
           </Box>
-          {session?.user?.id_role === process.env.NEXT_PUBLIC_ADMIN_ID &&
-            po.data.status === "pending" && (
-              <ApprovalAction id_user={session?.user?.id_user} id_po={encodeURIComponent(idPO)} />
-            )}
-          {session?.user?.id_role === process.env.NEXT_PUBLIC_ADMIN_ID && po.data.cancel_reason && (
+          {id_role === process.env.NEXT_PUBLIC_ADMIN_ID && po.data.status === "pending" && (
+            <ApprovalAction id_user={id_user} id_po={encodeURIComponent(idPO)} />
+          )}
+          {id_role === process.env.NEXT_PUBLIC_ADMIN_ID && po.data.cancel_reason && (
             <CancelReqAction id_po={idPO} />
           )}
         </>

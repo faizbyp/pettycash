@@ -3,15 +3,15 @@
 import POTable from "@/components/POTable";
 import useFetch from "@/hooks/useFetch";
 import { Box, Button, MenuItem, Skeleton, Typography, IconButton } from "@mui/material";
-import { useSession } from "next-auth/react";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Link from "next/link";
 import { TableSkeleton } from "../../Skeleton";
+import useAuthStore from "@/hooks/useAuthStore";
 
 const GR = () => {
-  const { data: session } = useSession();
+  const id_user = useAuthStore((state) => state.id_user);
   const { data: po } = useFetch(
-    session ? `/po/user/${session.user.id_user}?status=approved&is_complete=false` : null
+    id_user ? `/po/user/${id_user}?status=approved&is_complete=false` : null
   );
   const tableAction = (row) => (
     <Link href={`/dashboard/my-gr/new/${encodeURIComponent(row.id_po)}`} passHref>

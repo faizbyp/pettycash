@@ -1,7 +1,7 @@
 "use client";
 
 import TextFieldCtrl from "@/components/forms/TextField";
-import API from "@/services/api";
+import useAPI from "@/hooks/useAPI";
 import {
   Box,
   Button,
@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 const ReqResetPass = () => {
+  const API = useAPI();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { control, handleSubmit } = useForm({

@@ -6,9 +6,5 @@ export const metadata = {
 };
 
 export default function DashboardLayout({ children }) {
-  return (
-    <PersistentDrawer title="Petty Cash KPN" menu={<DashboardMenu />}>
-      {children}
-    </PersistentDrawer>
-  );
+  return <PersistentDrawer>{children}</PersistentDrawer>;
 }

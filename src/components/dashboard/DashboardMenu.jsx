@@ -20,7 +20,7 @@ import {
   ListSubheader,
 } from "@mui/material";
 import Link from "next/link";
-import { getSession, useSession } from "next-auth/react";
+import useAuthStore from "@/hooks/useAuthStore";
 
 const menuItems = {
   admin: [
@@ -121,10 +121,10 @@ function getMenuItems(role) {
 }
 
 const DashboardMenu = () => {
-  const { data: session, status } = useSession();
+  const id_role = useAuthStore((state) => state.id_role);
 
   let role;
-  switch (session?.user?.id_role) {
+  switch (id_role) {
     case process.env.NEXT_PUBLIC_ADMIN_ID:
       role = "admin";
       break;

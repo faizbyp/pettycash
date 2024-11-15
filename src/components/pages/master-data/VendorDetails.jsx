@@ -3,7 +3,6 @@
 import CheckboxCtrl from "@/components/forms/Checkbox";
 import TextFieldCtrl from "@/components/forms/TextField";
 import useFetch from "@/hooks/useFetch";
-import API from "@/services/api";
 import { Box, Skeleton, Typography, Grid2 as Grid, Button } from "@mui/material";
 import { isAxiosError } from "axios";
 import { useRouter } from "next/navigation";
@@ -11,8 +10,10 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { ListSkeleton } from "../../Skeleton";
+import useAPI from "@/hooks/useAPI";
 
 const VendorDetails = ({ idVendor }) => {
+  const API = useAPI();
   const { data: vendor } = useFetch(`/vendor/${idVendor}`);
   const router = useRouter();
   const [loading, setLoading] = useState(false);

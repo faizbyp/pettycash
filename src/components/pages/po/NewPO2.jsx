@@ -13,18 +13,19 @@ import NumericFieldCtrl from "@/components/forms/NumericField";
 import CurrencyField from "@/components/forms/CurrencyField";
 import ItemTable from "@/components/ItemTable";
 import { calculateTotal } from "@/helper/helper";
-import API from "@/services/api";
 import toast from "react-hot-toast";
 import { isAxiosError } from "axios";
-import { useSession } from "next-auth/react";
 import POFooter from "@/components/POFooter";
 import POHeader from "@/components/POHeader";
 import DialogComp from "@/components/Dialog";
 import { POSkeleton } from "../../Skeleton";
+import useAuthStore from "@/hooks/useAuthStore";
+import useAPI from "@/hooks/useAPI";
 
 const NewPO2 = ({ idPO }) => {
+  const API = useAPI();
   const router = useRouter();
-  const { data: session } = useSession();
+  const id_user = useAuthStore((state) => state.id_user);
   const [poData, setPoData] = useSessionStorage("poData");
   const { data: uom } = useFetch("/uom");
 
@@ -122,9 +123,9 @@ const NewPO2 = ({ idPO }) => {
   }, [setValue, getValues, watch("ppn"), fields, addedItemsFields]);
 
   useEffect(() => {
-    if (editData && session?.user?.id_user) {
+    if (editData && id_user) {
       const data = editData.data;
-      if (session?.user?.id_user !== data.id_user) {
+      if (id_user !== data.id_user) {
         redirect("/403");
       }
       resetPO({
@@ -139,7 +140,7 @@ const NewPO2 = ({ idPO }) => {
         items: data.items,
       });
     }
-  }, [editData, resetPO, session?.user?.id_user]);
+  }, [editData, resetPO, id_user]);
 
   const onPrev = () => {
     router.back();
@@ -219,7 +220,7 @@ const NewPO2 = ({ idPO }) => {
     if (!isEdit) {
       values = {
         ...values,
-        id_user: session?.user?.id_user,
+        id_user: id_user,
       };
       delete values.added_items;
       delete values.edited_items;
@@ -259,7 +260,7 @@ const NewPO2 = ({ idPO }) => {
       <Box component="main">
         <Button onClick={() => onPrev()}>Back</Button>
         <Typography variant="h1" sx={{ color: "primary.main" }}>
-          {!isEdit ? "Add New Order Plan - 2" : `Edit Order Plan: ${idPO}`}
+          {!isEdit ? "Add New Order Plan" : `Edit Order Plan: ${idPO}`}
         </Typography>
         {(company && vendor && poData) || editData ? (
           <>

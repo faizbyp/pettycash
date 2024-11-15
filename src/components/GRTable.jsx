@@ -16,7 +16,7 @@ import Link from "next/link";
 
 const GRTable = ({ data, admin, actions }) => {
   return (
-    <TableContainer component={Paper} sx={{ maxWidth: "92vw", overflow: "scroll", maxHeight: 440 }}>
+    <TableContainer component={Paper} sx={{ maxHeight: 440 }}>
       <Table stickyHeader aria-label="GR Table">
         <TableHead>
           <TableRow

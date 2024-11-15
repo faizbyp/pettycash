@@ -17,10 +17,7 @@ import Link from "next/link";
 
 const POTable = ({ data, admin, actions }) => {
   return (
-    <TableContainer
-      component={Paper}
-      sx={{ mb: 4, maxWidth: "92vw", overflow: "scroll", maxHeight: 440 }}
-    >
+    <TableContainer component={Paper} sx={{ mb: 4, maxHeight: 440 }}>
       <Table stickyHeader aria-label="PO Table">
         <TableHead>
           <TableRow

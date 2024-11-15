@@ -34,10 +34,7 @@ const StandardTable = memo(function StandardTable({
 
   return (
     <Box>
-      <TableContainer
-        component={Paper}
-        sx={{ mb: 4, maxWidth: "92vw", overflow: "scroll", maxHeight: maxHeight }}
-      >
+      <TableContainer component={Paper} sx={{ mb: 4, maxHeight: maxHeight }}>
         <Table stickyHeader size="small" aria-label="simple table">
           <TableHead>
             {table.getHeaderGroups().map((headerGroup) => (
