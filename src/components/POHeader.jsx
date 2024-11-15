@@ -9,13 +9,13 @@ const POHeader = memo(function POHeader({ company, vendor, po_date, gr_date, idP
     <>
       <Grid container spacing={4}>
         <Grid size={{ xs: 12, sm: 6 }}>
-          <Typography>{company.company_name}</Typography>
+          <Typography fontWeight="bold">{company.company_name}</Typography>
           <Typography>{company.company_addr}</Typography>
           <Typography>Phone: {company.company_phone}</Typography>
           <Typography>Fax: {company.company_fax}</Typography>
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>
-          <Typography sx={{ fontWeight: "bold" }}>{title}</Typography>
+          <Typography fontWeight="bold">{title}</Typography>
           {gr_date ? (
             <>
               {idPO && (

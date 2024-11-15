@@ -83,6 +83,7 @@ const GRDetails = ({ idGR }) => {
                 />
                 <ItemTable data={gr.data.items} />
                 <POFooter
+                  approvalBy={gr.data.approval_by}
                   approvalDate={
                     gr.data.status === "approved"
                       ? moment(gr.data.approval_date).format("DD-MM-YYYY")

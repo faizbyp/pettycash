@@ -181,6 +181,7 @@ const PODetails = ({ idPO }) => {
                 />
                 <ItemTable data={po.data.items} />
                 <POFooter
+                  approvalBy={po.data.approval_by}
                   approvalDate={
                     po.data.status === "approved"
                       ? moment(po.data.approval_date).format("DD-MM-YYYY")

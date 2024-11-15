@@ -28,6 +28,7 @@ const POFooter = memo(function POFooter({
   total,
   GR,
   invoice,
+  approvalBy,
   approvalDate,
 }) {
   return (
@@ -106,7 +107,7 @@ const POFooter = memo(function POFooter({
       </Grid>
       {approvalDate && (
         <Alert severity="success" icon={false} sx={{ mt: 2 }}>
-          Approved by system on {approvalDate}
+          Approved by system {`(${approvalBy})`} on {approvalDate}
         </Alert>
       )}
       {GR && (
