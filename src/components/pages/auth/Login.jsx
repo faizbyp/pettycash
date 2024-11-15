@@ -12,11 +12,17 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { getSession, signIn } from "next-auth/react";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { isAxiosError } from "axios";
+import useAuthStore from "@/hooks/useAuthStore";
+import useAPI from "@/hooks/useAPI";
 
 const Login = () => {
+  const API = useAPI();
+  const setAuth = useAuthStore((state) => state.setAuth);
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -26,34 +32,23 @@ const Login = () => {
   });
 
   const loginUser = async (values) => {
+    console.log(values);
     setLoading(true);
-    const payload = {
-      ...values,
-      redirect: false,
-    };
-    console.log(payload);
     try {
-      const res = await signIn("credentials", payload);
-
-      if (res?.status === 200) {
-        const session = await getSession();
-        if (session?.user.id_role) {
-          location.replace("/dashboard");
-        } else {
-          toast("Please try again");
-        }
-      } else if (res?.status === 401) {
-        if (res.error) {
-          toast.error(JSON.parse(res.error).message);
-        } else {
-          toast.error("Error");
-        }
-      } else {
-        toast.error("Failed to login");
-      }
+      const res = await API.post(`/user/login`, values);
+      console.log(res.data.data);
+      setAuth(res.data.data);
+      toast.success(`${res.data.message}`);
+      router.push("/dashboard");
     } catch (error) {
-      console.error("Login Error", error);
-      toast.error("Login Error", error);
+      if (isAxiosError(error)) {
+        const data = error.response?.data;
+        toast.error(data.message);
+        console.error(error.response);
+      } else {
+        toast.error("Error, check log for details");
+        console.error(error);
+      }
     } finally {
       setLoading(false);
     }

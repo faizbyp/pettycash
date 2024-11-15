@@ -24,12 +24,13 @@ import DialogComp from "@/components/Dialog";
 import { useState } from "react";
 import TextFieldCtrl from "@/components/forms/TextField";
 import CheckboxCtrl from "@/components/forms/Checkbox";
-import API from "@/services/api";
 import toast from "react-hot-toast";
 import { isAxiosError } from "axios";
 import { TableSkeleton } from "../../Skeleton";
+import useAPI from "@/hooks/useAPI";
 
 const Vendor = () => {
+  const API = useAPI();
   const { data: vendors, refetch } = useFetch("/vendor");
   const [openForm, setOpenForm] = useState(false);
   const [loading, setLoading] = useState(false);

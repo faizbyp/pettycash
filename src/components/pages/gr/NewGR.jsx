@@ -31,10 +31,8 @@ import NumericFieldCtrl from "@/components/forms/NumericField";
 import CurrencyField from "@/components/forms/CurrencyField";
 import ItemTable from "@/components/ItemTable";
 import { allowedFormat, calculateTotal } from "@/helper/helper";
-import API from "@/services/api";
 import toast from "react-hot-toast";
 import { isAxiosError } from "axios";
-import { useSession } from "next-auth/react";
 import POFooter from "@/components/POFooter";
 import POHeader from "@/components/POHeader";
 import DialogComp from "@/components/Dialog";
@@ -43,10 +41,11 @@ import FileInput from "@/components/forms/FileInput";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import CheckboxCtrl from "../../forms/Checkbox";
 import DatePickerCtrl from "../../forms/DatePicker";
+import useAPI from "@/hooks/useAPI";
 
 const NewGR = ({ idPO }) => {
+  const API = useAPI();
   const router = useRouter();
-  const { data: session } = useSession();
   const { data: po } = useFetch(`/gr/po/${encodeURIComponent(idPO)}`);
   const [openForm, setOpenForm] = useState(false);
   const [loading, setLoading] = useState(false);

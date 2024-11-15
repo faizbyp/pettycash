@@ -2,16 +2,16 @@
 
 import useFetch from "@/hooks/useFetch";
 import { Box, Button, MenuItem, Skeleton, Typography, IconButton } from "@mui/material";
-import { useSession } from "next-auth/react";
 import AddIcon from "@mui/icons-material/Add";
 import Link from "next/link";
 import { TableSkeleton } from "../../Skeleton";
 import InfoIcon from "@mui/icons-material/Info";
 import GRTable from "../../GRTable";
+import useAuthStore from "@/hooks/useAuthStore";
 
 const MyGR = () => {
-  const { data: session } = useSession();
-  const { data: gr } = useFetch(session ? `/gr/user/${session.user.id_user}` : null);
+  const id_user = useAuthStore((state) => state.id_user);
+  const { data: gr } = useFetch(id_user ? `/gr/user/${id_user}` : null);
 
   const tableAction = (row) => (
     <Link href={`/dashboard/gr/${encodeURIComponent(row.id_gr)}`} passHref>

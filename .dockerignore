@@ -8,3 +8,7 @@ README.md
 !.next/standalone
 .next/standalone/.env.production
 .git
+production.env
+development.env
+.env.development
+.env.production

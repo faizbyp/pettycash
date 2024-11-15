@@ -3,7 +3,7 @@
 import { PasswordWithEye } from "@/components/forms/PasswordWithEye";
 import SelectCtrl from "@/components/forms/Select";
 import TextFieldCtrl from "@/components/forms/TextField";
-import API from "@/services/api";
+import useAPI from "@/hooks/useAPI";
 import {
   Box,
   Button,
@@ -20,6 +20,7 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 const ResetPass = ({ email }) => {
+  const API = useAPI();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [verified, setVerified] = useState(false);
