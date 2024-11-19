@@ -22,6 +22,7 @@ import CancelReqAction from "../../forms/CancelReqAction";
 import moment from "moment";
 import useAuthStore from "@/hooks/useAuthStore";
 import useAPI from "@/hooks/useAPI";
+import DeleteAction from "@/components/forms/DeleteAction";
 
 const PODetails = ({ idPO }) => {
   const API = useAPI();
@@ -101,42 +102,62 @@ const PODetails = ({ idPO }) => {
           <Typography variant="h1" sx={{ color: "primary.main", m: 0 }}>
             {idPO}
           </Typography>
-          {po && <Chip color={statusColor(po.data.status)} label={po.data.status} />}
-          {po && po.data.cancel_reason && <Chip color="warning" label="Waiting for cancellation" />}
+          {po && (
+            <>
+              <Chip color={statusColor(po.data.status)} label={po.data.status} />
+              {po.data.cancel_reason && <Chip color="warning" label="Waiting for cancellation" />}
+            </>
+          )}
         </Box>
         <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-          {po && po.data.status === "canceled" && (
-            <Button onClick={handleEdit} variant="contained" color="warning" disabled={!isTheirPO}>
-              Edit
-            </Button>
-          )}
-          {po && !po.data.has_gr && !po.data.cancel_reason && po.data.status === "approved" && (
-            <Button
-              onClick={handleOpenForm}
-              variant="contained"
-              color="error"
-              disabled={!isTheirPO}
-            >
-              Cancel
-            </Button>
-          )}
-          {po && po.data.status === "approved" && (
+          {po && (
             <>
-              <Button
-                onClick={handleConfirmation}
-                variant="outlined"
-                startIcon={<AddIcon />}
-                disabled={!isTheirPO}
-              >
-                Confirmation
-              </Button>
-              <Button onClick={handlePrint} variant="contained" startIcon={<PrintIcon />}>
-                Print
-              </Button>
+              {/* EDIT BUTTON */}
+              {po.data.status === "canceled" && (
+                <Button
+                  onClick={handleEdit}
+                  variant="contained"
+                  color="warning"
+                  disabled={!isTheirPO}
+                >
+                  Edit
+                </Button>
+              )}
+
+              {/* CANCEL BUTTON */}
+              {!po.data.has_gr && !po.data.cancel_reason && po.data.status === "approved" && (
+                <Button
+                  onClick={handleOpenForm}
+                  variant="contained"
+                  color="error"
+                  disabled={!isTheirPO}
+                >
+                  Cancel
+                </Button>
+              )}
+
+              {/* ADD CONFIRMATION AND PRINT */}
+              {po.data.status === "approved" && (
+                <>
+                  <Button
+                    onClick={handleConfirmation}
+                    variant="outlined"
+                    startIcon={<AddIcon />}
+                    disabled={!isTheirPO}
+                  >
+                    Confirmation
+                  </Button>
+                  <Button onClick={handlePrint} variant="contained" startIcon={<PrintIcon />}>
+                    Print
+                  </Button>
+                </>
+              )}
             </>
           )}
         </Box>
       </Box>
+
+      {/* CANCEL REASON */}
       {po && po.data.cancel_reason && (
         <Box sx={{ my: 2 }}>
           <Typography color="text.secondary">
@@ -147,10 +168,12 @@ const PODetails = ({ idPO }) => {
           </Typography>
         </Box>
       )}
+
       {po ? (
         <>
           <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-            {po && po.data.status === "rejected" && (
+            {/* REJECT NOTES */}
+            {po.data.status === "rejected" && (
               <TextField
                 label="Reject Notes"
                 multiline
@@ -199,11 +222,21 @@ const PODetails = ({ idPO }) => {
               </Box>
             </Paper>
           </Box>
-          {id_role === process.env.NEXT_PUBLIC_ADMIN_ID && po.data.status === "pending" && (
-            <ApprovalAction id_user={id_user} id_po={encodeURIComponent(idPO)} />
-          )}
-          {id_role === process.env.NEXT_PUBLIC_ADMIN_ID && po.data.cancel_reason && (
-            <CancelReqAction id_po={idPO} />
+
+          {/* ADMIN ACTIONS */}
+          {id_role === process.env.NEXT_PUBLIC_ADMIN_ID && (
+            <>
+              {/* APPROVE */}
+              {po.data.status === "pending" && (
+                <ApprovalAction id_user={id_user} id_po={encodeURIComponent(idPO)} />
+              )}
+
+              {/* APPROVE CANCEL */}
+              {po.data.cancel_reason && <CancelReqAction id_po={idPO} />}
+
+              {/* DELETE BUTTON */}
+              {!po.data.has_gr && <DeleteAction id_po={idPO} />}
+            </>
           )}
         </>
       ) : (
