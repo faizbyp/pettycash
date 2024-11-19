@@ -30,7 +30,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import NumericFieldCtrl from "@/components/forms/NumericField";
 import CurrencyField from "@/components/forms/CurrencyField";
 import ItemTable from "@/components/ItemTable";
-import { allowedFormat, calculateTotal } from "@/helper/helper";
+import { allowedFormat, calculateTotal, formatThousand } from "@/helper/helper";
 import toast from "react-hot-toast";
 import { isAxiosError } from "axios";
 import POFooter from "@/components/POFooter";
@@ -70,6 +70,7 @@ const NewGR = ({ idPO }) => {
       id_po: "",
       notes: "",
       sub_total: 0,
+      discount: 0,
       ppn: false,
       grand_total: 0,
       invoice_num: "",
@@ -117,15 +118,19 @@ const NewGR = ({ idPO }) => {
   }, [po]);
 
   useEffect(() => {
-    setGrValue("sub_total", calculateTotal(grFields, "amount"));
-    setGrValue(
-      "grand_total",
-      watchGr("ppn")
-        ? getGrValues("sub_total") + getGrValues("sub_total") * (11 / 100)
-        : getGrValues("sub_total")
-    );
+    const debounce = setTimeout(() => {
+      const ppn = watchGr("ppn");
+      const discount = watchGr("discount");
+      const subTotal = calculateTotal(grFields, "amount");
+      const grandTotal = ppn ? (subTotal - discount) * 1.11 : subTotal - discount;
+
+      setGrValue("sub_total", subTotal);
+      setGrValue("grand_total", grandTotal);
+    }, 300);
+
+    return () => clearTimeout(debounce);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setGrValue, watchGr("ppn"), grFields]);
+  }, [setGrValue, watchGr("ppn"), watchGr("discount"), grFields]);
 
   const getRemainingQty = (array, id) => {
     const filter = array.filter((item) => item.id_po_item === id);
@@ -258,6 +263,9 @@ const NewGR = ({ idPO }) => {
                   </MenuItem>
                 ))}
               </MenuList>
+              <Typography color="text.secondary">
+                Discount: {formatThousand(po.data.discount)} (Order Plan)
+              </Typography>
             </Paper>
             <POHeader
               company={po.data.company}
@@ -275,8 +283,9 @@ const NewGR = ({ idPO }) => {
               control={grControl}
               watch={{
                 sub_total: watchGr("sub_total"),
-                grand_total: watchGr("grand_total"),
+                discount: watchGr("discount"),
                 ppn: watchGr("ppn"),
+                grand_total: watchGr("grand_total"),
               }}
             />
             <Typography variant="h2" sx={{ color: "primary.main" }}>

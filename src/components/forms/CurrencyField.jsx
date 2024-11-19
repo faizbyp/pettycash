@@ -2,7 +2,7 @@ import { Box, TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
 
-const CurrencyField = ({ name, control, label, disabled, rules = {} }) => {
+const CurrencyField = ({ name, control, label, disabled, noMargin, rules = {} }) => {
   return (
     <Controller
       name={name}
@@ -16,7 +16,7 @@ const CurrencyField = ({ name, control, label, disabled, rules = {} }) => {
         },
       }}
       render={({ field: { onChange, ref, value, ...rest } }) => (
-        <Box sx={{ mb: 2 }}>
+        <Box sx={{ mb: noMargin ? 0 : 2 }}>
           <NumericFormat
             {...rest}
             getInputRef={ref}

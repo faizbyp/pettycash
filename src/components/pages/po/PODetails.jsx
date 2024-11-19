@@ -215,6 +215,7 @@ const PODetails = ({ idPO }) => {
                   notes={po.data.notes}
                   total={{
                     sub_total: po.data.sub_total,
+                    discount: po.data.discount,
                     ppn: parseFloat(po.data.ppn),
                     grand_total: po.data.grand_total,
                   }}

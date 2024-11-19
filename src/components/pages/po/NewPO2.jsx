@@ -59,6 +59,7 @@ const NewPO2 = ({ idPO }) => {
       id_user: "",
       notes: "",
       sub_total: 0,
+      discount: 0,
       ppn: false,
       grand_total: 0,
     },
@@ -117,10 +118,19 @@ const NewPO2 = ({ idPO }) => {
   }, [poData, setValue]);
 
   useEffect(() => {
-    setValue("sub_total", calculateTotal(fields.concat(addedItemsFields), "amount"));
-    setValue("grand_total", watch("ppn") ? getValues("sub_total") * 1.11 : getValues("sub_total"));
+    const debounce = setTimeout(() => {
+      const ppn = watch("ppn");
+      const discount = watch("discount");
+      const subTotal = calculateTotal(fields.concat(addedItemsFields), "amount");
+      const grandTotal = ppn ? (subTotal - discount) * 1.11 : subTotal - discount;
+
+      setValue("sub_total", subTotal);
+      setValue("grand_total", grandTotal);
+    }, 300);
+
+    return () => clearTimeout(debounce);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setValue, getValues, watch("ppn"), fields, addedItemsFields]);
+  }, [setValue, watch("ppn"), watch("discount"), fields, addedItemsFields]);
 
   useEffect(() => {
     if (editData && id_user) {
@@ -135,6 +145,7 @@ const NewPO2 = ({ idPO }) => {
         id_user: data.id_user,
         notes: data.notes,
         sub_total: data.sub_total,
+        discount: data.discount,
         ppn: parseFloat(data.ppn),
         grand_total: data.grand_total,
         items: data.items,
@@ -289,8 +300,9 @@ const NewPO2 = ({ idPO }) => {
                 control={poControl}
                 watch={{
                   sub_total: watch("sub_total"),
-                  grand_total: watch("grand_total"),
+                  discount: watch("discount"),
                   ppn: watch("ppn"),
+                  grand_total: watch("grand_total"),
                 }}
               />
               <Box sx={{ textAlign: "right", mt: 2 }}>

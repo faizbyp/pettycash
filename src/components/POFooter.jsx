@@ -20,6 +20,8 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import { memo } from "react";
+import NumericFieldCtrl from "./forms/NumericField";
+import CurrencyField from "./forms/CurrencyField";
 
 const POFooter = memo(function POFooter({
   control,
@@ -60,6 +62,18 @@ const POFooter = memo(function POFooter({
               </TableRow>
               <TableRow>
                 <TableCell>
+                  <Typography>Discount</Typography>
+                </TableCell>
+                <TableCell sx={{ textAlign: "right" }}>
+                  {control && watch ? (
+                    <CurrencyField control={control} name="discount" label="Amount" noMargin />
+                  ) : (
+                    <Typography>{formatThousand(total.discount || 0)}</Typography>
+                  )}
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>
                   {control && watch ? (
                     <CheckboxCtrl name="ppn" control={control} label="PPN 11%" />
                   ) : (
@@ -80,11 +94,11 @@ const POFooter = memo(function POFooter({
                 <TableCell sx={{ textAlign: "right" }}>
                   {control && watch ? (
                     <Typography>
-                      {watch.ppn ? formatThousand(watch.sub_total * 0.11) : "-"}
+                      {watch.ppn ? formatThousand((watch.sub_total - watch.discount) * 0.11) : "-"}
                     </Typography>
                   ) : (
                     <Typography>
-                      {total.ppn ? formatThousand(total.sub_total * 0.11) : "-"}
+                      {total.ppn ? formatThousand((total.sub_total - total.discount) * 0.11) : "-"}
                     </Typography>
                   )}
                 </TableCell>

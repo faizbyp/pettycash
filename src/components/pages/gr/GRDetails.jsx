@@ -98,6 +98,7 @@ const GRDetails = ({ idGR }) => {
                   notes={gr.data.notes}
                   total={{
                     sub_total: gr.data.sub_total,
+                    discount: gr.data.discount,
                     ppn: parseFloat(gr.data.ppn),
                     grand_total: gr.data.grand_total,
                   }}
