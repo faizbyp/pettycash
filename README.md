@@ -95,3 +95,8 @@ docker run -p 3000:3000 --env-file .env.production faizbyp/pettycash:x.x.x
 
 - feat: auth zustand (api protect)
   NOTE: multiple fetch will fetch multiple refresh token too
+
+### `1.0.7`
+
+- feat: delete po
+- feat: discount
